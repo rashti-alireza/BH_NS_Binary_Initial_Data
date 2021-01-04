@@ -8,7 +8,7 @@
 
 /* initial data for a single BH. mostly used for test and experiment
 // purposes.  */
-int Single_BH_Initial_Data(void *vp)
+int BH_NS_Binary_Initial_Data(void *vp)
 {
   /* if this is a BAM call */
   if (strcmp_i(PgetsEZ(P_"bam_export_id"),"yes"))
