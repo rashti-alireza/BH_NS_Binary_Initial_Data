@@ -4,7 +4,7 @@
 */
 
 
-#include "sbh_header.h"
+#include "bhns_header.h"
 
 
 #define add_alloc_get_field(name) ADD_FIELD(name) REALLOC_v_WRITE_v(name)
@@ -13,8 +13,8 @@
 #define add_alloc_field(name) ADD_AND_ALLOC_FIELD(name) 
 
 
-void sbh_set_bam_fields(Grid_T *const grid);
-void sbh_set_bam_fields(Grid_T *const grid)
+void bhns_set_bam_fields(Grid_T *const grid);
+void bhns_set_bam_fields(Grid_T *const grid)
 {
   Uint p;
   const Uint np = grid->np;
