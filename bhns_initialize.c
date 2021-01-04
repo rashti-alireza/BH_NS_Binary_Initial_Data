@@ -36,38 +36,46 @@ Physics_T *bhns_initialize_new_physics(Physics_T *const old_phys)
 }
 
 
-/* use Kerr-Schild solution to initialize the physics */
+/* use a known BH and NS solution to initialize the physics */
 static Physics_T *guess_new_physics(void)
 {
   FUNC_TIC
   
   Physics_T *const bhns = init_physics(0,BHNS);/* the whole system */
-  Physics_T *const bh  = init_physics(bhns,BH);/* BH part */
+  Physics_T *const bh   = init_physics(bhns,BH);/* BH part */
+  Physics_T *const ns   = init_physics(bhns,NS);/* NS part */
   Grid_Char_T *const grid_char = init_grid_char(0);
   
   /* set paramters */
   physics(bhns,FREE_DATA_SET_PARAMS);
   physics(bhns,ADM_SET_PARAMS);
-  physics(bhns,BH_SET_PARAMS);
   physics(bhns,SYS_SET_PARAMS);
   physics(bhns,STRESS_ENERGY_SET_PARAMS);
   physics(bhns,OBSERVE_SET_PARAMS);  
+  physics(bhns,BH_SET_PARAMS);
+  physics(bhns,STAR_SET_PARAMS);
   
   /* create grid */
   bh->grid_char = grid_char;
   bh->igc       = Ibh;
+  ns->grid_char = grid_char;
+  ns->igc       = Ins;
   physics(bh,BH_START);
   physics(bh,BH_FIND_SURFACE);
+  physics(ns,STAR_START);
+  physics(ns,STAR_FIND_SURFACE);
   create_new_grid(grid_char,bhns);
   bh->grid = bhns->grid;
+  ns->grid = bhns->grid;
   
   /* add fields */
   physics(bhns,ADM_ADD_FIELDS);
-  physics(bhns,BH_ADD_FIELDS);
   physics(bhns,FREE_DATA_ADD_FIELDS);
   physics(bhns,STRESS_ENERGY_ADD_FIELDS);
   physics(bhns,SYS_ADD_FIELDS);
   physics(bhns,OBSERVE_ADD_FIELDS);
+  physics(bhns,BH_ADD_FIELDS);
+  physics(bhns,STAR_ADD_FIELDS);
   
   /* populate fields */
   physics(bhns,FREE_DATA_POPULATE);
@@ -79,8 +87,9 @@ static Physics_T *guess_new_physics(void)
   physics(bhns,ADM_UPDATE_beta);
   
   /* update derivatives */
-  update_partial_derivatives(bhns,".*","^dpsi_D.+,^ddpsi_D.+,"
-                                      "^dalphaPsi_D.+,^ddalphaPsi_D.+");
+  update_partial_derivatives(bhns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
+                                      "^dalphaPsi_D.$,^ddalphaPsi_D.D.$,"
+                                      "^dphi_D.$,^ddphi_D.D.$");
   
   /* update AConf^{ij} */
   physics(bhns,ADM_UPDATE_AConfIJ);
@@ -88,8 +97,12 @@ static Physics_T *guess_new_physics(void)
   /* update normal on AH */
   physics(bh,BH_UPDATE_sConf);
   
+  /* update stress energy-tensor */
+  physics(ns,STRESS_ENERGY_UPDATE);
+  
   /* free */
   free_physics(bh);
+  free_physics(ns);
   free_grid_char(grid_char);
   
   FUNC_TOC

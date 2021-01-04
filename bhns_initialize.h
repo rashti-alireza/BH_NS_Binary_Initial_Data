@@ -2,6 +2,8 @@
 
 /* index of bh */
 #define Ibh (0)
+/* index of ns */
+#define Ins (1)
 
 Physics_T *bhns_initialize_new_physics(Physics_T *const old_phys);
 static Physics_T *guess_new_physics(void);
