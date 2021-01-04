@@ -142,7 +142,7 @@ static int stop_criteria(Grid_T *const grid,const char *const name)
 /* how update sourc */
 static void source_update(Grid_T *const grid,const char *const name)
 {
-  Physics_T *const bhns = init_physics(0,SBH);
+  Physics_T *const bhns = init_physics(0,BHNS);
   bhns->grid            = grid;
   
   physics(bhns,ADM_UPDATE_AConfIJ);

@@ -6,8 +6,7 @@
 #include "bhns_main.h"
 
 
-/* initial data for a single BH. mostly used for test and experiment
-// purposes.  */
+/* initial data for BH-NS binary system */
 int BH_NS_Binary_Initial_Data(void *vp)
 {
   /* if this is a BAM call */
@@ -66,10 +65,7 @@ static void construct_initial_data(void *vp)
   FUNC_TOC
 }
 
-/* default parameters for this project
-// there might be silly that there is BHNS parameters and BH parameters;
-// however, since this is a project for test purposes I tried to be
-// as general as possible. */
+/* default parameters for this project */
 static void set_default_parameters(void)
 {
   /* how to start off:
