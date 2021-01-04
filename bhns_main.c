@@ -68,6 +68,18 @@ static void construct_initial_data(void *vp)
 /* default parameters for this project */
 static void set_default_parameters(void)
 {
+  /* BH-NS parameters:
+  // ================== */
+ 
+  /* how far are BH-NS */
+  Pset_default(P_"separation","0.");
+  
+  /* how fast BH-NS angular velocity */
+  Pset_default(P_"angular_velocity","0.");
+  
+  /* how fast BH-NS infall velocity */
+  Pset_default(P_"infall_velocity","0.");
+ 
   /* how to start off:
   // options:
   // "parameter_file" : it reads parameter file and initialize.
@@ -86,6 +98,67 @@ static void set_default_parameters(void)
   Pset_default(P_"boost_Vx","0."); 
   Pset_default(P_"boost_Vy","0."); 
   Pset_default(P_"boost_Vz","0."); 
+  
+  /* what to print for properties of BHNS, add and separate with comma */
+  Pset_default(P_"BHNS_properties","x_CM,y_CM,z_CM");
+  
+  /* NS paramters:
+  // ============= */
+  
+  /* NS baryonic mass */
+  Pset_default("NS_baryonic_mass","0.");
+  
+  /* NS EoS: */
+  Pset_default("NS_EoS_description","0");
+  /* [polytropic,piecewise_polytropic] */
+  Pset_default("NS_EoS_type","0");
+  /* unit: [geo] */
+  Pset_default("NS_EoS_unit","geo");
+  Pset_default("NS_EoS_K","0");
+  Pset_default("NS_EoS_Gamma","0");
+  
+  /* -> central rho0 */
+  Pset_default("NS_rho_center","1E-3");
+  
+  /* geometrical center of NS.
+  // NOTE: geometrical center can be different from patch->c. */ 
+  Pset_default("NS_center_x","0."); 
+  Pset_default("NS_center_y","0."); 
+  Pset_default("NS_center_z","0."); 
+  
+  /* spin vector to adjust spin for NS */
+  Pset_default("NS_Omega_x","0."); 
+  Pset_default("NS_Omega_y","0."); 
+  Pset_default("NS_Omega_z","0."); 
+  
+  /* dimensionless spin */
+  Pset_default("NS_chi_x","0."); 
+  Pset_default("NS_chi_y","0."); 
+  Pset_default("NS_chi_z","0."); 
+  
+  /* ADM momentum */
+  Pset_default("NS_Px_ADM","0."); 
+  Pset_default("NS_Py_ADM","0."); 
+  Pset_default("NS_Pz_ADM","0."); 
+  
+  /* ADM angular momentum */
+  Pset_default("NS_Jx_ADM","0."); 
+  Pset_default("NS_Jy_ADM","0."); 
+  Pset_default("NS_Jz_ADM","0."); 
+  
+  /* what to print for properties of NS, add and separate with comma */
+  Pset_default(P_"NS_properties",
+   "center_x,center_y,center_z,max_radius,min_radius,"
+   "ADM_mass,baryonic_mass,Px_ADM,Py_ADM,Pz_ADM,"
+   "Jx_ADM,Jy_ADM,Jz_ADM");
+  
+  
+  
+  /* BH paramters:
+  // ============= */
+  
+  /* BH irreducible mass */
+  Pset_default("BH_irreducible_mass","0.");
   
   /* geometrical center of BH.
   // NOTE: geometrical center can be different from patch->c. */ 
@@ -124,8 +197,6 @@ static void set_default_parameters(void)
    "irreducible_mass,Christodoulou_mass,Px_ADM,Py_ADM,Pz_ADM,"
    "Jx_ADM,Jy_ADM,Jz_ADM");
   
-  /* what to print for properties of BHNS, add and separate with comma */
-  Pset_default(P_"BHNS_properties","x_CM,y_CM,z_CM");
   
   /* BH filler parameters:
   // { */
