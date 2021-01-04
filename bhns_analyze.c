@@ -5,10 +5,10 @@
 
 /* analyzing initial data such as mass, momentum, constraints etc.  */
 
-#include "sbh_analyze.h"
+#include "bhns_analyze.h"
 
 /* analyzing physics properties, constraints etc */
-void sbh_analyze(Physics_T *const phys,const int iteration)
+void bhns_analyze(Physics_T *const phys,const int iteration)
 {
   FUNC_TIC
   
@@ -22,13 +22,13 @@ void sbh_analyze(Physics_T *const phys,const int iteration)
   /* open properties file in "my_directory" and save */
   sprintf(str,"%s/%s",Pgets(P_"my_directory"),properties_file_name);
   file = Fopen(str,"w");
-  sbh_print_physical_system_properties(phys,file,iteration,1);
+  bhns_print_physical_system_properties(phys,file,iteration,1);
   Fclose(file);
 
   /* open properties file in "Diagnostics" and save */
   sprintf(str,"%s/%s",Pgets(P_"Diagnostics"),properties_file_name);
   file = Fopen(str,"a");
-  sbh_print_physical_system_properties(phys,file,iteration,0);
+  bhns_print_physical_system_properties(phys,file,iteration,0);
   Fclose(file);
   
   /* prints */
@@ -41,7 +41,7 @@ void sbh_analyze(Physics_T *const phys,const int iteration)
 
 /* print physical system properties such as mass, spin etc in the given
 // file, if pr_screen is 1, it also prints in stdout */
-void sbh_print_physical_system_properties(Physics_T *const phys,
+void bhns_print_physical_system_properties(Physics_T *const phys,
                                           FILE *const file,
                                           const int iteration,
                                           const int pr_screen)
@@ -59,7 +59,7 @@ void sbh_print_physical_system_properties(Physics_T *const phys,
   fprintf(file,"\n");
   
   bh_print_properties(bh,Pgets(P_"BH_properties"),file,pr_screen);
-  sys_print_properties(phys,Pgets(P_"SBH_properties"),file,pr_screen);
+  sys_print_properties(phys,Pgets(P_"BHNS_properties"),file,pr_screen);
   
   free_physics(bh);
   

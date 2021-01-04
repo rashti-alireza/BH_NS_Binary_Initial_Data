@@ -1,5 +1,5 @@
-#ifndef sbh_header_LIB_H
-#define sbh_header_LIB_H
+#ifndef bhns_header_LIB_H
+#define bhns_header_LIB_H
 
 #include "core_lib.h"
 #include "maths_general_lib.h"
@@ -26,20 +26,20 @@
 // error of undefined parameter. */
 #define P_ "BHNS_"
 
-Physics_T *sbh_initialize_new_physics(Physics_T *const phys);
-void sbh_add_fields(Physics_T *const phys,const char *const region);
-void sbh_bam_exporting_initial_data(void *vp);
+Physics_T *bhns_initialize_new_physics(Physics_T *const phys);
+void bhns_add_fields(Physics_T *const phys,const char *const region);
+void bhns_bam_exporting_initial_data(void *vp);
 
-void sbh_print_physical_system_properties(Physics_T *const phys,
+void bhns_print_physical_system_properties(Physics_T *const phys,
                                           FILE *const file,
                                           const int iteration,
                                           const int pr_screen);
 
 
-Physics_T *sbh_read_physics_from_checkpoint(void);
-void sbh_set_bam_fields(Grid_T *const grid);
-void sbh_analyze(Physics_T *const phys,const int iteration);
-void sbh_solve_equation(Physics_T *const phys);
+Physics_T *bhns_read_physics_from_checkpoint(void);
+void bhns_set_bam_fields(Grid_T *const grid);
+void bhns_analyze(Physics_T *const phys,const int iteration);
+void bhns_solve_equation(Physics_T *const phys);
 
 #endif
 

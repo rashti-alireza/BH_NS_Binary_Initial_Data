@@ -5,16 +5,16 @@
 
 /* exporting initial data for evolution codes */
 
-#include "sbh_export_id.h"
+#include "bhns_export_id.h"
 
 
 /* exporting initial data for bam.
 // it writes the required fields into a file to be read by bam. */
-void sbh_bam_exporting_initial_data(void *vp)
+void bhns_bam_exporting_initial_data(void *vp)
 {
   FUNC_TIC
   
-  Physics_T *sbh    = 0;
+  Physics_T *bhns    = 0;
   ID_Export_T *points = idexp_init();
   FILE *file          = 0;
   char fields_name[STR_LEN_MAX] = {'\0'};
@@ -23,19 +23,19 @@ void sbh_bam_exporting_initial_data(void *vp)
   
   /* read physics from checkpoint */
   Psets("checkpoint_file_path",Pgets(P_ BAM_"checkpoint_file_path"));
-  sbh = sbh_read_physics_from_checkpoint();
-  points->grid = sbh->grid;
+  bhns = bhns_read_physics_from_checkpoint();
+  points->grid = bhns->grid;
   
-  physics(sbh,ADM_UPDATE_Kij);/* before filling */
+  physics(bhns,ADM_UPDATE_Kij);/* before filling */
   /* fill BH */
-  Physics_T *const bh  = init_physics(sbh,BH);
+  Physics_T *const bh  = init_physics(bhns,BH);
   Psets("BH_filler_method",Pgets(P_ BAM_"filler_method"));
   Pseti("BH_filler_verbose",1);/* make it verbose anyway. */
   physics(bh,BH_FILL);
   free_physics(bh);
     
   /* set bam fields based on initial data to be usable for bam */
-  sbh_set_bam_fields(sbh->grid);
+  bhns_set_bam_fields(bhns->grid);
  
   /* read (x,y,x) points from bam file to be interpolated on them */
   idexp_load_Cartesian_coordinates_from_file
@@ -90,7 +90,7 @@ void sbh_bam_exporting_initial_data(void *vp)
   /* finishing up */
   idexp_close_file(file);
   idexp_free(points);
-  free_physics(sbh);
+  free_physics(bhns);
   
   UNUSED(vp);
   FUNC_TOC  

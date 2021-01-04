@@ -3,7 +3,7 @@
 // November 2020
 */
 
-#include "sbh_main.h"
+#include "bhns_main.h"
 
 
 /* initial data for a single BH. mostly used for test and experiment
@@ -12,7 +12,7 @@ int Single_BH_Initial_Data(void *vp)
 {
   /* if this is a BAM call */
   if (strcmp_i(PgetsEZ(P_"bam_export_id"),"yes"))
-    sbh_bam_exporting_initial_data(vp);
+    bhns_bam_exporting_initial_data(vp);
   
   /* otherwise construct initial data */
   else
@@ -39,13 +39,13 @@ static void construct_initial_data(void *vp)
   {
      printf("{ Outermost iteration %u ...\n",iter);
      
-     new_phys = sbh_initialize_new_physics(old_phys);
+     new_phys = bhns_initialize_new_physics(old_phys);
      
-     sbh_analyze(new_phys,(int)iter);
+     bhns_analyze(new_phys,(int)iter);
      
      write_checkpoint(new_phys,Pgets(P_"my_directory"));
      
-     sbh_solve_equation(new_phys);
+     bhns_solve_equation(new_phys);
      
      free_physics(old_phys);
      
@@ -67,7 +67,7 @@ static void construct_initial_data(void *vp)
 }
 
 /* default parameters for this project
-// there might be silly that there is SBH parameters and BH parameters;
+// there might be silly that there is BHNS parameters and BH parameters;
 // however, since this is a project for test purposes I tried to be
 // as general as possible. */
 static void set_default_parameters(void)
@@ -86,7 +86,7 @@ static void set_default_parameters(void)
   Pset_default(P_"y_CM","0."); 
   Pset_default(P_"z_CM","0."); 
   
-  /* boost velocity for SBH */
+  /* boost velocity for BHNS */
   Pset_default(P_"boost_Vx","0."); 
   Pset_default(P_"boost_Vy","0."); 
   Pset_default(P_"boost_Vz","0."); 
@@ -128,8 +128,8 @@ static void set_default_parameters(void)
    "irreducible_mass,Christodoulou_mass,Px_ADM,Py_ADM,Pz_ADM,"
    "Jx_ADM,Jy_ADM,Jz_ADM");
   
-  /* what to print for properties of SBH, add and separate with comma */
-  Pset_default(P_"SBH_properties","x_CM,y_CM,z_CM");
+  /* what to print for properties of BHNS, add and separate with comma */
+  Pset_default(P_"BHNS_properties","x_CM,y_CM,z_CM");
   
   /* BH filler parameters:
   // { */
