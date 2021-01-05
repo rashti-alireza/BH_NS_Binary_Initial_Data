@@ -121,17 +121,20 @@ static void
   /* grid for characters */
   grid_char->grid = grid;
   
-  if (Pcmps("grid_kind","SplitCubedSpherical(BH)"))
-  {
-    grid_char->S              = Pgetd("grid_around_box_length");
-    grid_char->params[Ibh]->l = Pgetd("grid_central_box_length");
-    grid_char->params[Ibh]->w = Pgetd("grid_central_box_length");
-    grid_char->params[Ibh]->h = Pgetd("grid_central_box_length");
-    
-    set_params_of_split_cubed_spherical_grid(grid_char);
-  }
-  else
+  if (!Pcmps("grid_kind","SplitCubedSpherical(BH+NS)"))
     Error0(NO_OPTION);
+  
+  grid_char->S              = Pgetd("BHNS_separation");
+  
+  grid_char->params[Ibh]->l = Pgetd("grid_BH_central_box_length");
+  grid_char->params[Ibh]->w = Pgetd("grid_BH_central_box_length");
+  grid_char->params[Ibh]->h = Pgetd("grid_BH_central_box_length");
+  
+  grid_char->params[Ins]->l = Pgetd("grid_NS_central_box_length");
+  grid_char->params[Ins]->w = Pgetd("grid_NS_central_box_length");
+  grid_char->params[Ins]->h = Pgetd("grid_NS_central_box_length");
+  
+  set_params_of_split_cubed_spherical_grid(grid_char);
     
   make_patches(grid);
   realize_interfaces(grid);
