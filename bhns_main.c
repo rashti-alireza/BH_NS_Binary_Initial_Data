@@ -126,6 +126,9 @@ static void set_default_parameters(void)
   Pset_default("NS_center_y","0."); 
   Pset_default("NS_center_z","0."); 
   
+  /* box length at the center of NS */
+  Pset_default("grid_NS_central_box_length","1.");
+  
   /* spin vector to adjust spin for NS */
   Pset_default("NS_Omega_x","0."); 
   Pset_default("NS_Omega_y","0."); 
@@ -152,6 +155,18 @@ static void set_default_parameters(void)
    "ADM_mass,baryonic_mass,Px_ADM,Py_ADM,Pz_ADM,"
    "Jx_ADM,Jy_ADM,Jz_ADM");
   
+  /* the very first NS approximation
+  // options:
+  // ========
+  // o. TOV (see NS physics) */
+  Pset_default("NS_start_off","TOV"); 
+  
+  /* max l in Ylm expansion */
+  Pset_default("NS_surface_Ylm_max_l","1"); 
+  
+  /* NS surface type */
+  Pset_default("NS_surface_type","perfect_s2"); 
+  
   
   
   /* BH paramters:
@@ -165,6 +180,9 @@ static void set_default_parameters(void)
   Pset_default("BH_center_x","0."); 
   Pset_default("BH_center_y","0."); 
   Pset_default("BH_center_z","0."); 
+  
+  /* box length at the center of BH */
+  Pset_default("grid_BH_central_box_length","1.");
   
   /* boost velocity for BH */
   Pset_default("BH_boost_Vx","0."); 
@@ -196,6 +214,18 @@ static void set_default_parameters(void)
    "center_x,center_y,center_z,max_radius,min_radius,"
    "irreducible_mass,Christodoulou_mass,Px_ADM,Py_ADM,Pz_ADM,"
    "Jx_ADM,Jy_ADM,Jz_ADM");
+  
+  /* the very first BH approximation
+  // options:
+  // ========
+  // o. CloseKerrSchild (see BH physics) */
+  Pset_default("BH_start_off","CloseKerrSchild"); 
+  
+  /* max l in Ylm expansion */
+  Pset_default("BH_surface_Ylm_max_l","1"); 
+  
+  /* BH surface type */
+  Pset_default("BH_surface_type","perfect_s2"); 
   
   
   /* BH filler parameters:
