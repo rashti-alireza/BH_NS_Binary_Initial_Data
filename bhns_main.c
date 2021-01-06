@@ -293,4 +293,60 @@ static void set_default_parameters(void)
   Pset_default("BH_filler_test_print_1d_length","20.");
   Pset_default("BH_filler_test_print_1d_points","1");
   /* } */
+  
+  /* modify parameters if needed */
+  
+  /* use Kepler's law to set angular velocity */
+  if (Pcmps(P_"angular_velocity","auto"))
+  {
+    double m1 = Pgetd("BH_irreducible_mass");
+    double m2 = Pgetd("NS_baryonic_mass");
+    double r  = Pgetd(P_"separation");
+    double O  = sqrt((m1+m2)/pow(r,3.));
+    
+    Psetd(P_"angular_velocity",O);
+  }
+  
+  /* set BH center and NS center */
+  if (strstr(Pgets("grid_set_BH"),"right"))
+  {
+    double S = Pgetd(P_"separation");
+    
+    /* BH center in +y */
+    Psetd("BH_center_x",0.);
+    Psetd("BH_center_y",S/2.);
+    Psetd("BH_center_z",0.);
+    
+    /* NS center in -y */
+    Psetd("NS_center_x",0.);
+    Psetd("NS_center_y",-S/2.);
+    Psetd("NS_center_z",0.);
+  }
+  else
+  {
+    double S = Pgetd(P_"separation");
+    
+    /* BH center in -y */
+    Psetd("BH_center_x",0.);
+    Psetd("BH_center_y",-S/2.);
+    Psetd("BH_center_z",0.);
+    
+    /* NS center in +y */
+    Psetd("NS_center_x",0.);
+    Psetd("NS_center_y",S/2.);
+    Psetd("NS_center_z",0.);
+  }
+  
+  /* set center of mass */
+  {
+    double irr_mass = Pgetd("BH_irreducible_mass");
+    double bar_mass = Pgetd("NS_baryonic_mass");
+    double y_cm = (bar_mass*Pgetd("NS_center_y")+
+                   irr_mass*Pgetd("BH_center_y"))/(bar_mass+irr_mass);
+   
+   Psetd(P_"x_CM",0.);
+   Psetd(P_"y_CM",y_cm);
+   Psetd(P_"z_CM",0.);
+  }
+  
 }
