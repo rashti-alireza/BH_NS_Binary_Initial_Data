@@ -81,16 +81,14 @@ static Physics_T *guess_new_physics(void)
   physics(bhns,FREE_DATA_POPULATE);
   physics(bhns,SYS_INITIALIZE_FIELDS);
   /* beta = B0+B1 */
-  initial_B0I(bhns,".*");
   physics(bhns,ADM_UPDATE_B1I);
+  initial_B0I(bhns,".*");
   update_partial_derivatives(bhns,".*","^dB0_U.+,^ddB0_U.+");
   physics(bhns,ADM_UPDATE_beta);
   
   /* update derivatives */
   update_partial_derivatives(bhns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
                                       "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
-  
-  /* update derivatives */
   update_partial_derivatives(ns,"NS","^dphi_D.$,^ddphi_D.D.$");
   
   /* update AConf^{ij} */
@@ -188,6 +186,9 @@ static void initial_B0I(Physics_T *const phys,
     READ_v(beta_U0);
     READ_v(beta_U1);
     READ_v(beta_U2);
+    READ_v(B1_U0);
+    READ_v(B1_U1);
+    READ_v(B1_U2);
     
     REALLOC_v_WRITE_v(B0_U0);
     REALLOC_v_WRITE_v(B0_U1);
@@ -195,9 +196,9 @@ static void initial_B0I(Physics_T *const phys,
     
     FOR_ALL_ijk
     {
-      B0_U0[ijk] = beta_U0[ijk];
-      B0_U1[ijk] = beta_U1[ijk];
-      B0_U2[ijk] = beta_U2[ijk];
+      B0_U0[ijk] = beta_U0[ijk]-B1_U0[ijk];
+      B0_U1[ijk] = beta_U1[ijk]-B1_U1[ijk];
+      B0_U2[ijk] = beta_U2[ijk]-B1_U2[ijk];
     }
   }
   
