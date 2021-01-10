@@ -88,8 +88,10 @@ static Physics_T *guess_new_physics(void)
   
   /* update derivatives */
   update_partial_derivatives(bhns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
-                                      "^dalphaPsi_D.$,^ddalphaPsi_D.D.$,"
-                                      "^dphi_D.$,^ddphi_D.D.$");
+                                      "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
+  
+  /* update derivatives */
+  update_partial_derivatives(ns,"NS","^dphi_D.$,^ddphi_D.D.$");
   
   /* update AConf^{ij} */
   physics(bhns,ADM_UPDATE_AConfIJ);
