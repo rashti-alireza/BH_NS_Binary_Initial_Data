@@ -179,6 +179,10 @@ static void field_update(Patch_T *const patch,const char *const name)
     partial_derivative_with_regex(patch,"^dB0_U2D.$,^ddB0_U2D.D.$");
     adm_update_beta_U2(patch);
   }
+  else if (!strcmp(name,"phi"))
+  {
+    partial_derivative_with_regex(patch,"^dphi_D.$,^ddphi_D.D.$");
+  }
   else
     Error0(NO_OPTION);
 
