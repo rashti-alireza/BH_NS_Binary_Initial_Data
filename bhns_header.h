@@ -16,6 +16,7 @@
 #include "physics_observe_lib.h"
 #include "physics_blackhole_lib.h"
 #include "physics_system_lib.h"
+#include "physics_star_lib.h"
 
 /* prefix internal parameters of this project, 
 // PLEASE keep it capitalized.

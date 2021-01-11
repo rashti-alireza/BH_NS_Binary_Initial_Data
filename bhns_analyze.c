@@ -49,6 +49,7 @@ void bhns_print_physical_system_properties(Physics_T *const phys,
   FUNC_TIC
   
   Physics_T *const bh = init_physics(phys,BH);
+  Physics_T *const ns = init_physics(phys,NS);
 
   if (pr_screen)
   {
@@ -59,9 +60,11 @@ void bhns_print_physical_system_properties(Physics_T *const phys,
   fprintf(file,"\n");
   
   bh_print_properties(bh,Pgets(P_"BH_properties"),file,pr_screen);
+  star_print_properties(ns,Pgets(P_"NS_properties"),file,pr_screen);
   sys_print_properties(phys,Pgets(P_"BHNS_properties"),file,pr_screen);
   
   free_physics(bh);
+  free_physics(ns);
   
   FUNC_TOC
 }
