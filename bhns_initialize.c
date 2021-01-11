@@ -28,13 +28,104 @@ Physics_T *bhns_initialize_new_physics(Physics_T *const old_phys)
   }
   else/* use old physics, tune it and make new physics */
   {
-    Error0(NO_OPTION);
-    //new_phys = infer_new_physics(old_phys);
+    new_phys = infer_new_physics(old_phys);
   }
   
   return new_phys;
 }
 
+
+/* use old physics to infer the new physics */
+static Physics_T *infer_new_physics(Physics_T *const old_bhns)
+{
+  FUNC_TIC
+  
+  Physics_T *const bhns = init_physics(0,BHNS);/* the whole system */
+  Physics_T *const bh   = init_physics(bhns,BH);/* BH part */
+  Physics_T *const ns   = init_physics(bhns,NS);/* NS part */
+  Physics_T *const old_bh = init_physics(old_bhns,BH);/* BH part */
+  Physics_T *const old_ns = init_physics(old_bhns,NS);/* NS part */
+  Grid_Char_T *const grid_char = init_grid_char(0);
+  old_bh->grid_char = grid_char;
+  old_bh->igc       = Ibh;
+  old_ns->grid_char = grid_char;
+  old_ns->igc       = Ins;
+  
+  /* adjust and tuning */
+  Psets("NS_enthalpy_neat","no");
+  physics(old_ns,STRESS_ENERGY_UPDATE);
+  physics(old_ns,STAR_TUNE_EULER_CONST);
+  physics(old_ns,STRESS_ENERGY_UPDATE);
+  physics(old_bh,BH_TUNE_RADIUS);
+  physics(old_bhns,SYS_TUNE_P_ADM);
+  physics(old_ns,STRESS_ENERGY_UPDATE);
+  physics(old_ns,STAR_TUNE_FORCE_BALANCE);
+  physics(old_ns,STRESS_ENERGY_UPDATE);
+  physics(old_ns,STAR_EXTRAPOLATE_MATTERS);
+  physics(old_ns,STAR_TUNE_CENTER);
+  physics(old_ns,STAR_FIND_SURFACE);
+  
+  /* new grid */
+  create_new_grid(grid_char,bhns);
+  bh->grid = bhns->grid;
+  ns->grid = bhns->grid;
+  
+  /* set paramters */
+  physics(bhns,FREE_DATA_SET_PARAMS);
+  physics(bhns,ADM_SET_PARAMS);
+  physics(bhns,SYS_SET_PARAMS);
+  physics(bhns,STRESS_ENERGY_SET_PARAMS);
+  physics(bhns,OBSERVE_SET_PARAMS);  
+  physics(bhns,BH_SET_PARAMS);
+  physics(bhns,STAR_SET_PARAMS);
+  
+  /* add fields */
+  physics(bhns,ADM_ADD_FIELDS);
+  physics(bhns,FREE_DATA_ADD_FIELDS);
+  physics(bhns,STRESS_ENERGY_ADD_FIELDS);
+  physics(bhns,SYS_ADD_FIELDS);
+  physics(bhns,OBSERVE_ADD_FIELDS);
+  physics(bhns,BH_ADD_FIELDS);
+  physics(bhns,STAR_ADD_FIELDS);
+  
+  /* populate fields */
+  physics(bhns,FREE_DATA_POPULATE);
+  
+  /* upload the fields from old_grid */
+  interpolate_fields_from_old_grid_to_new_grid(old_bhns->grid,bhns->grid,
+    "psi,alphaPsi,phi,enthalpy,B0_U0,B0_U1,B0_U2");
+  
+  /* beta = B0+B1 */
+  physics(bhns,ADM_UPDATE_B1I);
+  initial_B0I(bhns,".*");
+  update_partial_derivatives(bhns,".*","^dB0_U.+,^ddB0_U.+");
+  physics(bhns,ADM_UPDATE_beta);
+  
+  /* update derivatives */
+  update_partial_derivatives(bhns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
+                                      "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
+  update_partial_derivatives(ns,"NS","^dphi_D.$,^ddphi_D.D.$");
+  
+  /* update AConf^{ij} */
+  physics(bhns,ADM_UPDATE_AConfIJ);
+  
+  /* update normal on AH */
+  physics(bh,BH_UPDATE_sConf);
+  
+  /* update matter fields */
+  Psets("NS_enthalpy_neat","yes");
+  physics(ns,STRESS_ENERGY_UPDATE);
+  
+  /* free */
+  free_physics(bh);
+  free_physics(ns);
+  free_physics(old_bh);
+  free_physics(old_ns);
+  free_grid_char(grid_char);
+  
+  FUNC_TOC
+  return bhns;
+}  
 
 /* use a known BH and NS solution to initialize the physics */
 static Physics_T *guess_new_physics(void)
@@ -227,19 +318,21 @@ Physics_T *bhns_read_physics_from_checkpoint(void)
   // since these call also reposible to set default functions. */
   physics(bhns,FREE_DATA_SET_PARAMS);
   physics(bhns,ADM_SET_PARAMS);
-  physics(bhns,BH_SET_PARAMS);
   physics(bhns,SYS_SET_PARAMS);
   physics(bhns,STRESS_ENERGY_SET_PARAMS);
-  physics(bhns,OBSERVE_SET_PARAMS);
-
+  physics(bhns,OBSERVE_SET_PARAMS);  
+  physics(bhns,BH_SET_PARAMS);
+  physics(bhns,STAR_SET_PARAMS);
+  
   /* now add fields */
   physics(bhns,ADM_ADD_FIELDS);
-  physics(bhns,BH_ADD_FIELDS);
   physics(bhns,FREE_DATA_ADD_FIELDS);
   physics(bhns,STRESS_ENERGY_ADD_FIELDS);
   physics(bhns,SYS_ADD_FIELDS);
   physics(bhns,OBSERVE_ADD_FIELDS);
-  
+  physics(bhns,BH_ADD_FIELDS);
+  physics(bhns,STAR_ADD_FIELDS);
+    
   /* then read those saved fields */
   read_fields_from_checkpoint_file(bhns,file);
   
