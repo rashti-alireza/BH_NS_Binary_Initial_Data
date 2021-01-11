@@ -105,8 +105,10 @@ static void set_default_parameters(void)
   /* NS paramters:
   // ============= */
   
-  /* NS baryonic mass */
+  /* NS masses */
   Pset_default("NS_baryonic_mass","0.");
+  Pset_default("NS_ADM_mass","0.");
+  Pset_default("NS_Komar_mass","0.");
   
   /* NS EoS: */
   Pset_default("NS_EoS_description","0");
