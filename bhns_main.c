@@ -189,6 +189,9 @@ static void set_default_parameters(void)
   Pset_default("NS_Observe_ADM_M","V_obj,default");
   Pset_default("NS_Observe_Komar_M","S_obj,default");
   
+  /* smooth and polish phi equation close to the surface */
+  Pset_default("NS_phi_polish","0.1");
+  
   /* BH paramters:
   // ============= */
   
@@ -246,6 +249,17 @@ static void set_default_parameters(void)
   
   /* BH surface type */
   Pset_default("BH_surface_type","perfect_s2"); 
+  
+  /* equation related: */
+  /* XCTS means: alpha,beta,psi */
+  Pset_default("BH_Eq_inner_BC_fields","XCTS");
+  
+  /* set alpha on AH to be exp(-r^4)*KerrSchild value */
+  Pset_default("BH_Eq_inner_BC_alpha","exp(-r^4)*KerrSchild");
+  
+  /* set bete^i on AH to be alpha*s^i + Omega x r.  */
+  Pset_default("BH_Eq_inner_BC_beta","alpha+Omega*r");
+  
   
   /* BH filler parameters:
   // { */
