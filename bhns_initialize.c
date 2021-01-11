@@ -98,6 +98,8 @@ static Physics_T *guess_new_physics(void)
   physics(bh,BH_UPDATE_sConf);
   
   /* update stress energy-tensor */
+  Psetd("NS_Euler_equation_constant",
+        star_NS_current_Euler_eq_const(ns));
   physics(ns,STRESS_ENERGY_UPDATE);
   
   /* free */

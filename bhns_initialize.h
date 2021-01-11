@@ -1,4 +1,5 @@
 #include "bhns_header.h"
+#include "physics_star_lib.h"
 
 /* index of bh */
 #define Ibh (0)
