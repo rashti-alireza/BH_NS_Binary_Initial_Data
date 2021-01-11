@@ -19,6 +19,13 @@ void bhns_analyze(Physics_T *const phys,const int iteration)
   /* compute properties and constraints */ 
   physics(phys,ADM_COMPUTE_CONSTRAINTS);
   
+  /* computer masses */
+  double m = 0.;
+  observe(phys,"ADM(M)","S+V,default",&m);
+  Psetd(P_"adm_mass",m);
+  observe(phys,"Komar(M)","S_inf,default",&m);
+  Psetd(P_"Komar_mass",m);
+  
   /* open properties file in "my_directory" and save */
   sprintf(str,"%s/%s",Pgets(P_"my_directory"),properties_file_name);
   file = Fopen(str,"w");
