@@ -167,7 +167,25 @@ static void set_default_parameters(void)
   /* NS surface type */
   Pset_default("NS_surface_type","perfect_s2"); 
   
+  /* Euler eq. constant */
+  Pset_default("NS_Euler_equation_constant","0.");
+  Pset_default("NS_Euler_const_update_weight","1.");
   
+  /* NS enhtalpy update weight */
+  Pset_default("NS_enthalpy_update_weight","0.1");
+  /* set enthalpy != 1 on surface to 1
+  // options: [yes/no]. */
+  Pset_default("NS_enthalpy_neat","yes");
+  
+  /* root finder pertinent to NS */
+  Pset_default("NS_RootFinder_method","Steepest_Descent");
+  Pset_default("NS_RootFinder_Tolerance","1E-9");
+  Pset_default("NS_RootFinder_Iteration","1E3");
+  Pset_default("NS_RootFinder_verbose","yes");
+  
+  /* observe method pertinet to NS */
+  Pset_default("NS_Observe_ADM_M","V_obj,default");
+  Pset_default("NS_Observe_Komar_M","S_obj,default");
   
   /* BH paramters:
   // ============= */
@@ -226,7 +244,6 @@ static void set_default_parameters(void)
   
   /* BH surface type */
   Pset_default("BH_surface_type","perfect_s2"); 
-  
   
   /* BH filler parameters:
   // { */
