@@ -90,10 +90,7 @@ static Physics_T *infer_new_physics(Physics_T *const old_bhns)
   
   /* populate fields */
   physics(bhns,FREE_DATA_POPULATE);
-  
-  /* upload the fields from old_grid */
-  interpolate_fields_from_old_grid_to_new_grid(old_bhns->grid,bhns->grid,
-    "psi,alphaPsi,phi,enthalpy,B0_U0,B0_U1,B0_U2");
+  initialize_fields_using_previous_solve(bhns,old_bhns);
   
   /* beta = B0+B1 */
   physics(bhns,ADM_UPDATE_B1I);
@@ -349,10 +346,51 @@ Physics_T *bhns_read_physics_from_checkpoint(void)
                                       "^dalphaPsi_D.+,^ddalphaPsi_D.+");
   physics(bhns,ADM_UPDATE_AConfIJ);
   }
+ 
   
   Fclose(file);
   
   FUNC_TOC
   return bhns;
+}
+
+/* using copy or interpolation from old physics to 
+// initialize fields for new physics */
+static void initialize_fields_using_previous_solve
+            (Physics_T *const new_phys,Physics_T *const old_phys)
+{
+  FUNC_TIC
+  
+  /* matter fields */
+  interpolate_fields_from_old_grid_to_new_grid
+    (mygrid(old_phys,"NS"),mygrid(new_phys,"NS"),"phi,enthalpy",0);
+  
+  /* if resolution changed */
+  if(Pgeti(P_"did_resolution_change?"))
+  {
+    interpolate_fields_from_old_grid_to_new_grid
+      (old_phys->grid,new_phys->grid,"psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
+  }
+  else
+  {
+    const char *region = 0;
+    if (new_phys->grid->kind == Grid_SplitCubedSpherical_BHNS)
+    {
+      /* since filling_box,outermost are fixed, only copy */
+      region = "filling_box,outermost";
+      interpolate_fields_from_old_grid_to_new_grid
+        (mygrid(old_phys,region),mygrid(new_phys,region),
+         "psi,alphaPsi,B0_U0,B0_U1,B0_U2",1);
+      
+      region = "NS,NS_around,BH,BH_around";
+      interpolate_fields_from_old_grid_to_new_grid
+        (mygrid(old_phys,region),mygrid(new_phys,region),
+         "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
+    }
+    else
+      Error0(NO_OPTION);
+  }
+  
+  FUNC_TOC
 }
 
