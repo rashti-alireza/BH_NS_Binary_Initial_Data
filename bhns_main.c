@@ -99,8 +99,21 @@ static void set_default_parameters(void)
   Pset_default(P_"boost_Vy","0."); 
   Pset_default(P_"boost_Vz","0."); 
   
+  /* masses */
+  Pset_default(P_"ADM_mass","0.");
+  Pset_default(P_"Komar_mass","0.");
+  
   /* what to print for properties of BHNS, add and separate with comma */
-  Pset_default(P_"BHNS_properties","x_CM,y_CM,z_CM");
+  Pset_default(P_"BHNS_properties","x_CM,y_CM,z_CM,ADM_mass,Komar_mass");
+  
+  /* how to tune P_ADM */
+  Pset_default(P_"P_ADM_control_method","adjust(x_CM,y_CM)");
+  Pset_default(P_"P_ADM_control_update_weight","0.2");
+  Pset_default(P_"P_ADM_control_tolerance","1E-5");
+  
+  /* observer method */
+  Pset_default(P_"Observe_ADM_P","S+V,Rashti");
+  Pset_default(P_"Observe_ADM_J","S+V,Ossokine");
   
   /* NS paramters:
   // ============= */
@@ -198,6 +211,11 @@ static void set_default_parameters(void)
   /* BH irreducible mass */
   Pset_default("BH_irreducible_mass","0.");
   
+  /* how to tune BH Radius */
+  Pset_default("BH_tune_BH_radius_criteria","fix_irreducible_mass");
+  Pset_default("BH_mass_tolerance","1E-5");
+  Pset_default("BH_radius_update_weight","0.2");
+  
   /* geometrical center of BH.
   // NOTE: geometrical center can be different from patch->c. */ 
   Pset_default("BH_center_x","0."); 
@@ -259,6 +277,11 @@ static void set_default_parameters(void)
   
   /* set bete^i on AH to be alpha*s^i + Omega x r.  */
   Pset_default("BH_Eq_inner_BC_beta","alpha+Omega*r");
+  
+  /* observe method pertinet to BH */
+  Pset_default("BH_Observe_ADM_M","S_obj,default");
+  Pset_default("BH_Observe_Komar_M","S_obj,default");
+  Pset_default("BH_Observe_Irreducible_M","S_obj,default");
   
   
   /* BH filler parameters:
