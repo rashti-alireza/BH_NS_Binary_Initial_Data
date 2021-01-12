@@ -57,12 +57,13 @@ static Physics_T *infer_new_physics(Physics_T *const old_bhns)
   physics(old_ns,STAR_TUNE_EULER_CONST);
   physics(old_ns,STRESS_ENERGY_UPDATE);
   physics(old_bh,BH_TUNE_RADIUS);
+  physics(old_bh,BH_FIND_SURFACE);
   physics(old_bhns,SYS_TUNE_P_ADM);
   physics(old_ns,STRESS_ENERGY_UPDATE);
   physics(old_ns,STAR_TUNE_FORCE_BALANCE);
   physics(old_ns,STRESS_ENERGY_UPDATE);
   physics(old_ns,STAR_EXTRAPOLATE_MATTERS);
-  physics(old_ns,STAR_TUNE_CENTER);
+  //????physics(old_ns,STAR_TUNE_CENTER);
   physics(old_ns,STAR_FIND_SURFACE);
   
   /* new grid */
@@ -207,6 +208,7 @@ static void
   
   /* a new grid */
   Grid_T *const grid = alloc_grid();
+  Uint lmax,n;
   
   /* grid for characters */
   grid_char->grid = grid;
@@ -223,6 +225,39 @@ static void
   grid_char->params[Ins]->l = Pgetd("grid_NS_central_box_length");
   grid_char->params[Ins]->w = Pgetd("grid_NS_central_box_length");
   grid_char->params[Ins]->h = Pgetd("grid_NS_central_box_length");
+  
+  /* save the values for a rainy day */
+  if (Pgeti("NS_did_NS_surface_finder_work?"))
+  {
+    n = Ncoeffs_Ylm(grid_char->params[Ins]->lmax);
+    update_parameter_array("NS_surface_R|realClm",
+                           grid_char->params[Ins]->relClm,n);
+    update_parameter_array("NS_surface_R|imagClm",
+                           grid_char->params[Ins]->imgClm,n);
+    Pseti("NS_surface_R|lmax",(int)grid_char->params[Ins]->lmax);
+  }
+  else/* since surface finder failed, use previous value */
+  {
+    printf(Pretty0"Using the last NS surface.\n");
+    
+    lmax = (Uint)Pgeti("NS_surface_R|lmax");
+    n    = Ncoeffs_Ylm(lmax);
+    double *realClm = alloc_ClmYlm(lmax);/* freed in free_grid_char */
+    double *imagClm = alloc_ClmYlm(lmax);/* freed in free_grid_char */
+    double *coeffs  = 0;
+    
+    coeffs = Pgetdd("NS_surface_R|realClm");
+    for (Uint ij = 0; ij < n; ++ij)
+      realClm[ij] = coeffs[ij];
+
+    coeffs = Pgetdd("NS_surface_R|imagClm");
+    for (Uint ij = 0; ij < n; ++ij)
+      imagClm[ij] = coeffs[ij];
+
+    grid_char->params[Ins]->relClm = realClm;
+    grid_char->params[Ins]->imgClm = imagClm;
+    grid_char->params[Ins]->lmax   = lmax;
+  }
   
   set_params_of_split_cubed_spherical_grid(grid_char);
     
