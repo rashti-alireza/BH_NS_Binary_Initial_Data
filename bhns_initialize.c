@@ -3,7 +3,7 @@
 // January 2021
 */
 
-/* various functions to start off a new physics for BH-NS */
+/* various functions needed to make a physics object for BH-NS */
 
 
 #include "bhns_initialize.h"
