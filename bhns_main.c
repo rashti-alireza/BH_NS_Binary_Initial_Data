@@ -195,7 +195,7 @@ static void set_default_parameters(void)
   /* root finder pertinent to NS */
   Pset_default("NS_RootFinder_method","Steepest_Descent");
   Pset_default("NS_RootFinder_Tolerance","1E-9");
-  Pset_default("NS_RootFinder_Iteration","1E3");
+  Pset_default("NS_RootFinder_Iteration","1000");
   Pset_default("NS_RootFinder_verbose","yes");
   
   /* observe method pertinet to NS */
@@ -204,6 +204,13 @@ static void set_default_parameters(void)
   
   /* smooth and polish phi equation close to the surface */
   Pset_default("NS_phi_polish","0.1");
+  
+  /* tune */
+  Pset_default("NS_force_balance_equation","adjust(d/dy:Omega)");
+  Pset_default("NS_force_balance_update_Weight","0.2");
+  Pset_default("NS_adjust_center_method","interpolation");
+  Pset_default("NS_enthalpy_allowed_residual","1E-5");
+  
   
   /* BH paramters:
   // ============= */
