@@ -95,7 +95,6 @@ static Physics_T *infer_new_physics(Physics_T *const old_bhns)
   
   /* beta = B0+B1 */
   physics(bhns,ADM_UPDATE_B1I);
-  initial_B0I(bhns,".*");
   update_partial_derivatives(bhns,".*","^dB0_U.+,^ddB0_U.+");
   physics(bhns,ADM_UPDATE_beta);
   
@@ -396,9 +395,14 @@ static void initialize_fields_using_previous_solve
 {
   FUNC_TIC
   
+  Physics_T *const old_ns = init_physics(old_phys,NS);
+  Physics_T *const new_ns = init_physics(new_phys,NS);
+  Physics_T *const old_bh = init_physics(old_phys,BH);
+  Physics_T *const new_bh = init_physics(new_phys,BH);
+  
   /* matter fields */
   interpolate_fields_from_old_grid_to_new_grid
-    (mygrid(old_phys,"NS"),mygrid(new_phys,"NS"),"phi,enthalpy",0);
+    (mygrid(old_ns,"NS"),mygrid(new_ns,"NS"),"phi,enthalpy",0);
   
   /* if resolution changed */
   if(Pgeti(P_"did_resolution_change?"))
@@ -417,14 +421,27 @@ static void initialize_fields_using_previous_solve
         (mygrid(old_phys,region),mygrid(new_phys,region),
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",1);
       
-      region = "NS,NS_around,BH,BH_around";
+      region = "NS,NS_around";
       interpolate_fields_from_old_grid_to_new_grid
-        (mygrid(old_phys,region),mygrid(new_phys,region),
+        (mygrid(old_ns,region),mygrid(new_ns,region),
+         "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
+
+      region = "BH,BH_around";
+      interpolate_fields_from_old_grid_to_new_grid
+        (mygrid(old_bh,region),mygrid(new_bh,region),
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
     }
     else
       Error0(NO_OPTION);
   }
+  
+  /* alse we need NS spin vector */
+  star_W_spin_vector_idealfluid_update(new_ns,"NS");
+  
+  free_physics(old_ns);
+  free_physics(new_ns);
+  free_physics(old_bh);
+  free_physics(new_bh);
   
   FUNC_TOC
 }
