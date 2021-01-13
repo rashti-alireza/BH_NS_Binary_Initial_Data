@@ -108,7 +108,7 @@ static void set_default_parameters(void)
   
   /* how to tune P_ADM */
   Pset_default(P_"P_ADM_control_method","adjust(x_CM,y_CM)");
-  Pset_default(P_"P_ADM_control_update_weight","0.2");
+  Pset_default(P_"P_ADM_control_update_weight","0.");
   Pset_default(P_"P_ADM_control_tolerance","1E-5");
   
   /* observer method */
@@ -187,7 +187,7 @@ static void set_default_parameters(void)
   Pset_default("NS_Euler_const_update_weight","1.");
   
   /* NS enhtalpy update weight */
-  Pset_default("NS_enthalpy_update_weight","0.1");
+  Pset_default("NS_enthalpy_update_weight","0.");
   /* set enthalpy != 1 on surface to 1
   // options: [yes/no]. */
   Pset_default("NS_enthalpy_neat","yes");
@@ -207,7 +207,7 @@ static void set_default_parameters(void)
   
   /* tune */
   Pset_default("NS_force_balance_equation","adjust(d/dy:Omega)");
-  Pset_default("NS_force_balance_update_Weight","0.2");
+  Pset_default("NS_force_balance_update_weight","0.");
   Pset_default("NS_adjust_center_method","interpolation");
   Pset_default("NS_enthalpy_allowed_residual","1E-5");
   
@@ -221,7 +221,7 @@ static void set_default_parameters(void)
   /* how to tune BH Radius */
   Pset_default("BH_tune_BH_radius_criteria","fix_irreducible_mass");
   Pset_default("BH_mass_tolerance","1E-5");
-  Pset_default("BH_radius_update_weight","0.2");
+  Pset_default("BH_radius_update_weight","0.");
   
   /* geometrical center of BH.
   // NOTE: geometrical center can be different from patch->c. */ 
