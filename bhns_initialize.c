@@ -51,7 +51,7 @@ static Physics_T *infer_new_physics(Physics_T *const old_bhns)
   old_ns->grid_char = grid_char;
   old_ns->igc       = Ins;
   
-  /* adjust and tuning */
+  /* update, adjust and tune */
   Psets("NS_enthalpy_neat","no");
   physics(old_ns,STRESS_ENERGY_UPDATE);
   physics(old_ns,STAR_TUNE_EULER_CONST);
@@ -63,7 +63,7 @@ static Physics_T *infer_new_physics(Physics_T *const old_bhns)
   physics(old_ns,STAR_TUNE_FORCE_BALANCE);
   physics(old_ns,STRESS_ENERGY_UPDATE);
   physics(old_ns,STAR_EXTRAPOLATE_MATTERS);
-  //????physics(old_ns,STAR_TUNE_CENTER);
+  physics(old_ns,STAR_TUNE_CENTER);
   physics(old_ns,STAR_FIND_SURFACE);
   
   /* new grid */
@@ -188,6 +188,7 @@ static Physics_T *guess_new_physics(void)
   /* update stress energy-tensor */
   Psetd("NS_Euler_equation_constant",
         star_NS_current_Euler_eq_const(ns));
+  Psets("NS_enthalpy_neat","yes");
   physics(ns,STRESS_ENERGY_UPDATE);
   
   /* free */
@@ -402,7 +403,7 @@ static void initialize_fields_using_previous_solve
   
   /* matter fields */
   interpolate_fields_from_old_grid_to_new_grid
-    (mygrid(old_ns,"NS"),mygrid(new_ns,"NS"),"phi,enthalpy",0);
+    (mygrid(old_ns,"NS,NS_around"),mygrid(new_ns,"NS"),"phi,enthalpy",0);
   
   /* if resolution changed */
   if(Pgeti(P_"did_resolution_change?"))
