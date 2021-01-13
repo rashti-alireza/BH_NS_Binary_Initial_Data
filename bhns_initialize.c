@@ -403,7 +403,7 @@ static void initialize_fields_using_previous_solve
   
   /* matter fields */
   interpolate_fields_from_old_grid_to_new_grid
-    (mygrid(old_ns,"NS,NS_around"),mygrid(new_ns,"NS"),"phi,enthalpy",0);
+    (mygrid(old_ns,"NS,NS_around_IB"),mygrid(new_ns,"NS"),"phi,enthalpy",0);
   
   /* if resolution changed */
   if(Pgeti(P_"did_resolution_change?"))
@@ -413,23 +413,27 @@ static void initialize_fields_using_previous_solve
   }
   else
   {
-    const char *region = 0;
+    const char *region1 = 0;
+    const char *region2 = 0;
     if (new_phys->grid->kind == Grid_SplitCubedSpherical_BHNS)
     {
       /* since filling_box,outermost are fixed, only copy */
-      region = "filling_box,outermost";
+      region1 = "filling_box,outermost";
+      region2 = "filling_box,outermost";
       interpolate_fields_from_old_grid_to_new_grid
-        (mygrid(old_phys,region),mygrid(new_phys,region),
+        (mygrid(old_phys,region1),mygrid(new_phys,region2),
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",1);
       
-      region = "NS,NS_around";
+      region1 = "NS,NS_around,BH_around_OB,filling_box,outermost_IB";
+      region2 = "NS,NS_around";
       interpolate_fields_from_old_grid_to_new_grid
-        (mygrid(old_ns,region),mygrid(new_ns,region),
+        (mygrid(old_ns,region1),mygrid(new_ns,region2),
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
 
-      region = "BH,BH_around";
+      region1 = "BH,BH_around,NS_around_OB,filling_box,outermost_IB";
+      region2 = "BH,BH_around";
       interpolate_fields_from_old_grid_to_new_grid
-        (mygrid(old_bh,region),mygrid(new_bh,region),
+        (mygrid(old_bh,region1),mygrid(new_bh,region2),
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
     }
     else
