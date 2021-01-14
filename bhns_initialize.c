@@ -338,6 +338,21 @@ static void initial_B0I(Physics_T *const phys,
       B0_U1[ijk] = beta_U1[ijk]-B1_U1[ijk];
       B0_U2[ijk] = beta_U2[ijk]-B1_U2[ijk];
     }
+    
+    /* attenuate */
+    if (IsItCovering(patch,"outermost"))
+    {
+      FOR_ALL_ijk
+      {
+        DEF_RELATIVE_x
+        DEF_RELATIVE_y
+        DEF_RELATIVE_z
+        DEF_RELATIVE_r
+        B0_U0[ijk] /= r;
+        B0_U1[ijk] /= r;
+        B0_U2[ijk] /= r;
+      }
+    }
   }
   
   FUNC_TOC
