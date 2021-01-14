@@ -226,6 +226,18 @@ static void
   grid_char->params[Ins]->w = Pgetd("grid_NS_central_box_length");
   grid_char->params[Ins]->h = Pgetd("grid_NS_central_box_length");
   
+  /* check central box length */
+  if (grid_char->params[Ins]->l > grid_char->params[Ins]->r_min/2. ||
+      grid_char->params[Ins]->w > grid_char->params[Ins]->r_min/2. ||
+      grid_char->params[Ins]->h > grid_char->params[Ins]->r_min/2.)
+    Error0("NS central box is too big!");
+  
+  /* check central box length */
+  if (grid_char->params[Ibh]->l > grid_char->params[Ibh]->r_min/2. ||
+      grid_char->params[Ibh]->w > grid_char->params[Ibh]->r_min/2. ||
+      grid_char->params[Ibh]->h > grid_char->params[Ibh]->r_min/2.)
+    Error0("BH central box is too big!");
+    
   /* save the values for a rainy day */
   if (Pgeti("NS_did_NS_surface_finder_work?"))
   {
