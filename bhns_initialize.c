@@ -70,7 +70,8 @@ static Physics_T *infer_new_physics(Physics_T *const old_bhns)
   bh->grid = bhns->grid;
   ns->grid = bhns->grid;
   
-  /* set paramters */
+  /* set and update parameters */
+  update_params(bhns);
   physics(bhns,FREE_DATA_SET_PARAMS);
   physics(bhns,ADM_SET_PARAMS);
   physics(bhns,SYS_SET_PARAMS);
@@ -133,7 +134,7 @@ static Physics_T *guess_new_physics(void)
   Physics_T *const ns   = init_physics(bhns,NS);/* NS part */
   Grid_Char_T *const grid_char = init_grid_char(0);
   
-  /* set paramters */
+  /* set parameters */
   physics(bhns,FREE_DATA_SET_PARAMS);
   physics(bhns,ADM_SET_PARAMS);
   physics(bhns,SYS_SET_PARAMS);
@@ -474,3 +475,20 @@ static void initialize_fields_using_previous_solve
   FUNC_TOC
 }
 
+/* update some parameters for a new physics */
+static void update_params(Physics_T *const phys)
+{
+  FUNC_TIC
+  
+  /* BH boost velocity */
+  const double Omega = Pgetd(P_"angular_velocity");
+  const double x_CM  = Pgetd(P_"x_CM");
+  const double y_CM  = Pgetd(P_"y_CM");
+  const double BH_center_x = Pgetd("BH_center_x");
+  const double BH_center_y = Pgetd("BH_center_y");
+  Psetd("BH_boost_Vx",-Omega*(BH_center_y-y_CM));
+  Psetd("BH_boost_Vy",Omega*(BH_center_x-x_CM));
+  
+  UNUSED(phys);
+  FUNC_TOC
+}
