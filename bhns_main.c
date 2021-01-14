@@ -361,10 +361,10 @@ static void set_default_parameters(void)
   /* use Kepler's law to set angular velocity */
   if (Pcmps(P_"angular_velocity","auto"))
   {
-    double m1 = Pgetd("BH_irreducible_mass");
-    double m2 = Pgetd("NS_baryonic_mass");
-    double r  = Pgetd(P_"separation");
-    double O  = sqrt((m1+m2)/pow(r,3.));
+    const double m1 = Pgetd("BH_irreducible_mass");
+    const double m2 = Pgetd("NS_baryonic_mass");
+    const double r  = Pgetd(P_"separation");
+    const double O  = sqrt((m1+m2)/pow(r,3.));
     
     Psetd(P_"angular_velocity",O);
   }
@@ -372,7 +372,7 @@ static void set_default_parameters(void)
   /* set BH center and NS center */
   if (strstr(Pgets("grid_set_BH"),"right"))
   {
-    double S = Pgetd(P_"separation");
+    const double S = Pgetd(P_"separation");
     
     /* BH center in +y */
     Psetd("BH_center_x",0.);
@@ -386,7 +386,7 @@ static void set_default_parameters(void)
   }
   else
   {
-    double S = Pgetd(P_"separation");
+    const double S = Pgetd(P_"separation");
     
     /* BH center in -y */
     Psetd("BH_center_x",0.);
@@ -401,14 +401,22 @@ static void set_default_parameters(void)
   
   /* set center of mass */
   {
-    double irr_mass = Pgetd("BH_irreducible_mass");
-    double bar_mass = Pgetd("NS_baryonic_mass");
-    double y_cm = (bar_mass*Pgetd("NS_center_y")+
-                   irr_mass*Pgetd("BH_center_y"))/(bar_mass+irr_mass);
+    const double irr_mass = Pgetd("BH_irreducible_mass");
+    const double bar_mass = Pgetd("NS_baryonic_mass");
+    const double y_CM = (bar_mass*Pgetd("NS_center_y") +
+                       irr_mass*Pgetd("BH_center_y"))/(bar_mass+irr_mass);
    
-   Psetd(P_"x_CM",0.);
-   Psetd(P_"y_CM",y_cm);
-   Psetd(P_"z_CM",0.);
+    Psetd(P_"x_CM",0.);
+    Psetd(P_"y_CM",y_CM);
+    Psetd(P_"z_CM",0.);
   }
   
+  /* boost speed for BH in y direction */
+  {
+    const double Omega = Pgetd(P_"angular_velocity");
+    const double y_CM  = Pgetd(P_"y_CM");
+    const double BH_center_y = Pgetd("BH_center_y");
+    
+    Psetd("BH_boost_Vy",-Omega*(BH_center_y-y_CM));
+  }
 }
