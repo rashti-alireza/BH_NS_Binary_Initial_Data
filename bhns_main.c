@@ -187,7 +187,7 @@ static void set_default_parameters(void)
   Pset_default("NS_Observe_Komar_M","S_obj,default");
   
   /* smooth and polish phi equation close to the surface */
-  Pset_default("NS_phi_polish","0.1");
+  Pset_default("NS_Eq_phi_polish","0.1");
   
   /* tune and adjust: */
   Pset_default("NS_force_balance_equation","adjust(d/dy:Omega)");
@@ -209,7 +209,7 @@ static void set_default_parameters(void)
   Pset_default("NS_RootFinder_method","Steepest_Descent");
   Pset_default("NS_RootFinder_Tolerance","1E-9");
   Pset_default("NS_RootFinder_Iteration","1000");
-  Pset_default("NS_RootFinder_verbose","yes");
+  Pset_default("NS_RootFinder_verbose","no");
   
   /* BH paramters:
   // ============= */
