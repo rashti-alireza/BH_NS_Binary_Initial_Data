@@ -182,6 +182,19 @@ static void set_default_parameters(void)
   /* NS surface type */
   Pset_default("NS_surface_type","perfect_s2"); 
   
+  /* observe method pertinet to NS */
+  Pset_default("NS_Observe_ADM_M","V_obj,default");
+  Pset_default("NS_Observe_Komar_M","S_obj,default");
+  
+  /* smooth and polish phi equation close to the surface */
+  Pset_default("NS_phi_polish","0.1");
+  
+  /* tune and adjust: */
+  Pset_default("NS_force_balance_equation","adjust(d/dy:Omega)");
+  Pset_default("NS_force_balance_update_weight","0.");
+  Pset_default("NS_adjust_center_method","interpolation");
+  Pset_default("NS_enthalpy_allowed_residual","1E-5");
+  
   /* Euler eq. constant */
   Pset_default("NS_Euler_equation_constant","0.");
   Pset_default("NS_Euler_const_update_weight","1.");
@@ -198,30 +211,11 @@ static void set_default_parameters(void)
   Pset_default("NS_RootFinder_Iteration","1000");
   Pset_default("NS_RootFinder_verbose","yes");
   
-  /* observe method pertinet to NS */
-  Pset_default("NS_Observe_ADM_M","V_obj,default");
-  Pset_default("NS_Observe_Komar_M","S_obj,default");
-  
-  /* smooth and polish phi equation close to the surface */
-  Pset_default("NS_phi_polish","0.1");
-  
-  /* tune */
-  Pset_default("NS_force_balance_equation","adjust(d/dy:Omega)");
-  Pset_default("NS_force_balance_update_weight","0.");
-  Pset_default("NS_adjust_center_method","interpolation");
-  Pset_default("NS_enthalpy_allowed_residual","1E-5");
-  
-  
   /* BH paramters:
   // ============= */
   
   /* BH irreducible mass */
   Pset_default("BH_irreducible_mass","0.");
-  
-  /* how to tune BH Radius */
-  Pset_default("BH_tune_BH_radius_criteria","fix_irreducible_mass");
-  Pset_default("BH_mass_tolerance","1E-5");
-  Pset_default("BH_radius_update_weight","0.");
   
   /* geometrical center of BH.
   // NOTE: geometrical center can be different from patch->c. */ 
@@ -290,6 +284,10 @@ static void set_default_parameters(void)
   Pset_default("BH_Observe_Komar_M","S_obj,default");
   Pset_default("BH_Observe_Irreducible_M","S_obj,default");
   
+  /* how to tune BH Radius */
+  Pset_default("BH_tune_BH_radius_criteria","fix_irreducible_mass");
+  Pset_default("BH_mass_tolerance","1E-5");
+  Pset_default("BH_radius_update_weight","0.");
   
   /* BH filler parameters:
   // { */
