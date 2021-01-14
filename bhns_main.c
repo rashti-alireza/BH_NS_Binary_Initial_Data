@@ -411,12 +411,12 @@ static void set_default_parameters(void)
     Psetd(P_"z_CM",0.);
   }
   
-  /* boost speed for BH in y direction */
+  /* boost speed for BH in x direction */
   {
     const double Omega = Pgetd(P_"angular_velocity");
     const double y_CM  = Pgetd(P_"y_CM");
     const double BH_center_y = Pgetd("BH_center_y");
     
-    Psetd("BH_boost_Vy",-Omega*(BH_center_y-y_CM));
+    Psetd("BH_boost_Vx",-Omega*(BH_center_y-y_CM));
   }
 }
