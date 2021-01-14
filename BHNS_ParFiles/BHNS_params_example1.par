@@ -12,8 +12,8 @@ BHNS_start_off                   = parameter_file
 BHNS_P_ADM_control_method        = adjust(x_CM,y_CM)
 BHNS_P_ADM_control_update_weight = 0.
 BHNS_P_ADM_control_tolerance     = 1E-5
-BHNS_observe_ADM_P               = S_inf,default(x2) -> S+V,Rashti
-BHNS_observe_ADM_J               = S_inf,default(x2) -> S+V,Ossokine
+BHNS_observe_ADM_P               = S_inf,default(x10) -> S+V,Rashti
+BHNS_observe_ADM_J               = S_inf,default(x10) -> S+V,Ossokine
 
 #### BH:
 BH_start_off               = CloseKerrSchild
@@ -48,7 +48,7 @@ NS_enthalpy_allowed_residual   = 1E-5
 NS_enthalpy_update_weight      = 0.
 NS_Euler_const_criteria        = fix_baryonic_mass
 NS_Euler_const_update_weight   = 0.
-NS_force_balance_equation      = none->adjust(d/dy:Omega)
+NS_force_balance_equation      = none(x10)->adjust(d/dy:Omega)
 NS_force_balance_update_weight = 0.
 NS_adjust_center_method        = taylor_expansion
 NS_Eq_phi_polish               = 0.1
@@ -141,8 +141,8 @@ solve_UMFPACK_size              = 0
 # Print:                                                                #
 #-----------------------------------------------------------------------#
 
-txt_output_1d  = ham,mom,eq_residual
-silo_output_3d = ^phi,^enthalpy,^psi,^alphaPsi,^B0,^beta,ham,mom,
+txt_output_1d  = ^ham,^mom,eq_residual
+silo_output_3d = ^phi,^enthalpy,^psi,^alphaPsi,^B0,^beta,^ham,^mom,
 
 #-----------------------------------------------------------------------#
 # The End                                                               #
