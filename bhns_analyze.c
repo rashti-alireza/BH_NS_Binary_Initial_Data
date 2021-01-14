@@ -53,8 +53,6 @@ void bhns_print_physical_system_properties(Physics_T *const phys,
                                           const int iteration,
                                           const int pr_screen)
 {
-  FUNC_TIC
-  
   Physics_T *const bh = init_physics(phys,BH);
   Physics_T *const ns = init_physics(phys,NS);
 
@@ -72,6 +70,4 @@ void bhns_print_physical_system_properties(Physics_T *const phys,
   
   free_physics(bh);
   free_physics(ns);
-  
-  FUNC_TOC
 }
