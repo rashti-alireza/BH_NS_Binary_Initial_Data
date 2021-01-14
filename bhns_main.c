@@ -132,8 +132,10 @@ static void set_default_parameters(void)
   Pset_default("NS_EoS_K","0");
   Pset_default("NS_EoS_Gamma","0");
   
-  /* -> central rho0 */
+  /* -> central matters */
   Pset_default("NS_rho_center","1E-3");
+  Pset_default("NS_pressure_center","1E-3");
+  Pset_default("NS_energy_density_center","1E-3");
   
   /* geometrical center of NS.
   // NOTE: geometrical center can be different from patch->c. */ 
