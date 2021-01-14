@@ -288,6 +288,7 @@ static void set_default_parameters(void)
   Pset_default("BH_tune_BH_radius_criteria","fix_irreducible_mass");
   Pset_default("BH_mass_tolerance","1E-5");
   Pset_default("BH_radius_update_weight","0.");
+  Pset_default("BH_did_BH_surface_change","1");
   
   /* BH filler parameters:
   // { */

@@ -442,12 +442,23 @@ static void initialize_fields_using_previous_solve
       interpolate_fields_from_old_grid_to_new_grid
         (mygrid(old_ns,region1),mygrid(new_ns,region2),
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
-
-      region1 = "BH,BH_around,NS_around_OB,filling_box,outermost_IB";
-      region2 = "BH,BH_around";
-      interpolate_fields_from_old_grid_to_new_grid
-        (mygrid(old_bh,region1),mygrid(new_bh,region2),
-         "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
+         
+      if (Pgeti("BH_did_BH_surface_change?"))
+      {
+        region1 = "BH,BH_around,NS_around_OB,filling_box,outermost_IB";
+        region2 = "BH,BH_around";
+        interpolate_fields_from_old_grid_to_new_grid
+          (mygrid(old_bh,region1),mygrid(new_bh,region2),
+           "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
+      }
+      else
+      {
+        region1 = "BH,BH_around";
+        region2 = "BH,BH_around";
+        interpolate_fields_from_old_grid_to_new_grid
+          (mygrid(old_bh,region1),mygrid(new_bh,region2),
+           "psi,alphaPsi,B0_U0,B0_U1,B0_U2",1);
+      }
     }
     else
       Error0(NO_OPTION);
