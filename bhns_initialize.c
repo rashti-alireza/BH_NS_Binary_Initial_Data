@@ -216,12 +216,13 @@ static void
   if (!Pcmps("grid_kind","SplitCubedSpherical(BH+NS)"))
     Error0(NO_OPTION);
   
+  /* separation */
   grid_char->S              = Pgetd("BHNS_separation");
-  
+  /* BH */
   grid_char->params[Ibh]->l = Pgetd("grid_BH_central_box_length");
   grid_char->params[Ibh]->w = Pgetd("grid_BH_central_box_length");
   grid_char->params[Ibh]->h = Pgetd("grid_BH_central_box_length");
-  
+  /* NS */
   grid_char->params[Ins]->l = Pgetd("grid_NS_central_box_length");
   grid_char->params[Ins]->w = Pgetd("grid_NS_central_box_length");
   grid_char->params[Ins]->h = Pgetd("grid_NS_central_box_length");
