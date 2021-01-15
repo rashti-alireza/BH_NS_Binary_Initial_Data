@@ -2,7 +2,7 @@
 # Physics:                                                              #
 #-----------------------------------------------------------------------#
 
-#### Project
+#### Project:
 Project = BH_NS_binary_initial_data
 
 #### BH-NS binary:
@@ -132,9 +132,9 @@ solve_Newton_Update_Weight      = 1.0
 solve_residual                  = 1E-20
 solve_residual_factor           = 1E-5
 solve_Max_Iteration             = 1
-solve_Max_Newton_Step           = 0
+solve_Max_Newton_Step           = 1
 solve_Method                    = DDM_Schur_Complement
-solve_UMFPACK_refinement_step   = 2
+solve_UMFPACK_refinement_step   = 0
 solve_UMFPACK_size              = 0
 
 #-----------------------------------------------------------------------#
