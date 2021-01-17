@@ -40,11 +40,11 @@ static void construct_initial_data(void *vp)
      
      new_phys = bhns_initialize_new_physics(old_phys);
      
-     bhns_analyze(new_phys,(int)iter);
-     
      write_checkpoint(new_phys,Pgets(P_"my_directory"));
      
      bhns_solve_equation(new_phys);
+     
+     bhns_analyze(new_phys,(int)iter);
      
      free_physics(old_phys);
      
