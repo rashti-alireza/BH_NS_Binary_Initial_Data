@@ -198,8 +198,8 @@ static void set_default_parameters(void)
   Pset_default("NS_enthalpy_allowed_residual","1E-5");
   
   /* extrapolation of matter fields outside NS:
-  // options = [inverse_r2,exp2,poly2]. */
-  Pset_default("NS_extrapolate_matter_fields","inverse_r2");
+  // options = [inverse_r2,exp2,poly2,inverse_r2_expmr,inverse_r2_expmAr]. */
+  Pset_default("NS_extrapolate_matter_fields","inverse_r2_expmAr");
   
   /* Euler eq. constant */
   Pset_default("NS_Euler_equation_constant","0.");
