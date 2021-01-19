@@ -119,18 +119,22 @@ static void set_default_parameters(void)
   // ============= */
   
   /* NS masses */
+  Pset_default("NS_baryonic_mass_current","0.");
   Pset_default("NS_baryonic_mass","0.");
   Pset_default("NS_ADM_mass","0.");
   Pset_default("NS_Komar_mass","0.");
+  Pset_default("NS_TOV_ADM_mass","0.");
+  Pset_default("NS_mass_shedding_indicator","0.");
+  Pset_default("NS_TOV_compactness","0.");
   
   /* NS EoS: */
-  Pset_default("NS_EoS_description","0");
+  Pset_default("NS_EoS_description","NA");
   /* [polytropic,piecewise_polytropic] */
-  Pset_default("NS_EoS_type","0");
+  Pset_default("NS_EoS_type","NA");
   /* unit: [geo] */
-  Pset_default("NS_EoS_unit","geo");
-  Pset_default("NS_EoS_K","0");
-  Pset_default("NS_EoS_Gamma","0");
+  Pset_default("NS_EoS_unit","NA");
+  Pset_default("NS_EoS_K","NA");
+  Pset_default("NS_EoS_Gamma","NA");
   
   /* -> central matters */
   Pset_default("NS_rho_center","1E-3");
@@ -169,7 +173,13 @@ static void set_default_parameters(void)
   /* what to print for properties of NS, add and separate with comma */
   Pset_default(P_"NS_properties",
    "center_x,center_y,center_z,max_radius,min_radius,"
-   "ADM_mass,baryonic_mass,Px_ADM,Py_ADM,Pz_ADM,"
+   "ADM_mass,TOV_ADM_mass,Kommar_mass,baryonic_mass_current,"
+   "baryonic_mass,mass_shedding_indicator,TOV_compactness,"
+   "rho_center,pressure_center,energy_density_center,"
+   "enthalpy_residual,Euler_equation_constant,"
+   "Omega_x,Omega_y,Omega_z,"
+   "chi_x,chi_y,chi_z,"
+   "Px_ADM,Py_ADM,Pz_ADM,"
    "Jx_ADM,Jy_ADM,Jz_ADM");
   
   /* the very first NS approximation
@@ -211,6 +221,8 @@ static void set_default_parameters(void)
   /* set enthalpy != 1 on surface to 1
   // options: [yes/no]. */
   Pset_default("NS_enthalpy_neat","yes");
+  /* residual of enthalpy root finder */
+  Pset_default("NS_enthalpy_residual","0.");
   
   /* root finder pertinent to NS */
   Pset_default("NS_RootFinder_method","Steepest_Descent");
