@@ -105,7 +105,7 @@ static void compute_properties(Physics_T *const phys/* bhns */)
   }
   TOV_free(tov);
   
-  Psetd("NS_shedding_indicator",star_NS_mass_shedding_indicator(ns));
+  Psetd("NS_mass_shedding_indicator",star_NS_mass_shedding_indicator(ns));
   
   observe(ns,"CM",Pgets("NS_Observe_CM"),cm);
   Psetd("NS_x_CM",cm[0]);
