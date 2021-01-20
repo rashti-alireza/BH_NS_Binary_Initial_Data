@@ -114,6 +114,8 @@ static void set_default_parameters(void)
   /* observer method */
   Pset_default(P_"Observe_ADM_P","S+V,Rashti");
   Pset_default(P_"Observe_ADM_J","S+V,Ossokine");
+  Pset_default(P_"Observe_ADM_M","S+V,default");
+  Pset_default(P_"Observe_Komar_M","S_inf,default");
   
   /* NS paramters:
   // ============= */
@@ -135,6 +137,7 @@ static void set_default_parameters(void)
   Pset_default("NS_EoS_unit","NA");
   Pset_default("NS_EoS_K","NA");
   Pset_default("NS_EoS_Gamma","NA");
+  Pset_default("NS_EoS_rho_th","NA");
   
   /* -> central matters */
   Pset_default("NS_rho_center","1E-3");
@@ -146,6 +149,9 @@ static void set_default_parameters(void)
   Pset_default("NS_center_x","0."); 
   Pset_default("NS_center_y","0."); 
   Pset_default("NS_center_z","0."); 
+  Pset_default("NS_x_CM","0."); 
+  Pset_default("NS_y_CM","0."); 
+  Pset_default("NS_z_CM","0."); 
   
   /* box length at the center of NS */
   Pset_default("grid_NS_central_box_length","1.");
@@ -155,10 +161,13 @@ static void set_default_parameters(void)
   Pset_default("NS_Omega_y","0."); 
   Pset_default("NS_Omega_z","0."); 
   
-  /* dimensionless spin */
+  /* spin */
   Pset_default("NS_chi_x","0."); 
   Pset_default("NS_chi_y","0."); 
   Pset_default("NS_chi_z","0."); 
+  Pset_default("NS_spin_x","0."); 
+  Pset_default("NS_spin_y","0."); 
+  Pset_default("NS_spin_z","0."); 
   
   /* ADM momentum */
   Pset_default("NS_Px_ADM","0."); 
@@ -172,13 +181,13 @@ static void set_default_parameters(void)
   
   /* what to print for properties of NS, add and separate with comma */
   Pset_default(P_"NS_properties",
-   "center_x,center_y,center_z,max_radius,min_radius,"
-   "ADM_mass,TOV_ADM_mass,Kommar_mass,baryonic_mass_current,"
+   "center_x,center_y,center_z,x_CM,y_CM,z_CM,max_radius,min_radius,"
+   "ADM_mass,TOV_ADM_mass,Komar_mass,baryonic_mass_current,"
    "baryonic_mass,mass_shedding_indicator,TOV_compactness,"
    "rho_center,pressure_center,energy_density_center,"
-   "enthalpy_residual,Euler_equation_constant,"
-   "Omega_x,Omega_y,Omega_z,"
-   "chi_x,chi_y,chi_z,"
+   "enthalpy_L2_residual,Euler_equation_constant,"
+   "Omega_x,Omega_y,Omega_z,chi_x,chi_y,chi_z,"
+   "spin_x,spin_y,spin_z,"
    "Px_ADM,Py_ADM,Pz_ADM,"
    "Jx_ADM,Jy_ADM,Jz_ADM");
   
@@ -197,6 +206,11 @@ static void set_default_parameters(void)
   /* observe method pertinet to NS */
   Pset_default("NS_Observe_ADM_M","V_obj,default");
   Pset_default("NS_Observe_Komar_M","S_obj,default");
+  Pset_default("NS_Observe_baryonic_M","V_obj,default");
+  Pset_default("NS_Observe_ADM_P","S_obj,default");
+  Pset_default("NS_Observe_ADM_J","S_obj,default");
+  Pset_default("NS_Observe_CM","S_obj,default");
+  Pset_default("NS_Observe_spin","S_obj,JRP");
   
   /* smooth and polish phi equation close to the surface */
   Pset_default("NS_Eq_phi_polish","0.1");
@@ -206,6 +220,7 @@ static void set_default_parameters(void)
   Pset_default("NS_force_balance_update_weight","0.");
   Pset_default("NS_adjust_center_method","interpolation");
   Pset_default("NS_enthalpy_allowed_residual","1E-5");
+  Pset_default("NS_enthalpy_L2_residual","0.");
   
   /* extrapolation of matter fields outside NS:
   // options = [inverse_r2,exp2,poly2,inverse_r2_expmr,
