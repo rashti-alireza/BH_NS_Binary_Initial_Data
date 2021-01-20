@@ -104,8 +104,13 @@ static void set_default_parameters(void)
   Pset_default(P_"Komar_mass","0.");
   
   /* what to print for properties of BHNS, add and separate with comma */
-  Pset_default(P_"BHNS_properties","x_CM,y_CM,z_CM,ADM_mass,Komar_mass");
-  
+  Pset_default(P_"BHNS_properties",
+    "separation,x_CM,y_CM,z_CM,ADM_mass,Komar_mass,mass_ratio,"
+    "angular_velocity,infall_velocity,"
+    "Px_ADM,Py_ADM,Pz_ADM,"
+    "Jx_ADM,Jy_ADM,Jz_ADM,"
+    "binding_energy,Virial_error");
+    
   /* how to tune P_ADM */
   Pset_default(P_"P_ADM_control_method","adjust(x_CM,y_CM)");
   Pset_default(P_"P_ADM_control_update_weight","0.");
@@ -181,7 +186,8 @@ static void set_default_parameters(void)
   
   /* what to print for properties of NS, add and separate with comma */
   Pset_default(P_"NS_properties",
-   "center_x,center_y,center_z,x_CM,y_CM,z_CM,max_radius,min_radius,"
+   "center_x,center_y,center_z,x_CM,y_CM,z_CM,"
+   "max_radius,min_radius,TOV_radius,"
    "ADM_mass,TOV_ADM_mass,Komar_mass,baryonic_mass_current,"
    "baryonic_mass,mass_shedding_indicator,TOV_compactness,"
    "rho_center,pressure_center,energy_density_center,"
@@ -257,6 +263,10 @@ static void set_default_parameters(void)
   Pset_default("BH_center_y","0."); 
   Pset_default("BH_center_z","0."); 
   
+  Pset_default("BH_x_CM","0."); 
+  Pset_default("BH_y_CM","0."); 
+  Pset_default("BH_z_CM","0."); 
+  
   /* box length at the center of BH */
   Pset_default("grid_BH_central_box_length","1.");
   
@@ -270,10 +280,13 @@ static void set_default_parameters(void)
   Pset_default("BH_Omega_y","0."); 
   Pset_default("BH_Omega_z","0."); 
   
-  /* dimensionless spin */
+  /* spin */
   Pset_default("BH_chi_x","0."); 
   Pset_default("BH_chi_y","0."); 
   Pset_default("BH_chi_z","0."); 
+  Pset_default("BH_spin_x","0."); 
+  Pset_default("BH_spin_y","0."); 
+  Pset_default("BH_spin_z","0."); 
   
   /* ADM momentum */
   Pset_default("BH_Px_ADM","0."); 
@@ -287,10 +300,16 @@ static void set_default_parameters(void)
   
   /* what to print for properties of BH, add and separate with comma */
   Pset_default(P_"BH_properties",
-   "center_x,center_y,center_z,max_radius,min_radius,"
-   "irreducible_mass,Christodoulou_mass,Px_ADM,Py_ADM,Pz_ADM,"
-   "Jx_ADM,Jy_ADM,Jz_ADM");
-  
+   "center_x,center_y,center_z,x_CM,y_CM,z_CM,max_radius,min_radius,"
+   "Komar_mass,irreducible_mass,irreducible_mass_current,"
+   "Christodoulou_mass,Christodoulou_mass_current,AH_area,"
+   "Omega_x,Omega_y,Omega_z,chi_x,chi_y,chi_z,"
+   "chi_x_current,chi_y_current,chi_z_current,"
+   "spin_x,spin_y,spin_z,"
+   "Px_ADM,Py_ADM,Pz_ADM,"
+   "Jx_ADM,Jy_ADM,Jz_ADM,"
+   "boost_Vx,boost_Vy,boost_Vz");
+ 
   /* the very first BH approximation
   // options:
   // ========
@@ -317,6 +336,10 @@ static void set_default_parameters(void)
   Pset_default("BH_Observe_ADM_M","S_obj,default");
   Pset_default("BH_Observe_Komar_M","S_obj,default");
   Pset_default("BH_Observe_Irreducible_M","S_obj,default");
+  Pset_default("BH_Observe_ADM_P","S_obj,default");
+  Pset_default("BH_Observe_ADM_J","S_obj,default");
+  Pset_default("BH_Observe_CM","S_obj,default");
+  Pset_default("BH_Observe_spin","S_obj,Campanelli");
   
   /* how to tune BH Radius */
   Pset_default("BH_tune_BH_radius_criteria","fix_irreducible_mass");
