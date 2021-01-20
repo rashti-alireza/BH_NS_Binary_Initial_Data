@@ -68,33 +68,19 @@ void bhns_print_physical_system_properties(Physics_T *const phys,
 }
 
 /* compute variety of properties.
-// NOTE: order of parameters matter. */
+// NOTE: order of parameter calculations matter. 
+// NOTE: if there is a confusion between target params and current
+//       params, "current" suffix added to the latter. */
 static void compute_properties(Physics_T *const phys/* bhns */)
 {
   Physics_T *const ns = init_physics(phys,NS);
+  Physics_T *const bh = init_physics(phys,BH);
+  double im[2] = {0.};
+  double p[3]  = {0.};
+  double j[3]  = {0.};
+  double s[3]  = {0.};
+  double cm[3] = {0.};
   double m     = 0.;
-  double p[3]  = {0};
-  double j[3]  = {0};
-  double s[3]  = {0};
-  double cm[3] = {0};
-  
-  /* BHNS: */
-  observe(phys,"ADM(M)",Pgets(P_"Observe_ADM_M"),&m);
-  Psetd(P_"adm_mass",m);
-  
-  observe(phys,"Komar(M)",Pgets(P_"Observe_Komar_M"),&m);
-  Psetd(P_"Komar_mass",m);
-  
-  observe(phys,"ADM(P)",Pgets(P_"Observe_ADM_P"),p);
-  Psetd(P_"Px_ADM",p[0]);
-  Psetd(P_"Py_ADM",p[1]);
-  Psetd(P_"Pz_ADM",p[2]);
-
-  observe(phys,"ADM(J)",Pgets(P_"Observe_ADM_J"),j);
-  Psetd(P_"Jx_ADM",j[0]);
-  Psetd(P_"Jy_ADM",j[1]);
-  Psetd(P_"Jz_ADM",j[2]);
-
   
   /* NS: */
   observe(ns,"ADM(M)",Pgets("NS_Observe_ADM_M"),&m);
@@ -112,6 +98,7 @@ static void compute_properties(Physics_T *const phys/* bhns */)
   tov = TOV_solution(tov);
   Psetd("NS_TOV_ADM_mass",tov->ADM_m);
   Psetd("NS_TOV_compactness",tov->ADM_m/tov->rbar[tov->N-1]);
+  Psetd("NS_TOV_radius",tov->rbar[tov->N-1]);
   TOV_free(tov);
   
   Psetd("NS_shedding_indicator",star_NS_mass_shedding_indicator(ns));
@@ -141,5 +128,76 @@ static void compute_properties(Physics_T *const phys/* bhns */)
   Psetd("NS_chi_y",s[1]/Pow2(m));
   Psetd("NS_chi_z",s[2]/Pow2(m));
   
+  /* BH: */
+  observe(bh,"Komar(M)",Pgets("BH_Observe_Komar_M"),&m);
+  Psetd("BH_Komar_mass",m);
+  
+  observe(bh,"Irreducible(M)",Pgets("BH_Observe_irreducible_M"),im);
+  Psetd("BH_irreducible_mass_current",im[0]);
+  Psetd("BH_AH_area",im[1]);
+  
+  observe(bh,"CM",Pgets("BH_Observe_CM"),cm);
+  Psetd("BH_x_CM",cm[0]);
+  Psetd("BH_y_CM",cm[1]);
+  Psetd("BH_z_CM",cm[2]);
+
+  observe(bh,"ADM(P)",Pgets("BH_Observe_ADM_P"),p);
+  Psetd("BH_Px_ADM",p[0]);
+  Psetd("BH_Py_ADM",p[1]);
+  Psetd("BH_Pz_ADM",p[2]);
+
+  observe(bh,"ADM(J)",Pgets("BH_Observe_ADM_J"),j);
+  Psetd("BH_Jx_ADM",j[0]);
+  Psetd("BH_Jy_ADM",j[1]);
+  Psetd("BH_Jz_ADM",j[2]);
+  
+  observe(bh,"spin",Pgets("BH_Observe_spin"),s);
+  Psetd("BH_Spin_x",s[0]);
+  Psetd("BH_Spin_y",s[1]);
+  Psetd("BH_Spin_z",s[2]);
+  
+  /* calculate BH current Christodoulou mass.
+  // NOTE: s[?] depend on BH spin on top */
+  double irr_mass = Pgetd("BH_irreducible_mass_current");
+  double net_spin = sqrt(Pow2(s[0])+Pow2(s[1])+Pow2(s[2]));
+  m = sqrt(Pow2(irr_mass)+Pow2(net_spin)/(4*Pow2(irr_mass)));
+  Psetd("BH_Christodoulou_mass_current",m);
+  
+  Psetd("BH_chi_x_current",s[0]/Pow2(m));
+  Psetd("BH_chi_y_current",s[1]/Pow2(m));
+  Psetd("BH_chi_z_current",s[2]/Pow2(m));
+  
+  /* BHNS: */
+  observe(phys,"ADM(M)",Pgets(P_"Observe_ADM_M"),&m);
+  Psetd(P_"adm_mass",m);
+  
+  observe(phys,"Komar(M)",Pgets(P_"Observe_Komar_M"),&m);
+  Psetd(P_"Komar_mass",m);
+  
+  observe(phys,"ADM(P)",Pgets(P_"Observe_ADM_P"),p);
+  Psetd(P_"Px_ADM",p[0]);
+  Psetd(P_"Py_ADM",p[1]);
+  Psetd(P_"Pz_ADM",p[2]);
+
+  observe(phys,"ADM(J)",Pgets(P_"Observe_ADM_J"),j);
+  Psetd(P_"Jx_ADM",j[0]);
+  Psetd(P_"Jy_ADM",j[1]);
+  Psetd(P_"Jz_ADM",j[2]);
+
+  /* mass ratio */
+  double q = 
+    Pgetd("BH_Christodoulou_mass_current")/Pgetd("NS_TOV_ADM_mass");
+  Psetd(P_"mass_ratio",q);
+
+  /* binding energy */
+  double bin_e = Pgetd(P_"adm_mass")-
+    (Pgetd("BH_Christodoulou_mass_current")+Pgetd("NS_TOV_ADM_mass"));
+  Psetd(P_"binding_energy",bin_e);
+
+  /* virial error */
+  double v_e = fabs(1.-Pgetd(P_"adm_mass")/Pgetd(P_"komar_mass"));
+  Psetd(P_"virial_error",v_e);
+
   free_physics(ns);
+  free_physics(bh);
 }
