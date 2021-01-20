@@ -126,13 +126,14 @@ static void set_default_parameters(void)
   // ============= */
   
   /* NS masses */
-  Pset_default("NS_baryonic_mass_current","0.");
-  Pset_default("NS_baryonic_mass","0.");
-  Pset_default("NS_ADM_mass","0.");
-  Pset_default("NS_Komar_mass","0.");
-  Pset_default("NS_TOV_ADM_mass","0.");
-  Pset_default("NS_mass_shedding_indicator","0.");
+  Pset_default("NS_baryonic_mass_current","1.");
+  Pset_default("NS_baryonic_mass","1.");
+  Pset_default("NS_ADM_mass","1.");
+  Pset_default("NS_Komar_mass","1.");
+  Pset_default("NS_TOV_ADM_mass","1.");
+  Pset_default("NS_TOV_radius","1.");
   Pset_default("NS_TOV_compactness","0.");
+  Pset_default("NS_mass_shedding_indicator","1.");
   
   /* NS EoS: */
   Pset_default("NS_EoS_description","NA");

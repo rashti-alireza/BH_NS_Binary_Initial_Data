@@ -93,12 +93,16 @@ static void compute_properties(Physics_T *const phys/* bhns */)
   Psetd("NS_baryonic_mass_current",m);
   
   TOV_T *tov = TOV_init();
+  tov->exit_if_error = 0;
   tov->phys  = ns;
   tov->bar_m = Pgetd("NS_baryonic_mass_current");
   tov = TOV_solution(tov);
-  Psetd("NS_TOV_ADM_mass",tov->ADM_m);
-  Psetd("NS_TOV_compactness",tov->ADM_m/tov->rbar[tov->N-1]);
-  Psetd("NS_TOV_radius",tov->rbar[tov->N-1]);
+  if (tov->status == 0)
+  {
+    Psetd("NS_TOV_ADM_mass",tov->ADM_m);
+    Psetd("NS_TOV_compactness",tov->ADM_m/tov->rbar[tov->N-1]);
+    Psetd("NS_TOV_radius",tov->rbar[tov->N-1]);
+  }
   TOV_free(tov);
   
   Psetd("NS_shedding_indicator",star_NS_mass_shedding_indicator(ns));
