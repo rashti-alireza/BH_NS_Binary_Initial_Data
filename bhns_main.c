@@ -72,7 +72,7 @@ static void set_default_parameters(void)
   // ================== */
  
   /* how far are BH-NS */
-  Pset_default(P_"separation","0.");
+  Pset_default(P_"separation","10.");
   
   /* how fast BH-NS angular velocity */
   Pset_default(P_"angular_velocity","0.");
@@ -100,8 +100,8 @@ static void set_default_parameters(void)
   Pset_default(P_"boost_Vz","0."); 
   
   /* masses */
-  Pset_default(P_"ADM_mass","0.");
-  Pset_default(P_"Komar_mass","0.");
+  Pset_default(P_"ADM_mass","1.");
+  Pset_default(P_"Komar_mass","1.");
   
   /* what to print for properties of BHNS, add and separate with comma */
   Pset_default(P_"BHNS_properties",
@@ -111,7 +111,8 @@ static void set_default_parameters(void)
     "Jx_ADM,Jy_ADM,Jz_ADM,"
     "binding_energy,Virial_error");
     
-  /* how to tune P_ADM */
+  /* how to tune P_ADM:
+  // options:[none,adjust(?_CM)], cf. */
   Pset_default(P_"P_ADM_control_method","adjust(x_CM,y_CM)");
   Pset_default(P_"P_ADM_control_update_weight","0.");
   Pset_default(P_"P_ADM_control_tolerance","1E-5");
@@ -216,13 +217,14 @@ static void set_default_parameters(void)
   Pset_default("NS_Observe_baryonic_M","V_obj,default");
   Pset_default("NS_Observe_ADM_P","S_obj,default");
   Pset_default("NS_Observe_ADM_J","S_obj,default");
-  Pset_default("NS_Observe_CM","S_obj,default");
+  Pset_default("NS_Observe_CM","V_obj,default");
   Pset_default("NS_Observe_spin","S_obj,JRP");
   
   /* smooth and polish phi equation close to the surface */
   Pset_default("NS_Eq_phi_polish","0.1");
   
   /* tune and adjust: */
+  /* for option cf star_main */
   Pset_default("NS_force_balance_equation","adjust(d/dy:Omega)");
   Pset_default("NS_force_balance_update_weight","0.");
   Pset_default("NS_adjust_center_method","interpolation");
@@ -235,7 +237,7 @@ static void set_default_parameters(void)
   Pset_default("NS_extrapolate_matter_fields","inverse_r2_expmAr");
   
   /* Euler eq. constant */
-  Pset_default("NS_Euler_equation_constant","0.");
+  Pset_default("NS_Euler_equation_constant","-0.8");
   Pset_default("NS_Euler_const_update_weight","1.");
   
   /* NS enhtalpy update weight */
@@ -243,8 +245,6 @@ static void set_default_parameters(void)
   /* set enthalpy != 1 on surface to 1
   // options: [yes/no]. */
   Pset_default("NS_enthalpy_neat","yes");
-  /* residual of enthalpy root finder */
-  Pset_default("NS_enthalpy_residual","0.");
   
   /* root finder pertinent to NS */
   Pset_default("NS_RootFinder_method","Steepest_Descent");
@@ -256,7 +256,7 @@ static void set_default_parameters(void)
   // ============= */
   
   /* BH irreducible mass */
-  Pset_default("BH_irreducible_mass","0.");
+  Pset_default("BH_irreducible_mass","1.");
   
   /* geometrical center of BH.
   // NOTE: geometrical center can be different from patch->c. */ 
