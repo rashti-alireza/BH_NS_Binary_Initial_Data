@@ -75,6 +75,9 @@ static void compute_properties(Physics_T *const phys/* bhns */)
 {
   Physics_T *const ns = init_physics(phys,NS);
   Physics_T *const bh = init_physics(phys,BH);
+  const double x_CM   = Pgetd(P_"x_CM");
+  const double y_CM   = Pgetd(P_"y_CM");
+  const double z_CM   = Pgetd(P_"z_CM");
   double im[2] = {0.};
   double p[3]  = {0.};
   double j[3]  = {0.};
@@ -108,9 +111,9 @@ static void compute_properties(Physics_T *const phys/* bhns */)
   Psetd("NS_mass_shedding_indicator",star_NS_mass_shedding_indicator(ns));
   
   observe(ns,"CM",Pgets("NS_Observe_CM"),cm);
-  Psetd("NS_x_CM",cm[0]);
-  Psetd("NS_y_CM",cm[1]);
-  Psetd("NS_z_CM",cm[2]);
+  Psetd("NS_x_CM",cm[0]+x_CM);
+  Psetd("NS_y_CM",cm[1]+y_CM);
+  Psetd("NS_z_CM",cm[2]+z_CM);
 
   observe(ns,"ADM(P)",Pgets("NS_Observe_ADM_P"),p);
   Psetd("NS_Px_ADM",p[0]);
@@ -141,9 +144,9 @@ static void compute_properties(Physics_T *const phys/* bhns */)
   Psetd("BH_AH_area",im[1]);
   
   observe(bh,"CM",Pgets("BH_Observe_CM"),cm);
-  Psetd("BH_x_CM",cm[0]);
-  Psetd("BH_y_CM",cm[1]);
-  Psetd("BH_z_CM",cm[2]);
+  Psetd("BH_x_CM",cm[0]+x_CM);
+  Psetd("BH_y_CM",cm[1]+y_CM);
+  Psetd("BH_z_CM",cm[2]+z_CM);
 
   observe(bh,"ADM(P)",Pgets("BH_Observe_ADM_P"),p);
   Psetd("BH_Px_ADM",p[0]);
