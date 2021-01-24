@@ -429,6 +429,16 @@ static void initialize_fields_using_previous_solve
   Physics_T *const old_bh = init_physics(old_phys,BH);
   Physics_T *const new_bh = init_physics(new_phys,BH);
   
+  if (Pgeti("BH_did_BH_surface_change?"))
+  {
+    /* fill the hole if we have excised region */
+    if (Pcmpss("grid_set_BH","excised"))
+    {
+      Psets("BH_filler_fields","alphaPsi,psi,B0_U0,B0_U1,B0_U2");
+      physics(old_bh,BH_FILL);
+    }
+  }
+
   /* matter fields */
   interpolate_fields_from_old_grid_to_new_grid
     (mygrid(old_ns,"NS,NS_around_IB"),mygrid(new_ns,"NS"),"phi,enthalpy",0);
