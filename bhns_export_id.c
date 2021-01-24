@@ -31,6 +31,12 @@ void bhns_bam_exporting_initial_data(void *vp)
   Physics_T *const bh  = init_physics(bhns,BH);
   Psets("BH_filler_method",Pgets(P_ BAM_"filler_method"));
   Pseti("BH_filler_verbose",1);/* make it verbose anyway. */
+  /* fill these fields */
+  Psets("BH_filler_fields","alphaPsi,psi,beta_U0,beta_U1,beta_U2,"
+                           "adm_Kij_D0D0,adm_Kij_D0D1,adm_Kij_D0D2,"
+                           "adm_Kij_D1D1,adm_Kij_D1D2,adm_Kij_D2D2,"
+                           "gConf_D0D0,gConf_D0D1,gConf_D0D2,"
+                           "gConf_D1D1,gConf_D1D2,gConf_D2D2");
   physics(bh,BH_FILL);
   free_physics(bh);
     
