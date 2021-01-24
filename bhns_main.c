@@ -228,6 +228,7 @@ static void set_default_parameters(void)
   Pset_default("NS_force_balance_equation","adjust(d/dy:Omega)");
   Pset_default("NS_force_balance_update_weight","0.");
   Pset_default("NS_adjust_center_method","interpolation");
+  Pset_default("NS_adjust_center_update_weight","0.");
   Pset_default("NS_enthalpy_allowed_residual","1E-5");
   Pset_default("NS_enthalpy_L2_residual","0.");
   
