@@ -56,6 +56,7 @@ static Physics_T *infer_new_physics(Physics_T *const old_bhns)
   physics(old_ns,STRESS_ENERGY_UPDATE);
   physics(old_ns,STAR_TUNE_EULER_CONST);
   physics(old_ns,STRESS_ENERGY_UPDATE);
+  physics(old_bh,BH_TUNE_SPIN);
   physics(old_bh,BH_TUNE_RADIUS);
   physics(old_bh,BH_FIND_SURFACE);
   physics(old_bhns,SYS_TUNE_P_ADM);
