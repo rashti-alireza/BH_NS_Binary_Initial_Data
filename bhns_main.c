@@ -385,6 +385,9 @@ static void set_default_parameters(void)
   Pset_default("BH_filler_r0_beta_U0","0.");
   Pset_default("BH_filler_r0_beta_U1","0.");
   Pset_default("BH_filler_r0_beta_U2","0.");
+  Pset_default("BH_filler_r0_B0_U0","0.");
+  Pset_default("BH_filler_r0_B0_U1","0.");
+  Pset_default("BH_filler_r0_B0_U2","0.");
   Pset_default("BH_filler_r0_gConf_D0D0","4.");
   Pset_default("BH_filler_r0_gConf_D0D1","0.");
   Pset_default("BH_filler_r0_gConf_D0D2","0.");
