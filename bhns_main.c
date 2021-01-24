@@ -282,6 +282,10 @@ static void set_default_parameters(void)
   Pset_default("BH_Omega_y","0."); 
   Pset_default("BH_Omega_z","0."); 
   
+  /* tune spin */
+  Pset_default("BH_spin_update_weight","0."); 
+  Pset_default("BH_spin_tolerance","1E-3"); 
+  
   /* spin */
   Pset_default("BH_chi_x","0."); 
   Pset_default("BH_chi_y","0."); 
