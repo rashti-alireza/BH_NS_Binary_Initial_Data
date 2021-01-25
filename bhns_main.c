@@ -44,7 +44,7 @@ static void construct_initial_data(void *vp)
      
      bhns_solve_equation(new_phys);
      
-     bhns_analyze(new_phys,(int)iter);
+     bhns_analyze(new_phys,Pgeti(P_"iteration_number"));
      
      free_physics(old_phys);
      
