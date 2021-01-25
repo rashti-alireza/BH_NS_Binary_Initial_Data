@@ -68,6 +68,29 @@ static void construct_initial_data(void *vp)
 /* default parameters for this project */
 static void set_default_parameters(void)
 {
+  /* general parameters: */
+  // =================== */
+  
+  /* which fields to be saved at checkpoint file */
+  Pset_default("checkpoint_save","enthalpy,phi,psi,alphaPsi,"
+                                 "B0_U0,B0_U1,B0_U2");
+  
+  /* how to computer derivative */
+  Pset_default("Derivative_method","Spectral");
+  
+  /* how to computer interpolation */
+  Pset_default("Interpolation_method","Spectral");
+  
+  /* how to compute coefficients of expansion:
+  // option:
+  // =======
+  // RFT : regular Fourier transformation. */
+  Pset_default("Fourier_transformation_method","RFT");
+  
+  /* how to computer functional derivatives used in Jacobian */
+  Pset_default("dF/du_for_Newton_method","Spectral");
+  
+  
   /* BH-NS parameters:
   // ================== */
  
