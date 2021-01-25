@@ -108,6 +108,8 @@ static void set_default_parameters(void)
   
   /* total number of iterations that have been executed */
   Pseti(P_"iteration_number",0);
+  /* stop the main loop if it is 1. */
+  Pseti(P_"STOP",0);
   
   /* system center of mass. */
   Pset_default(P_"x_CM","0."); 
