@@ -10,6 +10,8 @@
 /* setup and issue physics solve */
 void bhns_solve_equation(Physics_T *const phys)
 {
+  if (!phys) return;
+  
   FUNC_TIC
   
   /* populate value of inner BC */

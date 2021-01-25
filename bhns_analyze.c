@@ -10,6 +10,8 @@
 /* analyzing physics properties, constraints etc */
 void bhns_analyze(Physics_T *const phys,const int iteration)
 {
+  if (!phys) return;
+
   FUNC_TIC
   
   const char *const properties_file_name = P_"properties.txt";

@@ -368,6 +368,18 @@ Physics_T *bhns_read_physics_from_checkpoint(void)
   
   /* first load grid and parameters */
   file = open_checkpoint_file_then_read_grid_and_params(bhns);
+  
+  /* it already hit the stop */
+  if (Pgeti(P_"STOP") == 1)
+  {
+    printf(Pretty0" All iterations have already done.\n");
+    free_physics(bhns);
+    Fclose(file);
+    
+    FUNC_TOC
+    return 0;
+  }
+  
   Physics_T *const ns = init_physics(bhns,NS);
   Physics_T *const bh = init_physics(bhns,BH);
   

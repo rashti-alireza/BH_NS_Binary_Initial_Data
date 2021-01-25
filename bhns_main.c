@@ -40,8 +40,6 @@ static void construct_initial_data(void *vp)
      
      new_phys = bhns_initialize_new_physics(old_phys);
      
-     write_checkpoint(new_phys,Pgets(P_"my_directory"));
-     
      bhns_solve_equation(new_phys);
      
      bhns_analyze(new_phys,Pgeti(P_"iteration_number"));
@@ -55,10 +53,9 @@ static void construct_initial_data(void *vp)
      iter++;
      
      Stop = update_iteration_params(iter,P_,P_"%s_%ux%ux%u");
+     
+     write_checkpoint(new_phys,Pgets(P_"my_directory"));
   }
-  
-  /* save */
-  write_checkpoint(new_phys,Pgets(P_"my_directory"));
   
   free_physics(new_phys);
   UNUSED(vp);
