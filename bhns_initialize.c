@@ -368,6 +368,8 @@ Physics_T *bhns_read_physics_from_checkpoint(void)
   
   /* first load grid and parameters */
   file = open_checkpoint_file_then_read_grid_and_params(bhns);
+  Physics_T *const ns = init_physics(bhns,NS);
+  Physics_T *const bh = init_physics(bhns,BH);
   
   /* make the patches */
   make_patches(bhns->grid);
@@ -393,27 +395,40 @@ Physics_T *bhns_read_physics_from_checkpoint(void)
   physics(bhns,OBSERVE_ADD_FIELDS);
   physics(bhns,BH_ADD_FIELDS);
   physics(bhns,STAR_ADD_FIELDS);
-    
-  /* then read those saved fields */
-  read_fields_from_checkpoint_file(bhns,file);
   
-  
-  {//temp
-  Warning("temp");
+  /* populate free data fields */
   physics(bhns,FREE_DATA_POPULATE);
-  physics(bhns,SYS_INITIALIZE_FIELDS);
-  initial_B0I(bhns,".*");
+  
+  /* then read saved fields in param "checkpoint_save" */
+  read_fields_from_checkpoint_file(bhns,file);
+  Fclose(file);
+  
+  /* alse we need NS spin vector */
+  star_W_spin_vector_idealfluid_update(ns,"NS");
+  
+  /* beta = B0+B1 */
   physics(bhns,ADM_UPDATE_B1I);
   update_partial_derivatives(bhns,".*","^dB0_U.+,^ddB0_U.+");
   physics(bhns,ADM_UPDATE_beta);
-  update_partial_derivatives(bhns,".*","^dpsi_D.+,^ddpsi_D.+,"
-                                      "^dalphaPsi_D.+,^ddalphaPsi_D.+");
+  
+  /* update derivatives */
+  update_partial_derivatives(bhns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
+                                      "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
+  update_partial_derivatives(ns,"NS","^dphi_D.$,^ddphi_D.D.$");
+  
+  /* update AConf^{ij} */
   physics(bhns,ADM_UPDATE_AConfIJ);
-  }
- 
   
-  Fclose(file);
+  /* update normal on AH */
+  physics(bh,BH_UPDATE_sConf);
   
+  /* update matter fields */
+  Psets("NS_enthalpy_neat","yes");
+  physics(ns,STRESS_ENERGY_UPDATE);
+  
+  free_physics(ns);
+  free_physics(bh);
+
   FUNC_TOC
   return bhns;
 }
