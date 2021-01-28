@@ -92,7 +92,7 @@ static void set_default_parameters(void)
   // ================== */
  
   /* how far are BH-NS */
-  Pset_default(P_"separation","10.");
+  Pset_default(P_"separation","50.");
   
   /* how fast BH-NS angular velocity */
   Pset_default(P_"angular_velocity","0.");
