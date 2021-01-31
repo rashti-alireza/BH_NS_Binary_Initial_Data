@@ -27,7 +27,7 @@ void bhns_analyze(Physics_T *const phys,const int iteration)
   /* open properties file in "my_directory" and save */
   sprintf(str,"%s/%s",Pgets(P_"my_directory"),properties_file_name);
   file = Fopen(str,"w");
-  bhns_print_physical_system_properties(phys,file,iteration,1);
+  bhns_print_physical_system_properties(phys,file,iteration,0);
   Fclose(file);
 
   /* open properties file in "Diagnostics" and save */
