@@ -67,7 +67,6 @@ void bhns_bam_exporting_initial_data(void *vp)
   regex_replace(fields_name,"\\badm_gyz\\b",BAM_"adm_g_D1D2",fields_name);
   regex_replace(fields_name,"\\badm_gzz\\b",BAM_"adm_g_D2D2",fields_name);
   
-  
   regex_replace(fields_name,"\\badm_Kxx\\b",BAM_"adm_Kij_D0D0",fields_name);
   regex_replace(fields_name,"\\badm_Kxy\\b",BAM_"adm_Kij_D0D1",fields_name);
   regex_replace(fields_name,"\\badm_Kxz\\b",BAM_"adm_Kij_D0D2",fields_name);
