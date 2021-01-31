@@ -42,7 +42,7 @@ static void construct_initial_data(void *vp)
      
      bhns_solve_equation(new_phys);
      
-     bhns_analyze(new_phys,Pgeti(P_"iteration_number"));
+     bhns_analyze(new_phys,Pgeti(P_"resolution_iteration"));
      
      free_physics(old_phys);
      
@@ -107,9 +107,11 @@ static void set_default_parameters(void)
   Pset_default(P_"start_off","parameter_file");
   
   /* total number of iterations that have been executed */
-  Pseti(P_"iteration_number",0);
+  Pset_default(P_"iteration","0");
+  /* total number of iterations executed for this resolution */
+  Pset_default(P_"resolution_iteration","0");
   /* stop the main loop if it is 1. */
-  Pseti(P_"STOP",0);
+  Pset_default(P_"STOP","0");
   
   /* system center of mass. */
   Pset_default(P_"x_CM","0."); 
