@@ -46,6 +46,8 @@ static void construct_initial_data(void *vp)
      
      free_physics(old_phys);
      
+     fill_blackhole(new_phys);
+     
      old_phys = new_phys;
      
      printf("} Outermost iteration %u ==> Done.\n",iter);
@@ -352,6 +354,9 @@ static void set_default_parameters(void)
   /* BH surface type */
   Pset_default("BH_surface_type","perfect_s2"); 
   
+  /* did_BH_surface_change? used for interpolation purposes and efficiency */
+  Pset_default("BH_did_BH_surface_change?","0");
+  
   /* equation related: */
   /* XCTS means: alpha,beta,psi */
   Pset_default("BH_Eq_inner_BC_fields","XCTS");
@@ -509,4 +514,27 @@ static void set_default_parameters(void)
     
     Psetd("BH_boost_Vx",-Omega*(BH_center_y-y_CM));
   }
+}
+
+/* if nessesary fill the bh for interpolation purposes */
+static void fill_blackhole(Physics_T *const phys)
+{
+  if (!phys) return;
+ 
+  FUNC_TIC
+  
+  Physics_T *const bh = init_physics(phys,BH);
+  
+  if (Pgeti("BH_did_BH_surface_change?"))
+  {
+    /* fill the hole if we have excised region */
+    if (Pcmpss("grid_set_BH","excised"))
+    {
+      Psets("BH_filler_fields","alphaPsi,psi,B0_U0,B0_U1,B0_U2");
+      physics(bh,BH_FILL);
+    }
+  }
+  free_physics(bh);
+  
+  FUNC_TOC
 }
