@@ -11,7 +11,17 @@
 /* decide how to initialize the new physics */
 Physics_T *bhns_initialize_new_physics(Physics_T *const old_phys)
 {
+  /* if already hit the stop */
+  if (Pgeti(P_"STOP") == 1)
+  {
+    printf(Pretty0"I should STOP!\n");
+    Warning("You should call BHfiller for ID export here!");
+    write_checkpoint(old_phys,Pgets(P_"my_directory"));
+    return 0;
+  }
+  
   Physics_T *new_phys = 0;
+  
   if (!old_phys)/* if empty, come up with a start off */
   {
     /* if we wanna use checkpoint file */
@@ -56,12 +66,12 @@ static Physics_T *infer_new_physics(Physics_T *const old_bhns)
   physics(old_bh,BH_TUNE_SPIN);
   physics(old_bh,BH_TUNE_RADIUS);
   physics(old_bh,BH_FIND_SURFACE);
-  physics(old_ns,STRESS_ENERGY_UPDATE);
+  //physics(old_ns,STRESS_ENERGY_UPDATE);
   physics(old_ns,STAR_TUNE_EULER_CONST);
-  physics(old_ns,STRESS_ENERGY_UPDATE);
+  //physics(old_ns,STRESS_ENERGY_UPDATE);
   physics(old_bhns,SYS_TUNE_P_ADM);
   physics(old_ns,STRESS_ENERGY_UPDATE);
-  physics(old_ns,STAR_TUNE_FORCE_BALANCE);
+  //physics(old_ns,STAR_TUNE_FORCE_BALANCE);
   physics(old_ns,STAR_EXTRAPOLATE_MATTERS);
   physics(old_ns,STAR_TUNE_CENTER);
   physics(old_ns,STAR_FIND_SURFACE);
@@ -328,6 +338,7 @@ static void initial_B0I(Physics_T *const phys,
     READ_v(B1_U0);
     READ_v(B1_U1);
     READ_v(B1_U2);
+    READ_v(psi);
     
     REALLOC_v_WRITE_v(B0_U0);
     REALLOC_v_WRITE_v(B0_U1);
@@ -335,9 +346,11 @@ static void initial_B0I(Physics_T *const phys,
     
     FOR_ALL_ijk
     {
-      B0_U0[ijk] = beta_U0[ijk]-B1_U0[ijk];
-      B0_U1[ijk] = beta_U1[ijk]-B1_U1[ijk];
-      B0_U2[ijk] = beta_U2[ijk]-B1_U2[ijk];
+      double psim4 = pow(psi[ijk],-4.);
+      
+      B0_U0[ijk] = psim4*beta_U0[ijk]-B1_U0[ijk];
+      B0_U1[ijk] = psim4*beta_U1[ijk]-B1_U1[ijk];
+      B0_U2[ijk] = psim4*beta_U2[ijk]-B1_U2[ijk];
     }
     
     /* attenuate */
@@ -457,16 +470,6 @@ static void initialize_fields_using_previous_solve
   Physics_T *const old_bh = init_physics(old_phys,BH);
   Physics_T *const new_bh = init_physics(new_phys,BH);
   
-  if (Pgeti("BH_did_BH_surface_change?"))
-  {
-    /* fill the hole if we have excised region */
-    if (Pcmpss("grid_set_BH","excised"))
-    {
-      Psets("BH_filler_fields","alphaPsi,psi,B0_U0,B0_U1,B0_U2");
-      physics(old_bh,BH_FILL);
-    }
-  }
-
   /* matter fields */
   interpolate_fields_from_old_grid_to_new_grid
     (mygrid(old_ns,"NS,NS_around_IB"),mygrid(new_ns,"NS"),"phi,enthalpy",0);
