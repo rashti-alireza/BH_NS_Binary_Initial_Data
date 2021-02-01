@@ -33,30 +33,29 @@ static void construct_initial_data(void *vp)
   set_default_parameters();
   
   /* main iteration loop */
-  Stop = update_iteration_params(iter,P_,P_"%s_%ux%ux%u");
   while(!Stop)
   {
-     printf("{ Outermost iteration %u ...\n",iter);
-     
-     new_phys = bhns_initialize_new_physics(old_phys);
-     
-     bhns_solve_equation(new_phys);
-     
-     bhns_analyze(new_phys,Pgeti(P_"resolution_iteration"));
-     
-     free_physics(old_phys);
-     
-     fill_blackhole(new_phys);
-     
-     old_phys = new_phys;
-     
-     printf("} Outermost iteration %u ==> Done.\n",iter);
-     
-     iter++;
-     
-     Stop = update_iteration_params(iter,P_,P_"%s_%ux%ux%u");
-     
-     write_checkpoint(new_phys,Pgets(P_"my_directory"));
+    printf("{ Outermost iteration %u ...\n",iter);
+    
+    Stop = update_iteration_params(iter,P_,P_"%s_%ux%ux%u");
+    
+    new_phys = bhns_initialize_new_physics(old_phys);
+    
+    bhns_analyze(new_phys,Pgeti(P_"resolution_iteration"));
+    
+    write_checkpoint(new_phys,Pgets(P_"my_directory"));
+    
+    bhns_solve_equation(new_phys);
+    
+    free_physics(old_phys);
+    
+    fill_blackhole(new_phys);
+    
+    old_phys = new_phys;
+    
+    printf("} Outermost iteration %u ==> Done.\n",iter);
+    
+    iter++;
   }
   
   free_physics(new_phys);
