@@ -338,7 +338,7 @@ static void initial_B0I(Physics_T *const phys,
     READ_v(B1_U0);
     READ_v(B1_U1);
     READ_v(B1_U2);
-    READ_v(psi);
+    WRITE_v(psi);
     
     REALLOC_v_WRITE_v(B0_U0);
     REALLOC_v_WRITE_v(B0_U1);
@@ -362,6 +362,8 @@ static void initial_B0I(Physics_T *const phys,
         DEF_RELATIVE_y
         DEF_RELATIVE_z
         DEF_RELATIVE_r
+        
+        psi[ijk]   /= r;
         B0_U0[ijk] /= r;
         B0_U1[ijk] /= r;
         B0_U2[ijk] /= r;
