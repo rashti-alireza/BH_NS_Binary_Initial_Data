@@ -499,7 +499,7 @@ static void initialize_fields_using_previous_solve
         (mygrid(old_phys,region1),mygrid(new_phys,region2),
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",1);
       
-      region1 = "NS,NS_around,BH_around_OB,filling_box,outermost_IB";
+      region1 = "NS,NS_around";
       region2 = "NS,NS_around";
       interpolate_fields_from_old_grid_to_new_grid
         (mygrid(old_ns,region1),mygrid(new_ns,region2),
@@ -507,7 +507,7 @@ static void initialize_fields_using_previous_solve
          
       if (Pgeti("BH_did_BH_surface_change?"))
       {
-        region1 = "BH,BH_around,NS_around_OB,filling_box,outermost_IB";
+        region1 = "BH,BH_around";
         region2 = "BH,BH_around";
         interpolate_fields_from_old_grid_to_new_grid
           (mygrid(old_bh,region1),mygrid(new_bh,region2),
