@@ -467,6 +467,10 @@ static void initialize_fields_using_previous_solve
 {
   FUNC_TIC
   
+  /* caveat for future! */
+  if(!Pcmpss("grid_set_BH","excised"))
+    Error0(NO_OPTION);
+  
   Physics_T *const old_ns = init_physics(old_phys,NS);
   Physics_T *const new_ns = init_physics(new_phys,NS);
   Physics_T *const old_bh = init_physics(old_phys,BH);
@@ -511,8 +515,8 @@ static void initialize_fields_using_previous_solve
       }
       else
       {
-        region1 = "BH,BH_around";
-        region2 = "BH,BH_around";
+        region1 = "BH_around";
+        region2 = "BH_around";
         interpolate_fields_from_old_grid_to_new_grid
           (mygrid(old_bh,region1),mygrid(new_bh,region2),
            "psi,alphaPsi,B0_U0,B0_U1,B0_U2",1);
