@@ -237,18 +237,6 @@ static void
   grid_char->params[Ins]->l = Pgetd("grid_NS_central_box_length");
   grid_char->params[Ins]->w = Pgetd("grid_NS_central_box_length");
   grid_char->params[Ins]->h = Pgetd("grid_NS_central_box_length");
-  
-  /* check central box length */
-  if (grid_char->params[Ins]->l > grid_char->params[Ins]->r_min/2. ||
-      grid_char->params[Ins]->w > grid_char->params[Ins]->r_min/2. ||
-      grid_char->params[Ins]->h > grid_char->params[Ins]->r_min/2.)
-    Error0("NS central box is too big!");
-  
-  /* check central box length */
-  if (grid_char->params[Ibh]->l > grid_char->params[Ibh]->r_min/2. ||
-      grid_char->params[Ibh]->w > grid_char->params[Ibh]->r_min/2. ||
-      grid_char->params[Ibh]->h > grid_char->params[Ibh]->r_min/2.)
-    Error0("BH central box is too big!");
     
   /* save the values for a rainy day */
   if (Pgeti("NS_did_NS_surface_finder_work?"))
@@ -278,11 +266,29 @@ static void
     for (Uint ij = 0; ij < n; ++ij)
       imagClm[ij] = coeffs[ij];
 
+    /* might already have values so free them. */
+    Free(grid_char->params[Ins]->relClm);
+    Free(grid_char->params[Ins]->imgClm);
     grid_char->params[Ins]->relClm = realClm;
     grid_char->params[Ins]->imgClm = imagClm;
     grid_char->params[Ins]->lmax   = lmax;
+    grid_char->params[Ins]->r_min  = Pgetd("NS_min_radius");
+    grid_char->params[Ins]->r_max  = Pgetd("NS_max_radius");
   }
   
+  /* check central box length */
+  if (grid_char->params[Ins]->l > grid_char->params[Ins]->r_min/2. ||
+      grid_char->params[Ins]->w > grid_char->params[Ins]->r_min/2. ||
+      grid_char->params[Ins]->h > grid_char->params[Ins]->r_min/2.)
+    Error0("NS central box is too big!");
+  
+  /* check central box length */
+  if (grid_char->params[Ibh]->l > grid_char->params[Ibh]->r_min/2. ||
+      grid_char->params[Ibh]->w > grid_char->params[Ibh]->r_min/2. ||
+      grid_char->params[Ibh]->h > grid_char->params[Ibh]->r_min/2.)
+    Error0("BH central box is too big!");
+  
+
   set_params_of_split_cubed_spherical_grid(grid_char);
     
   make_patches(grid);
