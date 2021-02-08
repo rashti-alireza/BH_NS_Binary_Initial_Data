@@ -14,8 +14,9 @@ Physics_T *bhns_initialize_new_physics(Physics_T *const old_phys)
   /* if already hit the stop */
   if (Pgeti(P_"STOP") == 1)
   {
-    printf(Pretty0"I should STOP!\n");
+    printf(Pretty0"I'm done!  :)\n");
     Warning("You should call BHfiller for ID export here!");
+    Warning("should I infer physics one more time?!");
     write_checkpoint(old_phys,Pgets(P_"my_directory"));
     return 0;
   }
