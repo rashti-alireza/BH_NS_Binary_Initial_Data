@@ -141,6 +141,7 @@ static void set_default_parameters(void)
   Pset_default(P_"P_ADM_control_method","adjust(x_CM,y_CM)");
   Pset_default(P_"P_ADM_control_update_weight","0.");
   Pset_default(P_"P_ADM_control_tolerance","1E-5");
+  Pset_default(P_"P_ADM_control_threshold","1E-1");
   
   /* observer method */
   Pset_default(P_"Observe_ADM_P","S+V,Rashti");
