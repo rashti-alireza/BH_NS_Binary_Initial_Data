@@ -253,9 +253,9 @@ static void set_default_parameters(void)
   /* for option cf star_main */
   Pset_default("NS_force_balance_equation","adjust(d/dy:Omega)");
   Pset_default("NS_force_balance_update_weight","0.");
-  Pset_default("NS_adjust_center_method","interpolation");
+  Pset_default("NS_adjust_center_method","Taylor_expansion");
   Pset_default("NS_adjust_center_update_weight","0.");
-  Pset_default("NS_enthalpy_allowed_residual","1E-7");
+  Pset_default("NS_enthalpy_allowed_residual","1E-8");
   Pset_default("NS_enthalpy_L2_residual","0.");
   
   /* extrapolation of matter fields outside NS:
