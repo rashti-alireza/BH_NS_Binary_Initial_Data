@@ -396,8 +396,13 @@ static void set_default_parameters(void)
   //    demanding C2 continuity across horizon. extrapolant is:
   //    f(r) = C_{i}ChebyshevT(i,r) along radius. 
   // None:
-  //    No filling. */
-  Pset_default("BH_filler_method","ChebTn_Ylm_perfect_s2");
+  //    No filling. 
+  // expmr_C0_perfect_s2:
+  //    using f(r) = f(r0)e^-r (this is preferred during solve).
+  // r_expmr_C1_perfect_s2: 
+  //    using f(r) = (a+b*r)e^-r.
+  */
+  Pset_default("BH_filler_method","expmr_C0_perfect_s2");
   /* max l for Y_{lm} expansion in ChebTn_Ylm_perfect_s2 */
   Pset_default("BH_filler_Ylm_expansion_lmax","15");
   /* it won't fill inside the BH if r < Rmin_cutoff.
