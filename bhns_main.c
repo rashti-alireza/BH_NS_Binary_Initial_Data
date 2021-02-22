@@ -348,6 +348,9 @@ static void set_default_parameters(void)
   // o. CloseKerrSchild (see BH physics) */
   Pset_default("BH_start_off","CloseKerrSchild"); 
   
+  /* roll off radius used for attenuation of metric, trK etc */
+  Pset_default("BH_RollOff_radius","25.");
+  
   /* max l in Ylm expansion */
   Pset_default("BH_surface_Ylm_max_l","1"); 
   
