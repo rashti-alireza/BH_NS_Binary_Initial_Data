@@ -29,6 +29,7 @@ BH_radius_update_weight    = 0.
 BH_Eq_inner_BC_fields      = XCTS
 BH_Eq_inner_BC_alpha       = exp(-r^4)*KerrSchild
 BH_Eq_inner_BC_beta        = alpha+Omega*r
+BH_RollOff_radius          = 25.
 
 #### NS:
 NS_start_off                   = TOV
@@ -62,7 +63,6 @@ Free_data_conformal_metric             = flat+exp(-r^4)*(KerrSchild-flat)
 Free_data_conformal_Christoffel_symbol = flat+exp(-r^4)*(KerrSchild-flat)
 Free_data_conformal_Ricci              = flat+exp(-r^4)*(KerrSchild-flat)
 Free_data_trK                          = exp(-r^4)*KerrSchild
-Free_data_RollOff_radius               = 10.
 
 #### ADM:
 ADM_constraints_method     = from_scratch,from_identities
