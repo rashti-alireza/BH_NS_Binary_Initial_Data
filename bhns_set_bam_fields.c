@@ -26,12 +26,12 @@ void bhns_set_bam_fields(Grid_T *const grid)
 
 
   /* declaring: */
-  add_alloc_field(bam_grhd_v_U0)
-  add_alloc_field(bam_grhd_v_U1)
-  add_alloc_field(bam_grhd_v_U2)
-  add_alloc_field(bam_grhd_rho)
-  add_alloc_field(bam_grhd_p)
-  add_alloc_field(bam_grhd_epsl)
+  add_alloc_get_field(bam_grhd_v_U0)
+  add_alloc_get_field(bam_grhd_v_U1)
+  add_alloc_get_field(bam_grhd_v_U2)
+  add_alloc_get_field(bam_grhd_rho)
+  add_alloc_get_field(bam_grhd_p)
+  add_alloc_get_field(bam_grhd_epsl)
   add_alloc_get_field(bam_alpha)
   add_alloc_get_field(bam_beta_U0)
   add_alloc_get_field(bam_beta_U1)
@@ -54,6 +54,12 @@ void bhns_set_bam_fields(Grid_T *const grid)
   READ_v(gConf_D1D2)
   READ_v(gConf_D1D1)
   READ_v(gConf_D2D2)
+  READ_v(igConf_U2U2)
+  READ_v(igConf_U1U2)
+  READ_v(igConf_U1U1)
+  READ_v(igConf_U0U2)
+  READ_v(igConf_U0U0)
+  READ_v(igConf_U0U1)
   READ_v(adm_Kij_D2D2)
   READ_v(adm_Kij_D0D2)
   READ_v(adm_Kij_D1D2)
@@ -65,6 +71,14 @@ void bhns_set_bam_fields(Grid_T *const grid)
   READ_v(beta_U2)
   READ_v(psi)
   READ_v(alphaPsi)
+  READ_v(enthalpy)
+  READ_v(W_U1)
+  READ_v(W_U0)
+  READ_v(W_U2)
+  READ_v(dphi_D2)
+  READ_v(dphi_D1)
+  READ_v(dphi_D0)
+  READ_v(u0)
 
 
   FOR_ALL_ijk
@@ -128,6 +142,52 @@ adm_Kij_D0D1[ijk];
    bam_adm_Kij_D0D0[ijk] = Kdd_D0D0;
    bam_adm_Kij_D0D2[ijk] = Kdd_D0D2;
    bam_adm_Kij_D2D2[ijk] = Kdd_D2D2;
+  }
+  if (IsItCovering(patch,"NS"))
+  {
+  Physics_T *ns = init_physics(0,NS);
+  EoS_T *eos    = init_EoS(ns);
+  FOR_ALL_ijk
+  {
+  double psim4 = 
+pow(psi[ijk], -4);
+
+  double grhd_v_U1 = 
+(W_U1[ijk] + psim4*(dphi_D0[ijk]*igConf_U0U1[ijk] + dphi_D1[ijk]*
+igConf_U1U1[ijk] + dphi_D2[ijk]*igConf_U1U2[ijk]))/(bam_alpha[ijk]*
+enthalpy[ijk]*u0[ijk]);
+
+  double grhd_v_U0 = 
+(W_U0[ijk] + psim4*(dphi_D0[ijk]*igConf_U0U0[ijk] + dphi_D1[ijk]*
+igConf_U0U1[ijk] + dphi_D2[ijk]*igConf_U0U2[ijk]))/(bam_alpha[ijk]*
+enthalpy[ijk]*u0[ijk]);
+
+  double grhd_v_U2 = 
+(W_U2[ijk] + psim4*(dphi_D0[ijk]*igConf_U0U2[ijk] + dphi_D1[ijk]*
+igConf_U1U2[ijk] + dphi_D2[ijk]*igConf_U2U2[ijk]))/(bam_alpha[ijk]*
+enthalpy[ijk]*u0[ijk]);
+
+
+  /* populating: */
+  bam_grhd_v_U0[ijk] = grhd_v_U0;
+  bam_grhd_v_U1[ijk] = grhd_v_U1;
+  bam_grhd_v_U2[ijk] = grhd_v_U2;
+  eos->h = enthalpy[ijk];
+  if(!isfinite(eos->h) || LSSEQL(eos->h,1.))
+  {
+    bam_grhd_rho[ijk]  = 0;
+    bam_grhd_p[ijk]    = 0;
+    bam_grhd_epsl[ijk] = 0;
+  }
+  else
+  {
+   bam_grhd_rho[ijk]  = eos->rest_mass_density(eos);
+   bam_grhd_p[ijk]    = eos->pressure(eos);
+   bam_grhd_epsl[ijk] = eos->energy_density(eos)/bam_grhd_rho[ijk]-1.0;
+  }
+  }
+  free_physics(ns);
+  free_EoS(eos);
   }
   }
 }
