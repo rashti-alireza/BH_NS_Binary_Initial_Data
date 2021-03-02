@@ -54,6 +54,7 @@ void bhns_bam_exporting_initial_data(void *vp)
   /* adapt fields_notations for Elliptica */
   assert(sprintf(fields_name,"%s",Pgets(P_ BAM_"fields_name")));
   
+  /* metric fields */
   regex_replace(fields_name,"\\balpha\\b",BAM_"alpha",fields_name);
   
   regex_replace(fields_name,"\\bbetax\\b",BAM_"beta_U0",fields_name);
@@ -74,6 +75,14 @@ void bhns_bam_exporting_initial_data(void *vp)
   regex_replace(fields_name,"\\badm_Kyz\\b",BAM_"adm_Kij_D1D2",fields_name);
   regex_replace(fields_name,"\\badm_Kzz\\b",BAM_"adm_Kij_D2D2",fields_name);
   
+  /* matter fields */
+  regex_replace(fields_name,"\\bgrhd_vx\\b",BAM_"grhd_v_U0",fields_name);
+  regex_replace(fields_name,"\\bgrhd_vy\\b",BAM_"grhd_v_U1",fields_name);
+  regex_replace(fields_name,"\\bgrhd_vz\\b",BAM_"grhd_v_U2",fields_name);
+  regex_replace(fields_name,"\\bgrhd_rho\\b",BAM_"grhd_rho",fields_name);
+  regex_replace(fields_name,"\\bgrhd_p\\b",BAM_"grhd_p",fields_name);
+  regex_replace(fields_name,"\\bgrhd_epsl\\b",BAM_"grhd_epsl",fields_name);
+  
   /* check if all fields are expected */
   sfield = read_separated_items_in_string(fields_name,',');
   f = 0;
@@ -81,8 +90,8 @@ void bhns_bam_exporting_initial_data(void *vp)
   {
     if (!regex_search("^"BAM_,sfield[f]))
     {
-      printf("%s is Unexpected!\n",sfield[f]);
-      Error1("Unexpected field!");
+      printf("field '%s' is Unexpected!\n",sfield[f]);
+      Error1("Unexpected field! Add me!");
     }
     f++;
   }
