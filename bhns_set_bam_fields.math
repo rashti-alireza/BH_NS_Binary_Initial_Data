@@ -6,7 +6,7 @@ Dimension = 3;
 # point on manifold shown by:
 Point = ijk;
 
-C_macro  = READ_v(name);
+C_macro  = reav_v_if_exists(name);
 C_macro2 = REALLOC_v_WRITE_v(name);
 C_macro3 = DECLARE_AND_EMPTY_FIELD(name);
 C_macro4 = add_alloc_get_field(name);
@@ -20,6 +20,10 @@ C_macro5 = add_alloc_field(name);
 ``
 ``
 `#define add_alloc_field(name) ADD_AND_ALLOC_FIELD(name) `
+``
+``
+`#define reav_v_if_exists(name) const double *name = 0; \`
+` if (_Ind(#name) >= 0) name = patch->fields[Ind(#name)]->v;`
 ``
 ``
 `void bhns_set_bam_fields(Grid_T *const grid);`
