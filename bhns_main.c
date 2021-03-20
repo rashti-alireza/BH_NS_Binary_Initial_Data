@@ -349,7 +349,7 @@ static void set_default_parameters(void)
   Pset_default("BH_start_off","CloseKerrSchild"); 
   
   /* roll off radius used for attenuation of metric, trK etc */
-  Pset_default("BH_RollOff_radius","25.");
+  Pset_default("BH_RollOff_radius","auto");
   
   /* max l in Ylm expansion */
   Pset_default("BH_surface_Ylm_max_l","1"); 
@@ -460,6 +460,13 @@ static void set_default_parameters(void)
   /* } */
   
   /* modify parameters if needed */
+  
+  /* auto roll off param. 
+  // note: too small roll off might not get you a converge solution */
+  if (Pcmps("BH_RollOff_radius","auto"))
+  {
+    Psetd("BH_RollOff_radius",Pgetd(P_"separation")/2.);
+  }
   
   /* use Kepler's law to set angular velocity */
   if (Pcmps(P_"angular_velocity","auto"))
