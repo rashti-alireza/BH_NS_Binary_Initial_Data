@@ -26,11 +26,12 @@ BH_surface_Ylm_max_l       = 1
 BH_tune_BH_radius_criteria = fix_irreducible_mass
 BH_mass_tolerance          = 1E-8
 BH_radius_update_weight    = 0.(x4)->0.2(x100)->0.
-BH_RollOff_radius          = 20.
+BH_RollOff_radius          = auto
+BH_RollOff_power           = 4.
 BH_spin_update_weight      = 0.
 BH_spin_tolerance          = 1E-3
 BH_Eq_inner_BC_fields      = XCTS
-BH_Eq_inner_BC_alpha       = exp(-r^4)*KerrSchild
+BH_Eq_inner_BC_alpha       = exp(-r^p)*KerrSchild
 BH_Eq_inner_BC_beta        = alpha+Omega*r
 
 #### NS:
@@ -63,10 +64,10 @@ SYS_initialize        = TOV+KerrSchild
 SYS_initialize_fields = XCTS
 
 ### free data
-Free_data_conformal_metric             = flat+exp(-r^4)*(KerrSchild-flat)
-Free_data_conformal_Christoffel_symbol = flat+exp(-r^4)*(KerrSchild-flat)
-Free_data_conformal_Ricci              = flat+exp(-r^4)*(KerrSchild-flat)
-Free_data_trK                          = exp(-r^4)*KerrSchild
+Free_data_conformal_metric             = flat+exp(-r^p)*(KerrSchild-flat)
+Free_data_conformal_Christoffel_symbol = flat+exp(-r^p)*(KerrSchild-flat)
+Free_data_conformal_Ricci              = flat+exp(-r^p)*(KerrSchild-flat)
+Free_data_trK                          = exp(-r^p)*KerrSchild
 
 #### ADM:
 ADM_constraints_method     = from_scratch,from_identities

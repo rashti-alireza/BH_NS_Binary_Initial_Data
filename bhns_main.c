@@ -348,8 +348,9 @@ static void set_default_parameters(void)
   // o. CloseKerrSchild (see BH physics) */
   Pset_default("BH_start_off","CloseKerrSchild"); 
   
-  /* roll off radius used for attenuation of metric, trK etc */
+  /* roll off radius and power used for attenuation of metric, trK etc */
   Pset_default("BH_RollOff_radius","auto");
+  Pset_default("BH_RollOff_power","4.");
   
   /* max l in Ylm expansion */
   Pset_default("BH_surface_Ylm_max_l","1"); 
@@ -364,8 +365,9 @@ static void set_default_parameters(void)
   /* XCTS means: alpha,beta,psi */
   Pset_default("BH_Eq_inner_BC_fields","XCTS");
   
-  /* set alpha on AH to be exp(-r^4)*KerrSchild value */
-  Pset_default("BH_Eq_inner_BC_alpha","exp(-r^4)*KerrSchild");
+  /* set alpha on AH to be exp(-r^p)*KerrSchild value,
+  // p is rolloff_power param. */
+  Pset_default("BH_Eq_inner_BC_alpha","exp(-r^p)*KerrSchild");
   
   /* set bete^i on AH to be alpha*s^i + Omega x r.  */
   Pset_default("BH_Eq_inner_BC_beta","alpha+Omega*r");
