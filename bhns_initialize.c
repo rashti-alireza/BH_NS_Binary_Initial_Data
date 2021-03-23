@@ -558,6 +558,18 @@ static void update_params(Physics_T *const phys)
   Psetd("BH_boost_Vx",-Omega*(BH_center_y-y_CM));
   Psetd("BH_boost_Vy",Omega*(BH_center_x-x_CM));
   
+  /* BH Christodoulou mass and spin.
+  // these are needed when BH_irreducible_mass is iterative. */
+  const double bh_chi_x    = Pgetd("BH_chi_x");
+  const double bh_chi_y    = Pgetd("BH_chi_y");
+  const double bh_chi_z    = Pgetd("BH_chi_z");
+  const double bh_irr_mass = Pgetd("BH_irreducible_mass");
+  const double bh_chi = sqrt(Pow2(bh_chi_x)+Pow2(bh_chi_y)+Pow2(bh_chi_z));
+  const double bh_chr_mass = bh_irr_mass*sqrt(2./(1.+sqrt(1-Pow2(bh_chi))));
+  const double bh_a = bh_chi*bh_chr_mass;
+  Psetd("BH_Christodoulou_mass",bh_chr_mass);
+  Psetd("BH_spin_a",bh_a);
+
   UNUSED(phys);
   FUNC_TOC
 }
