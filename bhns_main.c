@@ -236,6 +236,7 @@ static void set_default_parameters(void)
   
   /* NS surface type */
   Pset_default("NS_surface_type","perfect_s2"); 
+  Pset_default("NS_did_NS_surface_change?","1");
   
   /* observe method pertinet to NS */
   Pset_default("NS_Observe_ADM_M","V_obj,default");
@@ -359,7 +360,7 @@ static void set_default_parameters(void)
   Pset_default("BH_surface_type","perfect_s2"); 
   
   /* did_BH_surface_change? used for interpolation purposes and efficiency */
-  Pset_default("BH_did_BH_surface_change?","0");
+  Pset_default("BH_did_BH_surface_change?","1");
   
   /* equation related: */
   /* XCTS means: alpha,beta,psi */
@@ -385,7 +386,6 @@ static void set_default_parameters(void)
   Pset_default("BH_tune_BH_radius_criteria","fix_irreducible_mass");
   Pset_default("BH_mass_tolerance","1E-5");
   Pset_default("BH_radius_update_weight","0.");
-  Pset_default("BH_did_BH_surface_change","1");
   
   /* BH filler parameters:
   // { */
