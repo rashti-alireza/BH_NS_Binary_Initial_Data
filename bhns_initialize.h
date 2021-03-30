@@ -1,4 +1,5 @@
 #include "bhns_header.h"
+#include "maths_equation_solvings_lib.h"
 
 /* index of bh */
 #define Ibh (0)
@@ -25,4 +26,5 @@ static Physics_T *infer_new_physics(Physics_T *const old_phys);
 static void initialize_fields_using_previous_solve
             (Physics_T *const new_phys,Physics_T *const old_phys);
 static void update_params(Physics_T *const phys);
-
+static void move_jacobian
+            (Physics_T *const new_phys,Physics_T *const old_phys);

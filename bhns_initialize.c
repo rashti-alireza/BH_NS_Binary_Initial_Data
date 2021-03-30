@@ -105,6 +105,9 @@ static Physics_T *infer_new_physics(Physics_T *const old_bhns)
   physics(bhns,FREE_DATA_POPULATE);
   initialize_fields_using_previous_solve(bhns,old_bhns);
   
+  /* move Jacobian if possible */
+  move_jacobian(bhns,old_bhns);
+  
   /* beta = B0+B1 */
   physics(bhns,ADM_UPDATE_B1I);
   update_partial_derivatives(bhns,".*","^dB0_U.+,^ddB0_U.+");
@@ -248,6 +251,7 @@ static void
     update_parameter_array("NS_surface_R|imagClm",
                            grid_char->params[Ins]->imgClm,n);
     Pseti("NS_surface_R|lmax",(int)grid_char->params[Ins]->lmax);
+    Pseti("NS_did_NS_surface_change?",1);
   }
   else/* since surface finder failed, use previous value */
   {
@@ -275,6 +279,7 @@ static void
     grid_char->params[Ins]->lmax   = lmax;
     grid_char->params[Ins]->r_min  = Pgetd("NS_min_radius");
     grid_char->params[Ins]->r_max  = Pgetd("NS_max_radius");
+    Pseti("NS_did_NS_surface_change?",0);
   }
   
   /* check central box length */
@@ -289,7 +294,6 @@ static void
       grid_char->params[Ibh]->h > grid_char->params[Ibh]->r_min/2.)
     Error0("BH central box is too big!");
   
-
   set_params_of_split_cubed_spherical_grid(grid_char);
     
   make_patches(grid);
@@ -573,3 +577,94 @@ static void update_params(Physics_T *const phys)
   UNUSED(phys);
   FUNC_TOC
 }
+
+/* move Jacobian if possible */
+static void move_jacobian
+            (Physics_T *const new_phys,Physics_T *const old_phys)
+{
+  FUNC_TIC
+  
+  if(Pgeti(P_"did_resolution_change?") || 
+     !new_phys->grid                   || 
+     !old_phys->grid)
+  {
+    FUNC_TOC
+    return;
+  }
+  
+  Grid_T *gnew = 0;
+  Grid_T *gold = 0;
+  const char *name1 = 0;
+  const char *name2 = 0;
+  
+  if(new_phys->grid->kind == Grid_SplitCubedSpherical_BHNS)
+  {
+    /* move Jacobian of outermost */
+    gnew = mygrid(new_phys,"outermost");
+    gold = mygrid(old_phys,"outermost");
+    
+    FOR_ALL_p(gnew->np)
+    {
+      name1 = strchr(gnew->patch[p]->name,'_');
+      for(Uint p2 = 0; p2 < gold->np; ++p2)
+      {
+        name2 = strchr(gold->patch[p2]->name,'_');
+        if(!strcmp(name1,name2))
+        {
+          move_dfdu_jacobian_patch(gnew->patch[p],gold->patch[p2]);
+          break;
+        }
+      }
+    }
+    
+    /* move Jacobian of BH and BH around */
+    if (!Pgeti("BH_did_BH_surface_change?"))
+    {
+      gnew = mygrid(new_phys,"BH,BH_around");
+      gold = mygrid(old_phys,"BH,BH_around");
+      
+      FOR_ALL_p(gnew->np)
+      {
+        name1 = strchr(gnew->patch[p]->name,'_');
+        for(Uint p2 = 0; p2 < gold->np; ++p2)
+        {
+          name2 = strchr(gold->patch[p2]->name,'_');
+          if(!strcmp(name1,name2))
+          {
+            move_dfdu_jacobian_patch(gnew->patch[p],gold->patch[p2]);
+            break;
+          }
+        }
+      }
+    }
+    
+    /* move Jacobian of NS and NS around */
+    if (!Pgeti("NS_did_NS_surface_change?"))
+    {
+      gnew = mygrid(new_phys,"NS,NS_around");
+      gold = mygrid(old_phys,"NS,NS_around");
+      
+      FOR_ALL_p(gnew->np)
+      {
+        name1 = strchr(gnew->patch[p]->name,'_');
+        for(Uint p2 = 0; p2 < gold->np; ++p2)
+        {
+          name2 = strchr(gold->patch[p2]->name,'_');
+          if(!strcmp(name1,name2))
+          {
+            move_dfdu_jacobian_patch(gnew->patch[p],gold->patch[p2]);
+            break;
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    Error0(NO_OPTION);
+  }
+  
+  
+  FUNC_TOC
+}
+
