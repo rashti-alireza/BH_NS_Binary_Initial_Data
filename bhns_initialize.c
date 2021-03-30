@@ -600,7 +600,6 @@ static void move_jacobian
   Physics_T *const new_ns = init_physics(new_phys,NS);
   Physics_T *const old_bh = init_physics(old_phys,BH);
   Physics_T *const new_bh = init_physics(new_phys,BH);
-  
   Grid_T *gnew = 0;
   Grid_T *gold = 0;
   const char *name1 = 0;
@@ -667,7 +666,7 @@ static void move_jacobian
         }
       }
     }
-  }
+  }/* if(new_phys->grid->kind == Grid_SplitCubedSpherical_BHNS) */
   else
   {
     Error0(NO_OPTION);
