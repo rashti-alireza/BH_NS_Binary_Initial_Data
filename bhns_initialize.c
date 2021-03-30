@@ -592,6 +592,15 @@ static void move_jacobian
     return;
   }
   
+  /* caveat for future! */
+  if(!Pcmpss("grid_set_BH","excised"))
+    Error0(NO_OPTION);
+  
+  Physics_T *const old_ns = init_physics(old_phys,NS);
+  Physics_T *const new_ns = init_physics(new_phys,NS);
+  Physics_T *const old_bh = init_physics(old_phys,BH);
+  Physics_T *const new_bh = init_physics(new_phys,BH);
+  
   Grid_T *gnew = 0;
   Grid_T *gold = 0;
   const char *name1 = 0;
@@ -620,8 +629,8 @@ static void move_jacobian
     /* move Jacobian of BH and BH around */
     if (!Pgeti("BH_did_BH_surface_change?"))
     {
-      gnew = mygrid(new_phys,"BH,BH_around");
-      gold = mygrid(old_phys,"BH,BH_around");
+      gnew = mygrid(new_bh,"BH,BH_around");
+      gold = mygrid(old_bh,"BH,BH_around");
       
       FOR_ALL_p(gnew->np)
       {
@@ -641,8 +650,8 @@ static void move_jacobian
     /* move Jacobian of NS and NS around */
     if (!Pgeti("NS_did_NS_surface_change?"))
     {
-      gnew = mygrid(new_phys,"NS,NS_around");
-      gold = mygrid(old_phys,"NS,NS_around");
+      gnew = mygrid(new_ns,"NS,NS_around");
+      gold = mygrid(old_ns,"NS,NS_around");
       
       FOR_ALL_p(gnew->np)
       {
@@ -664,7 +673,11 @@ static void move_jacobian
     Error0(NO_OPTION);
   }
   
-  
+  free_physics(old_ns);
+  free_physics(new_ns);
+  free_physics(old_bh);
+  free_physics(new_bh);
+
   FUNC_TOC
 }
 
