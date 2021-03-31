@@ -223,6 +223,7 @@ static void
   
   /* a new grid */
   Grid_T *const grid = alloc_grid();
+  int update_ns_surface = 1;
   Uint lmax,n;
   
   /* grid for characters */
@@ -245,12 +246,14 @@ static void
   /* save the values for a rainy day */
   if (Pgeti("NS_did_NS_surface_finder_work?"))
   {
+    double rel_change = 0.;
     /* change the relative difference using coeffs */
     if (
-        /* if prev exists */
+        /* if prev value exists */
         PgetddEZ("NS_surface_R|realClm")  && 
+        PgetddEZ("NS_surface_R|imagClm")  &&
         /* if the old and new have the same lmax */
-        Pgeti("NS_surface_R|lmax") == (int)grid_char->params[Ins]->lmax
+        PgetiEZ("NS_surface_R|lmax") == (int)grid_char->params[Ins]->lmax
        )
     {
       lmax = (Uint)Pgeti("NS_surface_R|lmax");
@@ -261,52 +264,40 @@ static void
       double dreal = L2_norm(n,realClm,grid_char->params[Ins]->relClm);
       double dimag = L2_norm(n,imagClm,grid_char->params[Ins]->imgClm);
       /* relative change df/f */
-      double dchange = (dreal+dimag) /
-                       (L2_norm(n,grid_char->params[Ins]->relClm,0)+
-                        L2_norm(n,grid_char->params[Ins]->imgClm,0));
+      rel_change = (dreal+dimag) /
+                   (L2_norm(n,grid_char->params[Ins]->relClm,0)+
+                    L2_norm(n,grid_char->params[Ins]->imgClm,0));
     
       /* update if change greater than prescribed */
-      if (dchange > Pgetd("NS_surface_change_threshold"))
-        update_surface = 1;
+      if (rel_change > Pgetd("NS_surface_change_threshold"))
+        update_ns_surface = 1;
       else
-        update_surface = 0;
+        update_ns_surface = 0;
     }
-    
-    n = Ncoeffs_Ylm(grid_char->params[Ins]->lmax);
-    update_parameter_array("NS_surface_R|realClm",
-                           grid_char->params[Ins]->relClm,n);
-    update_parameter_array("NS_surface_R|imagClm",
-                           grid_char->params[Ins]->imgClm,n);
-    Pseti("NS_surface_R|lmax",(int)grid_char->params[Ins]->lmax);
-    Pseti("NS_did_NS_surface_change?",1);
+    /* save new values if ns surface must change */
+    if (update_ns_surface)
+    {
+      n = Ncoeffs_Ylm(grid_char->params[Ins]->lmax);
+      update_parameter_array("NS_surface_R|realClm",
+                             grid_char->params[Ins]->relClm,n);
+      update_parameter_array("NS_surface_R|imagClm",
+                             grid_char->params[Ins]->imgClm,n);
+      Pseti("NS_surface_R|lmax",(int)grid_char->params[Ins]->lmax);
+      Pseti("NS_did_NS_surface_change?",1);
+    }
+    else
+    {
+      printf(Pretty0"relative change is smaller "
+                    "that threshold (%.3e < %.3e).\n",
+                    rel_change,Pgetd("NS_surface_change_threshold"));
+      USE_LAST_NS_SURFACE();
+    }
   }
-  else/* since surface finder failed, use previous value */
+  /* since surface finder failed use previous value. */
+  else
   {
-    printf(Pretty0"Using the last NS surface.\n");
-    
-    lmax = (Uint)Pgeti("NS_surface_R|lmax");
-    n    = Ncoeffs_Ylm(lmax);
-    double *realClm = alloc_ClmYlm(lmax);/* freed in free_grid_char */
-    double *imagClm = alloc_ClmYlm(lmax);/* freed in free_grid_char */
-    double *coeffs  = 0;
-    
-    coeffs = Pgetdd("NS_surface_R|realClm");
-    for (Uint ij = 0; ij < n; ++ij)
-      realClm[ij] = coeffs[ij];
-
-    coeffs = Pgetdd("NS_surface_R|imagClm");
-    for (Uint ij = 0; ij < n; ++ij)
-      imagClm[ij] = coeffs[ij];
-
-    /* might already have values so free them. */
-    Free(grid_char->params[Ins]->relClm);
-    Free(grid_char->params[Ins]->imgClm);
-    grid_char->params[Ins]->relClm = realClm;
-    grid_char->params[Ins]->imgClm = imagClm;
-    grid_char->params[Ins]->lmax   = lmax;
-    grid_char->params[Ins]->r_min  = Pgetd("NS_min_radius");
-    grid_char->params[Ins]->r_max  = Pgetd("NS_max_radius");
-    Pseti("NS_did_NS_surface_change?",0);
+    printf(Pretty0"NS surface finder failed.\n");
+    USE_LAST_NS_SURFACE();
   }
   
   /* check central box length */
