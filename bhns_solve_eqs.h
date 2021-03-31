@@ -16,5 +16,6 @@ static void backtrack_solutions(Grid_T *const grid,const char *const name);
 static int stop_criteria (Grid_T *const grid,const char *const name);
 static void source_update(Grid_T *const grid,const char *const name);
 static void field_update(Patch_T *const patch,const char *const name);
+static void prepare_dFdu(Physics_T *const phys);
 
 

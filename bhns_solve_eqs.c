@@ -14,6 +14,10 @@ void bhns_solve_equation(Physics_T *const phys)
   
   FUNC_TIC
   
+  /* prepare dF/du if asked */
+  if (!Pcmps(P_"dF/du_prepare","none"))
+    prepare_dFdu(phys);
+  
   /* populate value of inner BC */
   Physics_T *const bh = init_physics(phys,BH);
   physics(bh,BH_UPDATE_INNER_BC);
@@ -212,4 +216,50 @@ static void backtrack_solutions(Grid_T *const grid,const char *const name)
     eq_field_update(patch,name);
   }
   
+}
+
+/* prepare required dF/du's to speed up */
+static void prepare_dFdu(Physics_T *const phys)
+{
+  FUNC_TIC
+  
+  /* get types */
+  char **dFdu = read_separated_items_in_string
+                (Pgets(P_"dF/du_prepare"),',');
+  
+  /* collect all patches don't have Jacobian already */
+  Grid_T *grid      = mygrid(phys,".*");
+  Patch_T **patches = 0;
+  Uint Np           = 0;/* number of patches */
+  FOR_ALL_p(grid->np)
+  {
+    Patch_T *patch = grid->patch[p];
+    if (!patch->solving_man || !patch->solving_man->jacobian)
+    {
+      patches = realloc(patches,(Np+2)*sizeof(*patches));
+      IsNull(patches);
+      patches[Np]   = patch;
+      patches[Np+1] = 0;
+      ++Np;
+      if (!patch->solving_man)
+      {
+        patch->solving_man = calloc(1,sizeof(*patch->solving_man));
+        IsNull(patch->solving_man);
+      }
+    }
+  }
+  
+  /* compute jacobian in each patch (very expensive) */
+  OpenMP_Patch_Pragma(omp parallel for)
+  FOR_ALL_p(Np)
+  {
+    Patch_T *patch = patches[p];
+    prepare_Js_jacobian_eq(patch,(const char * const *)dFdu);
+  }
+  
+  /* free */
+  free_2d(dFdu);
+  Free(patches);
+  
+  FUNC_TOC
 }
