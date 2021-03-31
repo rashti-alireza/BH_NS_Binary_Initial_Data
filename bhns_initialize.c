@@ -245,6 +245,33 @@ static void
   /* save the values for a rainy day */
   if (Pgeti("NS_did_NS_surface_finder_work?"))
   {
+    /* change the relative difference using coeffs */
+    if (
+        /* if prev exists */
+        PgetddEZ("NS_surface_R|realClm")  && 
+        /* if the old and new have the same lmax */
+        Pgeti("NS_surface_R|lmax") == (int)grid_char->params[Ins]->lmax
+       )
+    {
+      lmax = (Uint)Pgeti("NS_surface_R|lmax");
+      n    = Ncoeffs_Ylm(lmax);
+      const double *realClm = Pgetdd("NS_surface_R|realClm");
+      const double *imagClm = Pgetdd("NS_surface_R|imagClm");
+      /* diff between old and new */
+      double dreal = L2_norm(n,realClm,grid_char->params[Ins]->relClm);
+      double dimag = L2_norm(n,imagClm,grid_char->params[Ins]->imgClm);
+      /* relative change df/f */
+      double dchange = (dreal+dimag) /
+                       (L2_norm(n,grid_char->params[Ins]->relClm,0)+
+                        L2_norm(n,grid_char->params[Ins]->imgClm,0));
+    
+      /* update if change greater than prescribed */
+      if (dchange > Pgetd("NS_surface_change_threshold"))
+        update_surface = 1;
+      else
+        update_surface = 0;
+    }
+    
     n = Ncoeffs_Ylm(grid_char->params[Ins]->lmax);
     update_parameter_array("NS_surface_R|realClm",
                            grid_char->params[Ins]->relClm,n);
