@@ -224,8 +224,9 @@ static void prepare_dFdu(Physics_T *const phys)
   FUNC_TIC
   
   /* get types */
-  char **dFdu = read_separated_items_in_string
-                (Pgets(P_"dF/du_prepare"),',');
+  const char *const param = Pgets(P_"dF/du_prepare");
+  char **dFdu = read_separated_items_in_string(param,',');
+  printf(Pretty0"compute '%s'\n",param);
   
   /* collect all patches don't have Jacobian already */
   Grid_T *grid      = mygrid(phys,".*");
