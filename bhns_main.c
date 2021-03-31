@@ -89,6 +89,7 @@ static void set_default_parameters(void)
   Pset_default("dF/du_for_Newton_method","Spectral");
   
   
+  
   /* BH-NS parameters:
   // ================== */
  
@@ -148,6 +149,14 @@ static void set_default_parameters(void)
   Pset_default(P_"Observe_ADM_J","S+V,Ossokine");
   Pset_default(P_"Observe_ADM_M","S+V,default");
   Pset_default(P_"Observe_Komar_M","S_inf,default");
+  
+  /* equation */
+  /* kind of dF/du to compute before calling elliptic solve.
+  // if set "none" it won't prepare in advance. 
+  // this is used for optimization */
+  Pset_default(P_"dF/du_prepare","J_D0,J_D1,J_D2,"
+                                 "J_D0D0,J_D0D1,J_D0D2,"
+                                 "J_D1D1,J_D1D2,J_D2D2");
   
   /* NS paramters:
   // ============= */
