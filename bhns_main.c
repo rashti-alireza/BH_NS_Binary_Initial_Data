@@ -88,6 +88,8 @@ static void set_default_parameters(void)
   /* how to computer functional derivatives used in Jacobian */
   Pset_default("dF/du_for_Newton_method","Spectral");
   
+  /* optimize ccs reader with 10 splits; if gives error make it smaller */
+  Pset_default("matrix_ccs_reader_split","10");
   
   
   /* BH-NS parameters:
@@ -247,7 +249,7 @@ static void set_default_parameters(void)
   Pset_default("NS_surface_type","perfect_s2"); 
   Pset_default("NS_did_NS_surface_change?","1");
   /* if new surface relative change exceeds this, NS surface gets updated */
-  Pset_default("NS_surface_change_threshold","1.0E-12");
+  Pset_default("NS_surface_change_threshold","0.0");
   
   /* observe method pertinet to NS */
   Pset_default("NS_Observe_ADM_M","V_obj,default");
