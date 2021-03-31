@@ -155,10 +155,11 @@ static void set_default_parameters(void)
   /* equation */
   /* kind of dF/du to compute before calling elliptic solve.
   // if set "none" it won't prepare in advance. 
-  // this is used for optimization */
-  Pset_default(P_"dF/du_prepare","J_D0,J_D1,J_D2,"
-                                 "J_D0D0,J_D0D1,J_D0D2,"
-                                 "J_D1D1,J_D1D2,J_D2D2");
+  // this is used for optimization.
+  // NOTE: to optimize further it's better to start from second order. */
+  Pset_default(P_"dF/du_prepare","J_D0D0,J_D0D1,J_D0D2,"
+                                 "J_D1D1,J_D1D2,J_D2D2,"
+                                 "J_D0,J_D1,J_D2");
   
   /* NS paramters:
   // ============= */
