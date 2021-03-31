@@ -234,9 +234,11 @@ static void set_default_parameters(void)
   /* max l in Ylm expansion */
   Pset_default("NS_surface_Ylm_max_l","1"); 
   
-  /* NS surface type */
+  /* NS surface */
   Pset_default("NS_surface_type","perfect_s2"); 
   Pset_default("NS_did_NS_surface_change?","1");
+  /* if new surface relative change exceeds this, NS surface gets updated */
+  Pset_default("NS_surface_change_threshold","1.0E-12");
   
   /* observe method pertinet to NS */
   Pset_default("NS_Observe_ADM_M","V_obj,default");
