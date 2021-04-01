@@ -265,8 +265,7 @@ static void
       double dimag = L2_norm(n,imagClm,grid_char->params[Ins]->imgClm);
       /* relative change df/f */
       rel_change = (dreal+dimag) /
-                   (L2_norm(n,grid_char->params[Ins]->relClm,0)+
-                    L2_norm(n,grid_char->params[Ins]->imgClm,0));
+                   (L2_norm(n,realClm,0)+L2_norm(n,imagClm,0));
     
       /* update if change greater than prescribed */
       if (rel_change > Pgetd("NS_surface_change_threshold"))
