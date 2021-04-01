@@ -288,7 +288,7 @@ static void
     else
     {
       printf(Pretty0"relative change is smaller "
-                    "that threshold (%.3e < %.3e).\n",
+                    "than threshold (%.3e < %.3e).\n",
                     rel_change,Pgetd("NS_surface_change_threshold"));
       USE_LAST_NS_SURFACE();
     }
