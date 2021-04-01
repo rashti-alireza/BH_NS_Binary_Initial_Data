@@ -90,6 +90,8 @@ static void set_default_parameters(void)
   
   /* optimize ccs reader with 10 splits; if gives error make it smaller */
   Pset_default("matrix_ccs_reader_split","10");
+  /* drop matrix entries if less than this. */
+  Pset_default("matrix_ccs_drop_below","1.0E-12");
   
   
   /* BH-NS parameters:
