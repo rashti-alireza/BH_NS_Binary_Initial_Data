@@ -21,6 +21,9 @@ void bhns_bam_exporting_initial_data(void *vp)
   char **sfield = 0;
   Uint f;
   
+  /* go from Omega x r to inertial coords sys asymptotically */
+  Psets("modify_checkpoint_par:ADM_B1I_form","zero");
+  
   /* read physics from checkpoint */
   Psets("checkpoint_file_path",Pgets(P_ BAM_"checkpoint_file_path"));
   bhns = bhns_read_physics_from_checkpoint();
