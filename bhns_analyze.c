@@ -206,7 +206,19 @@ static void compute_properties(Physics_T *const phys/* bhns */)
   /* virial error */
   double v_e = fabs(1.-Pgetd(P_"adm_mass")/Pgetd(P_"komar_mass"));
   Psetd(P_"virial_error",v_e);
-
+  
+  /* number of orbits (lowest order PN) */
+  double m1    = Pgetd("NS_adm_mass");
+  double m2    = Pgetd("BH_Christodoulou_mass_current");
+  double nu    = m1*m2/Pow2(m1+m2);
+  double omega = Pgetd(P_"angular_velocity");
+  double m_tot = Pgetd(P_"ADM_mass");
+  double N_orb = pow(m_tot*omega,-5./3.)/(32.*nu)/(2.*M_PI);
+  /* initially some vars might be off or negative like total adm_mass */
+  N_orb = (isfinite(N_orb) && N_orb > 0. ? N_orb : 0.);
+  Psetd(P_"number_of_orbits_1PN",N_orb);
+  
+  
   free_physics(ns);
   free_physics(bh);
 }

@@ -139,7 +139,7 @@ static void set_default_parameters(void)
     "angular_velocity,infall_velocity,"
     "Px_ADM,Py_ADM,Pz_ADM,"
     "Jx_ADM,Jy_ADM,Jz_ADM,"
-    "binding_energy,Virial_error");
+    "binding_energy,Virial_error,number_of_orbits_1PN");
     
   /* how to tune P_ADM:
   // options:[none,adjust(?_CM)], cf. */
