@@ -21,6 +21,9 @@ void bhns_bam_exporting_initial_data(void *vp)
   char **sfield = 0;
   Uint f;
   
+  /* don't stop */
+  Pseti("modify_checkpoint_par:"P_"STOP",0);
+  
   /* go from Omega x r to inertial coords sys asymptotically.
   // BAM needs this! */
   Psets("modify_checkpoint_par:ADM_B1I_form","zero");
