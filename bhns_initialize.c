@@ -11,17 +11,19 @@
 /* decide how to initialize the new physics */
 Physics_T *bhns_initialize_new_physics(Physics_T *const old_phys)
 {
+  Physics_T *new_phys = 0;
+  
   /* if already hit the stop */
   if (Pgeti(P_"STOP") == 1)
   {
     printf(Pretty0"I'm done!  :)\n");
-    Warning("You should call BHfiller for ID export here!");
-    Warning("should I infer physics one more time?!");
-    write_checkpoint(old_phys,Pgets(P_"my_directory"));
+    
+    new_phys = infer_new_physics(old_phys);
+    write_checkpoint(new_phys,Pgets(P_"my_directory"));
+    free_physics(new_phys);
+    
     return 0;
   }
-  
-  Physics_T *new_phys = 0;
   
   if (!old_phys)/* if empty, come up with a start off */
   {
@@ -340,7 +342,7 @@ static void update_partial_derivatives(Physics_T *const phys,
   {
     Patch_T *patch = grid->patch[p];
     
-    partial_derivative_with_regex(patch,regex);
+    partial_derivative_regex(patch,regex);
   }
   
   FUNC_TOC
