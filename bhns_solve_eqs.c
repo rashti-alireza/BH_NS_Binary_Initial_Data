@@ -164,30 +164,30 @@ static void field_update(Patch_T *const patch,const char *const name)
 {
   if (!strcmp(name,"psi"))
   {
-    partial_derivative_with_regex(patch,"^dpsi_D.$,^ddpsi_D.D.$");
+    partial_derivative_regex(patch,"^dpsi_D.$,^ddpsi_D.D.$");
   }
   else if (!strcmp(name,"alphaPsi"))
   {
-    partial_derivative_with_regex(patch,"^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
+    partial_derivative_regex(patch,"^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
   }
   else if (!strcmp(name,"B0_U0"))
   {
-    partial_derivative_with_regex(patch,"^dB0_U0D.$,^ddB0_U0D.D.$");
+    partial_derivative_regex(patch,"^dB0_U0D.$,^ddB0_U0D.D.$");
     adm_update_beta_U0(patch);
   }
   else if (!strcmp(name,"B0_U1"))
   {
-    partial_derivative_with_regex(patch,"^dB0_U1D.$,^ddB0_U1D.D.$");
+    partial_derivative_regex(patch,"^dB0_U1D.$,^ddB0_U1D.D.$");
     adm_update_beta_U1(patch);
   }
   else if (!strcmp(name,"B0_U2"))
   {
-    partial_derivative_with_regex(patch,"^dB0_U2D.$,^ddB0_U2D.D.$");
+    partial_derivative_regex(patch,"^dB0_U2D.$,^ddB0_U2D.D.$");
     adm_update_beta_U2(patch);
   }
   else if (!strcmp(name,"phi"))
   {
-    partial_derivative_with_regex(patch,"^dphi_D.$,^ddphi_D.D.$");
+    partial_derivative_regex(patch,"^dphi_D.$,^ddphi_D.D.$");
   }
   else
     Error0(NO_OPTION);
