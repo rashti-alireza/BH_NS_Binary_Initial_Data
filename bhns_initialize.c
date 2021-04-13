@@ -16,12 +16,13 @@ Physics_T *bhns_initialize_new_physics(Physics_T *const old_phys)
   /* if already hit the stop */
   if (Pgeti(P_"STOP") == 1)
   {
-    printf(Pretty0"I'm done!  :)\n");
-    
+    /* update things */
     new_phys = infer_new_physics(old_phys);
+    /* save and dump */
     write_checkpoint(new_phys,Pgets(P_"my_directory"));
     free_physics(new_phys);
     
+    printf(Pretty0"I'm done!  :)\n");
     return 0;
   }
   
