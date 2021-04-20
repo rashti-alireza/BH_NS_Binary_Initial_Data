@@ -351,7 +351,7 @@ static void set_default_parameters(void)
   Pset_default(P_"BH_properties",
    "center_x,center_y,center_z,x_CM,y_CM,z_CM,max_radius,min_radius,"
    "Komar_mass,irreducible_mass,irreducible_mass_current,"
-   "Christodoulou_mass,Christodoulou_mass_current,AH_area,"
+   "Christodoulou_mass,Christodoulou_mass_current,"
    "Omega_x,Omega_y,Omega_z,chi_x,chi_y,chi_z,"
    "chi_x_current,chi_y_current,chi_z_current,"
    "spin_x,spin_y,spin_z,"
