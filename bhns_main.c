@@ -365,8 +365,18 @@ static void set_default_parameters(void)
   // o. CloseKerrSchild (see BH physics) */
   Pset_default("BH_start_off","CloseKerrSchild"); 
   
-  /* roll off radius and power used for attenuation of metric, trK etc */
-  Pset_default("BH_RollOff_radius","auto");
+  /* roll off function to stich free data */
+  Pset_default("BH_RollOff_function","exp(-lambda*(r/rmax)^p)");
+  
+  /* lambda in "BH_RollOff_function".
+  // options:
+  // [ constant_1, |(r-rmin)/(rmax-r)| ]. */  
+  Pset_default("BH_RollOff_lambda","|(r-rmin)/(rmax-r)|");
+  
+  /* rmax in "BH_RollOff_function" */
+  Pset_default("BH_RollOff_rmax","auto");
+  
+  /* p in "BH_RollOff_function" */
   Pset_default("BH_RollOff_power","4.");
   
   /* max l in Ylm expansion */
@@ -382,9 +392,8 @@ static void set_default_parameters(void)
   /* XCTS means: alpha,beta,psi */
   Pset_default("BH_Eq_inner_BC_fields","XCTS");
   
-  /* set alpha on AH to be exp(-r^p)*KerrSchild value,
-  // p is rolloff_power param. */
-  Pset_default("BH_Eq_inner_BC_alpha","exp(-r^p)*KerrSchild");
+  /* set alpha on AH to be W*KerrSchild value. */
+  Pset_default("BH_Eq_inner_BC_alpha","w*KerrSchild");
   
   /* set bete^i on AH to be alpha*s^i + Omega x r.  */
   Pset_default("BH_Eq_inner_BC_beta","alpha+Omega*r");
@@ -481,9 +490,9 @@ static void set_default_parameters(void)
   
   /* auto roll off param. 
   // note: too small roll off might not get you a converge solution */
-  if (Pcmps("BH_RollOff_radius","auto"))
+  if (Pcmps("BH_RollOff_rmax","auto"))
   {
-    Psetd("BH_RollOff_radius",Pgetd(P_"separation")/2.);
+    Psetd("BH_RollOff_rmax",Pgetd(P_"separation")/2.);
   }
   
   /* use Kepler's law to set angular velocity */
