@@ -366,7 +366,7 @@ static void set_default_parameters(void)
   Pset_default("BH_start_off","CloseKerrSchild"); 
   
   /* roll off function to stich free data */
-  Pset_default("BH_RollOff_function","exp(-lambda*(r/rmax)^p)");
+  Pset_default("BH_RollOff_function","exp(-lambda*(r/rmax)^p):r<rmax");
   
   /* lambda in "BH_RollOff_function".
   // options:
