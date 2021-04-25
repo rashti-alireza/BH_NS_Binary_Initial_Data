@@ -489,10 +489,15 @@ static void set_default_parameters(void)
   /* modify parameters if needed */
   
   /* auto roll off param. 
-  // note: too small roll off might not get you a converge solution */
+  // note: too small roll off might not get you a converge solution
+  // the bigger the better however, the metric should become flat at star
+  // and around it, so not too big! */
   if (Pcmps("BH_RollOff_rmax","auto"))
   {
-    Psetd("BH_RollOff_rmax",Pgetd(P_"separation")/2.);
+    double r_NS = 10.;/* average stiff NS star in geo unit. */
+    double rmax = Pgetd(P_"separation")/2.-1.7*r_NS;
+    assert(rmax > 0);
+    Psetd("BH_RollOff_rmax",rmax);
   }
   
   /* use Kepler's law to set angular velocity */
