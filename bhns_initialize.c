@@ -574,13 +574,16 @@ static void update_params(Physics_T *const phys)
   FUNC_TIC
   
   /* BH boost velocity */
-  const double Omega = Pgetd(P_"angular_velocity");
-  const double x_CM  = Pgetd(P_"x_CM");
-  const double y_CM  = Pgetd(P_"y_CM");
-  const double BH_center_x = Pgetd("BH_center_x");
-  const double BH_center_y = Pgetd("BH_center_y");
-  Psetd("BH_boost_Vx",-Omega*(BH_center_y-y_CM));
-  Psetd("BH_boost_Vy",Omega*(BH_center_x-x_CM));
+  if(!Pcmps("BH_boost_Vx","off"))
+  {
+    const double Omega = Pgetd(P_"angular_velocity");
+    const double x_CM  = Pgetd(P_"x_CM");
+    const double y_CM  = Pgetd(P_"y_CM");
+    const double BH_center_x = Pgetd("BH_center_x");
+    const double BH_center_y = Pgetd("BH_center_y");
+    Psetd("BH_boost_Vx",-Omega*(BH_center_y-y_CM));
+    Psetd("BH_boost_Vy",Omega*(BH_center_x-x_CM));
+  }
   
   /* BH Christodoulou mass and spin.
   // these are needed when BH_irreducible_mass is iterative. */

@@ -315,7 +315,9 @@ static void set_default_parameters(void)
   /* box length at the center of BH */
   Pset_default("grid_BH_central_box_length","1.");
   
-  /* boost velocity for BH */
+  /* boost velocity for BH, 
+  // if no boost required like in conformal flat metric, 
+  // set them to value "off". */
   Pset_default("BH_boost_Vx","0."); 
   Pset_default("BH_boost_Vy","0."); 
   Pset_default("BH_boost_Vz","0."); 
@@ -554,6 +556,7 @@ static void set_default_parameters(void)
   }
   
   /* boost speed for BH in x direction */
+  if (!Pcmps("BH_boost_Vx","off"))
   {
     const double Omega = Pgetd(P_"angular_velocity");
     const double y_CM  = Pgetd(P_"y_CM");
