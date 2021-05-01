@@ -22,11 +22,11 @@ void bhns_bam_exporting_initial_data(void *vp)
   Uint f;
   
   /* don't stop */
-  Pseti("modify_checkpoint_par:"P_"STOP",0);
+  Pseti(CHECKPOINT_SET_PARAM_ P_"STOP",0);
   
   /* go from Omega x r to inertial coords sys asymptotically.
   // BAM needs this! */
-  Psets("modify_checkpoint_par:ADM_B1I_form","zero");
+  Psets(CHECKPOINT_SET_PARAM_ "ADM_B1I_form","zero");
   
   /* read physics from checkpoint */
   Psets("checkpoint_file_path",Pgets(P_ BAM_"checkpoint_file_path"));
