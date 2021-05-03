@@ -364,16 +364,23 @@ static void set_default_parameters(void)
   /* the very first BH approximation
   // options:
   // ========
-  // o. CloseKerrSchild (see BH physics) */
+  // o. CloseKerrSchild (see BH physics)
+  // o. IsoSchild (see BH physics) */
   Pset_default("BH_start_off","CloseKerrSchild"); 
   
-  /* roll off function to stich free data */
-  Pset_default("BH_RollOff_function","exp(-lambda*(r/rmax)^p):r<rmax");
+  /* roll off function to stich free data.
+  // options:
+  // ========
+  // o. exp(-lambda*(r/rmax)^p):r<rmax.
+  // o. exp(-lambda*(r/rmax)^p)]. */
+  Pset_default("BH_RollOff_function","exp(-lambda*(r/rmax)^p)");
   
   /* lambda in "BH_RollOff_function".
   // options:
-  // [ constant_1, |(r-rmin)/(rmax-r)| ]. */  
-  Pset_default("BH_RollOff_lambda","|(r-rmin)/(rmax-r)|");
+  // ========
+  // o. constant_1.
+  // o. |(r-rmin)/(rmax-r)|. */  
+  Pset_default("BH_RollOff_lambda","constant_1");
   
   /* rmax in "BH_RollOff_function" */
   Pset_default("BH_RollOff_rmax","auto");
