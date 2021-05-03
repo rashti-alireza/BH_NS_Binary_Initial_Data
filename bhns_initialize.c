@@ -28,10 +28,24 @@ Physics_T *bhns_initialize_new_physics(Physics_T *const old_phys)
   
   if (!old_phys)/* if empty, come up with a start off */
   {
-    /* if we wanna use checkpoint file */
+    /* if we wanna use a particular checkpoint file, 
+    // mostly for debug purposes, set:
+    // set:
+    // BHNS_start_off       = checkpoint_file
+    // checkpoint_file_path = path_to_checkpoint_file */
     if (Pcmps(P_"start_off","checkpoint_file"))
-      Error0(NO_OPTION);
-      //new_phys = read_physics_from_checkpoint();
+    {
+      /* modify output directories.
+      // AD-HOC: put everything in top directory. */
+      Psets(CHECKPOINT_SET_PARAM_ "top_directory", 
+            Pgets("top_directory"));
+      Psets(CHECKPOINT_SET_PARAM_ P_"my_directory", 
+            Pgets("top_directory"));
+      Psets(CHECKPOINT_SET_PARAM_ P_"Diagnostics", 
+            Pgets("top_directory"));
+      
+      new_phys = bhns_read_physics_from_checkpoint();
+    }
     
     /* can we resume from a useful checkpoint file */
     else if (can_we_use_checkpoint(Pgets("top_directory")))
