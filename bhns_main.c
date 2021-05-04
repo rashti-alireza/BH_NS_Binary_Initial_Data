@@ -149,9 +149,9 @@ static void set_default_parameters(void)
   Pset_default(P_"P_ADM_control_threshold","1E-1");
   
   /* observer method */
-  Pset_default(P_"Observe_ADM_P","S+V,Rashti");
-  Pset_default(P_"Observe_ADM_J","S+V,Ossokine");
-  Pset_default(P_"Observe_ADM_M","S+V,default");
+  Pset_default(P_"Observe_ADM_P","S+V,constraint");
+  Pset_default(P_"Observe_ADM_J","S+V,constraint");
+  Pset_default(P_"Observe_ADM_M","S+V,conformal");
   Pset_default(P_"Observe_Komar_M","S_inf,default");
   
   /* equation */
