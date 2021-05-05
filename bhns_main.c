@@ -503,8 +503,7 @@ static void set_default_parameters(void)
   // and around it, so not too big! */
   if (Pcmps("BH_RollOff_rmax","auto"))
   {
-    double r_NS = 10.;/* average stiff NS star in geo unit. */
-    double rmax = Pgetd(P_"separation")/2.-1.7*r_NS;
+    double rmax = Pgetd(P_"separation")/2.;
     assert(rmax > 0);
     Psetd("BH_RollOff_rmax",rmax);
   }
