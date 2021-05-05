@@ -25,8 +25,8 @@ void bhns_bam_exporting_initial_data(void *vp)
   Pseti(CHECKPOINT_SET_PARAM_ P_"STOP",0);
   
   /* go from Omega x r to inertial coords sys asymptotically.
-  // BAM needs this! */
-  Psets(CHECKPOINT_SET_PARAM_ "ADM_B1I_form","zero");
+  // BAM needs this!? (it will be set in the reader) */
+  // Psets(CHECKPOINT_SET_PARAM_ "ADM_B1I_form","zero");
   
   /* read physics from checkpoint */
   Psets("checkpoint_file_path",Pgets(P_ BAM_"checkpoint_file_path"));
