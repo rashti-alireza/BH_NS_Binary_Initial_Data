@@ -6,49 +6,52 @@
 Project = BH_NS_binary_initial_data
 
 #### BH-NS binary:
-BHNS_separation                  = 60.
+BHNS_separation                  = 80.
 BHNS_angular_velocity            = auto
 BHNS_start_off                   = parameter_file
+BHNS_observe_ADM_P               = S+V,constraint
+BHNS_observe_ADM_J               = S+V,constraint
 BHNS_P_ADM_control_method        = adjust(x_CM,y_CM)
-BHNS_P_ADM_control_update_weight = 0.(x4)->0.2
+BHNS_P_ADM_control_update_weight = 0.(x10)->0.2
 BHNS_P_ADM_control_tolerance     = 1E-8
-BHNS_observe_ADM_P               = S_inf,default
-BHNS_observe_ADM_J               = S_inf,default
+BHNS_P_ADM_control_threshold     = 10
 
 #### BH:
-BH_start_off               = CloseKerrSchild
-BH_irreducible_mass        = 4.
+BH_irreducible_mass        = 8.4
 BH_chi_x                   = 0.
 BH_chi_y                   = 0.
 BH_chi_z                   = 0.
+BH_Eq_inner_BC_fields      = XCTS
+BH_Eq_inner_BC_beta        = alpha+Omega*r
+BH_Eq_inner_BC_alpha       = w*KerrSchild
+BH_RollOff_function        = exp(-lambda*(r/rmax)^p)
+BH_RollOff_rmax      	   = auto
+BH_RollOff_power           = 4.
+BH_RollOff_lambda          = constant_1
+BH_start_off               = CloseKerrSchild
 BH_surface_type            = perfect_s2
 BH_surface_Ylm_max_l       = 1
 BH_tune_BH_radius_criteria = fix_irreducible_mass
 BH_mass_tolerance          = 1E-8
-BH_radius_update_weight    = 0.(x4)->0.2(x100)->0.
-BH_RollOff_radius          = auto
-BH_RollOff_power           = 4.
+BH_radius_update_weight    = 0.(x10)->0.2(x340)->0.
 BH_spin_update_weight      = 0.
 BH_spin_tolerance          = 1E-3
-BH_Eq_inner_BC_fields      = XCTS
-BH_Eq_inner_BC_alpha       = exp(-r^p)*KerrSchild
-BH_Eq_inner_BC_beta        = alpha+Omega*r
 
 #### NS:
-NS_start_off                   = TOV
-NS_baryonic_mass               = 1.4
-NS_EoS_description             = K123
+NS_baryonic_mass               = 1.6
+NS_EoS_description             = K
 NS_EoS_type                    = polytropic
 NS_EoS_unit                    = geo
-NS_EoS_K                       = [123.6489]
+NS_EoS_K                       = [96.7]
 NS_EoS_Gamma                   = [2]
 NS_Omega_x             	       = 0.
 NS_Omega_y                     = 0.
 NS_Omega_z                     = 0.
 NS_surface_type                = perfect_s2->topology_s2
 NS_surface_finder              = bisection
+NS_surface_change_threshold    = 0.0
 NS_surface_Ylm_max_l           = 10
-NS_enthalpy_allowed_residual   = 1E-10
+NS_enthalpy_allowed_residual   = 1E-8
 NS_enthalpy_update_weight      = 0.1
 NS_Euler_const_criteria        = fix_baryonic_mass
 NS_Euler_const_update_weight   = 1.
@@ -58,23 +61,24 @@ NS_adjust_center_method        = taylor_expansion
 NS_adjust_center_update_weight = 1.
 NS_extrapolate_matter_fields   = inverse_r_expmr
 NS_Eq_phi_polish               = 0.1
+NS_start_off                   = TOV
 
 #### system:
 SYS_initialize        = TOV+KerrSchild
 SYS_initialize_fields = XCTS
 
-### free data
-Free_data_conformal_metric             = flat+exp(-r^p)*(KerrSchild-flat)
-Free_data_conformal_Christoffel_symbol = flat+exp(-r^p)*(KerrSchild-flat)
-Free_data_conformal_Ricci              = flat+exp(-r^p)*(KerrSchild-flat)
-Free_data_trK                          = exp(-r^p)*KerrSchild
+#### free data
+Free_data_conformal_metric             = w1*flat+w2*KerrSchild
+Free_data_conformal_Christoffel_symbol = w1*flat+w2*KerrSchild
+Free_data_conformal_Ricci              = w1*flat+w2*KerrSchild
+Free_data_trK                          = w*KerrSchild
 
 #### ADM:
 ADM_constraints_method     = from_scratch,from_identities
 ADM_B1I_form               = inspiral
 ADM_compute_adm_Kuu_method = use_AIJ
 
-### stress energy tensor:
+#### stress energy tensor:
 Tij_NS_decomposition = XCTS
 Tij_NS_gConf         = general
 
@@ -82,7 +86,7 @@ Tij_NS_gConf         = general
 # Settings:                                                             #
 #-----------------------------------------------------------------------#
 
-### checkpoint:
+#### checkpoint:
 checkpoint_every = 0h
 
 #### basics:
@@ -94,6 +98,8 @@ dF/du_for_Newton_Method         = Spectral
 #-----------------------------------------------------------------------#
 # Grid and Geometry:                                                    #
 #-----------------------------------------------------------------------#
+
+#### grid:
 grid_kind                    = SplitCubedSpherical(BH+NS)
 grid_set_NS                  = left
 grid_set_BH                  = right,excised
@@ -103,9 +109,9 @@ grid_outermost_radius        = 1E5
 grid_verbose                 = no
 
 #### resolutions:
-n_a                          = 12(x150)->14(x100)->16(x50)->18(x50)->20(x25)
-n_b                          = 12(x150)->14(x100)->16(x50)->18(x50)->20(x25)
-n_c                          = 12(x150)->14(x100)->16(x50)->18(x50)->20(x25)
+n_a                          = 12(x250)->14(x100)->16(x50)->18(x50)->20(x40)
+n_b                          = 12(x250)->14(x100)->16(x50)->18(x50)->20(x40)
+n_c                          = 12(x250)->14(x100)->16(x50)->18(x50)->20(x40)
 grid_SplitCS_max_n_a         = 40
 grid_SplitCS_max_n_b         = 40
 grid_SplitCS_max_n_c         = 40
@@ -113,15 +119,16 @@ grid_SplitCS_max_n_c         = 40
 #-----------------------------------------------------------------------#
 # Equations and Solve:                                                  #
 #-----------------------------------------------------------------------#
+
 #### what and where to solve:
 Eq_type                         = Elliptic
 Eq_elliptic_test                = no
-Eq_phi                          = XCTS_curve_Wolf_DDM, NS
-Eq_psi                          = XCTS_curve_excision_KerrSchild_DDM, .*
-Eq_alphaPsi                     = XCTS_curve_excision_KerrSchild_DDM, .*
-Eq_B0_U0                        = XCTS_curve_excision_KerrSchild_DDM, .*
-Eq_B0_U1                        = XCTS_curve_excision_KerrSchild_DDM, .*
-Eq_B0_U2                        = XCTS_curve_excision_KerrSchild_DDM, .*
+Eq_phi                          = XCTS_curve_Type3_DDM, NS
+Eq_psi                          = XCTS_curve_excision_Type1_DDM, .*
+Eq_alphaPsi                     = XCTS_curve_excision_Type1_DDM, .*
+Eq_B0_U0                        = XCTS_curve_excision_Type1_DDM, .*
+Eq_B0_U1                        = XCTS_curve_excision_Type1_DDM, .*
+Eq_B0_U2                        = XCTS_curve_excision_Type1_DDM, .*
 Eq_update_method                = relaxed_scheme
 Eq_update_weight_phi            = 0.2
 Eq_update_weight_psi            = 0.2
@@ -130,8 +137,8 @@ Eq_update_weight_B0_U0          = 0.2
 Eq_update_weight_B0_U1          = 0.2
 Eq_update_weight_B0_U2          = 0.2
 
-#### how to solve:
-solve_Order                     = phi,psi,alphaPsi,B0_U0,B0_U1,B0_U2
+#### solve settings:
+solve_Order                     = psi,alphaPsi,B0_U0,B0_U1,B0_U2,phi
 solve_Newton_Update_Weight      = 1.
 solve_residual                  = 1E-10
 solve_residual_factor           = 1E-5
@@ -145,9 +152,13 @@ solve_UMFPACK_size              = 0
 # Print:                                                                #
 #-----------------------------------------------------------------------#
 
+#### outputs: (regular expression is supported)
 txt_output_1d  = ham,mom,eq_residual
-silo_output_3d = ^phi,^enthalpy,^psi,^alphaPsi,^B0,^beta,\
-		 ham,mom,eq_residual,(dphi_D0,dphi_D1,dphi_D2)
+silo_output_3d = ^phi,^psi,^alphaPsi,^B0,^beta,eq_residual,\
+                 ham,mom,(dphi_D0,dphi_D1,dphi_D2),\
+                 enthalpy,rho0,(drho0_D0,drho0_D1,drho0_D2),\
+                 drho0_D0,drho0_D1,drho0_D2,\
+	         (B0_U0,B0_U1,B0_U2),(beta_U0,beta_U1,beta_U2)
 
 #-----------------------------------------------------------------------#
 # The End                                                               #
