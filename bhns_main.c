@@ -372,7 +372,7 @@ static void set_default_parameters(void)
   // options:
   // ========
   // o. exp(-lambda*(r/rmax)^p):r<rmax.
-  // o. exp(-lambda*(r/rmax)^p)]. */
+  // o. exp(-lambda*(r/rmax)^p). */
   Pset_default("BH_RollOff_function","exp(-lambda*(r/rmax)^p)");
   
   /* lambda in "BH_RollOff_function".
