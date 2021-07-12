@@ -105,7 +105,9 @@ static void compute_properties(Physics_T *const phys/* bhns */)
   if (tov->status == 0)
   {
     Psetd("NS_TOV_ADM_mass",tov->ADM_m);
-    Psetd("NS_TOV_compactness",tov->ADM_m/tov->rbar[tov->N-1]);
+    /* Note: compactness = adm_mass/Schwarzschild_radius 
+      (not isotropic radius) */
+    Psetd("NS_TOV_compactness",tov->ADM_m/tov->r[tov->N-1]);
     Psetd("NS_TOV_radius",tov->rbar[tov->N-1]);
   }
   TOV_free(tov);
