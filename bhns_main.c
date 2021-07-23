@@ -572,7 +572,8 @@ static void set_default_parameters(void)
   }
 }
 
-/* if nessesary fill the bh for interpolation purposes */
+/* if nessesary fill the bh for interpolation purposes
+// NOTE THE KNOWN BUG below. */
 static void fill_blackhole(Physics_T *const phys)
 {
   if (!phys) return;
@@ -581,6 +582,17 @@ static void fill_blackhole(Physics_T *const phys)
   
   Physics_T *const bh = init_physics(phys,BH);
   
+  /* A KNOWN BUG: for the very first time BH filler won't kick in 
+  // since the BH's radius adjustment will happen afterward so
+  // "BH_did_BH_surface_change?" = 0.
+  // Hence, if initially BH's radius shrinks the function
+  // "interpolate_fields_from_old_grid_to_new_grid" gives error and 
+  // exits because cannot find any patch inside the BH 
+  // to have the interpolation point.
+  // ad-hoc solve: first I should say this happens for tiny mass
+  // BHs (like M_irr ~ 2) and for higher masses this generally won't
+  // happen; thus, one way around is to start with a bigger mass BH
+  // and then decreasing the mass to the target value.*/
   if (Pgeti("BH_did_BH_surface_change?"))
   {
     /* fill the hole if we have excised region */
