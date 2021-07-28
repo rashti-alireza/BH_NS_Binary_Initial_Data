@@ -66,6 +66,8 @@ Physics_T *bhns_initialize_new_physics(Physics_T *const old_phys)
 /* use old physics to infer the new physics */
 static Physics_T *infer_new_physics(Physics_T *const old_bhns)
 {
+  if (!old_bhns) return 0;
+  
   FUNC_TIC
   
   Physics_T *const bhns = init_physics(0,BHNS);/* the whole system */
