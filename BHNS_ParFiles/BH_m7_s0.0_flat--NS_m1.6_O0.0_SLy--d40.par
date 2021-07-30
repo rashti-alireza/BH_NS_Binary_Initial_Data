@@ -72,7 +72,7 @@ Free_data_conformal_Ricci              = flat
 Free_data_trK                          = zero
 
 #### ADM:
-ADM_constraints_method     = from_scratch,from_identities
+ADM_constraints_method     = from_scratch#,from_identities
 ADM_B1I_form               = inspiral
 ADM_compute_adm_Kuu_method = use_AIJ
 
