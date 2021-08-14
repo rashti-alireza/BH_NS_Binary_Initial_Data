@@ -184,10 +184,10 @@ static void set_default_parameters(void)
   Pset_default("NS_EoS_unit","NA");
   Pset_default("NS_EoS_K","NA");
   Pset_default("NS_EoS_Gamma","NA");
-  Pset_default("NS_EoS_rho_th","NA");
+  Pset_default("NS_EoS_rho0_th","NA");
   
   /* -> central matters */
-  Pset_default("NS_rho_center","1E-3");
+  Pset_default("NS_rho0_center","1E-3");
   Pset_default("NS_pressure_center","1E-3");
   Pset_default("NS_energy_density_center","1E-3");
   
@@ -232,7 +232,7 @@ static void set_default_parameters(void)
    "max_radius,min_radius,TOV_radius,"
    "ADM_mass,TOV_ADM_mass,Komar_mass,baryonic_mass_current,"
    "baryonic_mass,mass_shedding_indicator,TOV_compactness,"
-   "rho_center,pressure_center,energy_density_center,"
+   "rho0_center,pressure_center,energy_density_center,"
    "enthalpy_L2_residual,Euler_equation_constant,"
    "Omega_x,Omega_y,Omega_z,chi_x,chi_y,chi_z,"
    "spin_x,spin_y,spin_z,"
