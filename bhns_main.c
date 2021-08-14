@@ -201,7 +201,7 @@ static void set_default_parameters(void)
   Pset_default("NS_z_CM","0."); 
   
   /* box length at the center of NS */
-  Pset_default("grid_NS_central_box_length","1.");
+  Pset_default("grid_NS_central_box_length","auto");
   
   /* spin vector to adjust spin for NS */
   Pset_default("NS_Omega_x","0."); 
@@ -313,7 +313,7 @@ static void set_default_parameters(void)
   Pset_default("BH_z_CM","0."); 
   
   /* box length at the center of BH */
-  Pset_default("grid_BH_central_box_length","1.");
+  Pset_default("grid_BH_central_box_length","auto");
   
   /* boost velocity for BH, 
   // if no boost required like in conformal flat metric, 
