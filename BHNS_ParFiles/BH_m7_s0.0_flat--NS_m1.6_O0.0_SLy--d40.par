@@ -101,8 +101,8 @@ dF/du_for_Newton_Method         = Spectral
 grid_kind                    = SplitCubedSpherical(BH+NS)
 grid_set_NS                  = left
 grid_set_BH                  = right,excised
-grid_NS_central_box_length   = 1.25 # ~ 20% of the TOV isotropic radius
-grid_BH_central_box_length   = 1.   # ~ 20% of BH isotropic radius
+grid_NS_central_box_length   = auto # ~ 20% of the TOV isotropic radius
+grid_BH_central_box_length   = auto # ~ 20% of BH isotropic radius
 grid_outermost_radius        = 1E5
 grid_verbose                 = no
 
