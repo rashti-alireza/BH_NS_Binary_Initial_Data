@@ -242,6 +242,8 @@ static void
   
   /* a new grid */
   Grid_T *const grid = alloc_grid();
+  const double bh_box_len_ratio = 0.2;/* experimentally */
+  const double ns_box_len_ratio = 0.2;/* experimentally */
   int update_ns_surface = 1;
   Uint lmax,n;
   
@@ -250,6 +252,21 @@ static void
   
   if (!Pcmps("grid_kind","SplitCubedSpherical(BH+NS)"))
     Error0(NO_OPTION);
+  
+  /* set "grid_BH_central_box_length" and "grid_NS_central_box_length"
+  // automatically, if it is asked. 
+  // NOTE: these params are set only for the very first time 
+  // and this is important for stability of NS. additionally,
+  // one must note that if mass of the object is being iterated, 
+  // this auto option is not very ideal, since the final radius is not
+  // known yet */
+  if (Pcmps("grid_BH_central_box_length","auto"))
+    Psetd("grid_BH_central_box_length",
+          bh_box_len_ratio*grid_char->params[Ibh]->r_min);
+          
+  if (Pcmps("grid_NS_central_box_length","auto"))
+    Psetd("grid_NS_central_box_length",
+          ns_box_len_ratio*grid_char->params[Ins]->r_min);
   
   /* separation */
   grid_char->S              = Pgetd("BHNS_separation");
