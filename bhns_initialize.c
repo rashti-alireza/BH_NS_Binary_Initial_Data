@@ -571,6 +571,17 @@ static void initialize_fields_using_previous_solve
          
       if (Pgeti("BH_did_BH_surface_change?"))
       {
+        /* if BH is empty, i.e., BH has not already been filled
+        // we should fill the BH outerwise
+        // "interpolate_fields_from_old_grid_to_new_grid" gives error.
+        // note: obviously, the new grid has not been filled so this
+        // only regards the old grid and so old_bh. */
+        if (Pgeti("BH_was_BH_filled?") == 0)
+        {
+          Psets("BH_filler_fields","alphaPsi,psi,B0_U0,B0_U1,B0_U2");
+          physics(old_bh,BH_FILL);
+          Pseti("BH_was_BH_filled?",1);
+        }
         region1 = "BH,BH_around";
         region2 = "BH,BH_around";
         interpolate_fields_from_old_grid_to_new_grid
