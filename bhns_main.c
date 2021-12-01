@@ -159,9 +159,12 @@ static void set_default_parameters(void)
   // if set "none" it won't prepare in advance. 
   // this is used for optimization.
   // NOTE: to optimize further it's better to start from second order. */
-  Pset_default(P_"dF/du_prepare","J_D0D0,J_D0D1,J_D0D2,"
-                                 "J_D1D1,J_D1D2,J_D2D2,"
-                                 "J_D0,J_D1,J_D2");
+  //Pset_default(P_"dF/du_prepare","J_D0D0,J_D0D1,J_D0D2,"
+  //                               "J_D1D1,J_D1D2,J_D2D2,"
+  //                               "J_D0,J_D1,J_D2");
+  /* NOTE: a fast and analytic method implemented thus no further 
+  // dF/du preparation is requried. */
+  Pset_default(P_"dF/du_prepare","none");
   
   /* NS paramters:
   // ============= */
