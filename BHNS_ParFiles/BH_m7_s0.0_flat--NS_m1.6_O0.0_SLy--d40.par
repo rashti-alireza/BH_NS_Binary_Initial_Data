@@ -144,7 +144,7 @@ solve_Max_Iteration             = 1
 solve_Max_Newton_Step           = 1
 solve_Method                    = DDM_Schur_Complement
 solve_UMFPACK_refinement_step   = 0
-solve_UMFPACK_size              = 0
+solve_UMFPACK_size              = 1
 
 #-----------------------------------------------------------------------#
 # Print:                                                                #
