@@ -92,6 +92,14 @@ static void set_default_parameters(void)
   Pset_default("matrix_ccs_reader_split","10");
   /* drop matrix entries if less than this. */
   Pset_default("matrix_ccs_drop_below","1.0E-12");
+  /* use long UMFPACK */
+  Pset_default("solve_UMFPACK_size","1");
+  /* set the portion of cores to be used in schur algorithm.
+  // the main use of this param is when the memory is scarce and
+  // not all the threads should be used simultaneously otherwise 
+  // it is killed by the OS. values are in [0,1]. e.g., 0.5 means
+  // use 50% of the max number of available threads. */
+  Pset_default("solve_ddm_schur_thread_cap","1");
   
   
   /* BH-NS parameters:
