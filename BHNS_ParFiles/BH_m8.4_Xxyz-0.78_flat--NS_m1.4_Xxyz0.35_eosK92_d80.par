@@ -39,8 +39,8 @@ BH_surface_type            = perfect_s2
 BH_surface_Ylm_max_l       = 1
 BH_tune_BH_radius_criteria = fix_irreducible_mass
 BH_mass_tolerance          = 1E-8
-BH_radius_update_weight    = 0.(x10)->0.3(x550)->0.
-BH_spin_update_weight      = 0.(x10)->0.3(x550)->0.
+BH_radius_update_weight    = 0.(x10)->0.3(x490)->0.
+BH_spin_update_weight      = 0.(x10)->0.3(x490)->0.
 BH_spin_tolerance          = 1E-8
 
 #### NS:
@@ -116,13 +116,13 @@ grid_verbose                 = no
 
 #### resolutions:
 n_a                          = \
-12(x250)->14(x150)->16(x150)->18(x100)->20(x70)
+12(x200)->14(x100)->16(x100)->18(x100)->20(x70)
 
 n_b                          = \
-12(x250)->14(x150)->16(x150)->18(x100)->20(x70)
+12(x200)->14(x100)->16(x100)->18(x100)->20(x70)
 
 n_c                          = \
-12(x250)->14(x150)->16(x150)->18(x100)->20(x70)
+12(x200)->14(x100)->16(x100)->18(x100)->20(x70)
 
 grid_SplitCS_max_n_a         = 40
 grid_SplitCS_max_n_b         = 40
