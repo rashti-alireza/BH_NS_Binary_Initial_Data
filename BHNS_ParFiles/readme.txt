@@ -2,8 +2,7 @@
 ## some tips for setting the param files:
 #########################################
 
-1. Stop adjusting BH radius and spin at resolution 18 or 20 otherwise, 
-   it might cause instability when the inner boundary condition changes.
 
-2. Resolution 24x24x25 requires ~120Gb memory, but 22x22x22 ~ 100 Gb.
+o. On SplitCubedSpherical(BH+NS) grid, resolution 24x24x24 
+   requires ~120 GB memory, but 22x22x22 ~ 100 GB.
 
