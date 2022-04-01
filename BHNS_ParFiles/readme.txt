@@ -15,8 +15,9 @@ n_c = 12(x200)->14(x100)->16(x100)->18(x100)->20(x70)->22(x50)
 
 However, this number of iteration is an over-killing for 
 simple cases of BHNS, i.e., zero spin, well resolved BH and 
-not too close objects cases can be treated with a fewer number of iteration;
-see the other param files for a few examples.
+not too close objects. These cases can be treated with 
+a fewer number of iteration; see the other param files 
+for some examples.
 
 o.  Memory requirements on SplitCubedSpherical(BH+NS) grid where BH is
 excised and UMFPACK is used:
