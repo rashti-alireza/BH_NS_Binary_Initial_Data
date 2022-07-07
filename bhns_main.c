@@ -264,6 +264,10 @@ static void set_default_parameters(void)
   Pset_default("NS_did_NS_surface_change?","1");
   /* if new surface relative change exceeds this, NS surface gets updated */
   Pset_default("NS_surface_change_threshold","0.0");
+  /* max allowed surface fails */
+  Pset_default("NS_surface_max_fail","100");
+  /* number of surface fails */
+  Pset_default("NS_surface_num_fail","0");
   
   /* observe method pertinet to NS */
   Pset_default("NS_Observe_ADM_M","V_obj,default");
