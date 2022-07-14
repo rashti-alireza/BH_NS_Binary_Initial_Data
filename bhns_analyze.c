@@ -38,7 +38,7 @@ void bhns_analyze(Physics_T *const phys,const int iteration)
   
   /* prints */
   print_fields_3D(phys->grid,iteration,Pgets(P_"Diagnostics"));
-  print_fields_1D(phys->grid,iteration,Pgets(P_"Diagnostics"));
+  print_fields_0D(phys->grid,iteration,Pgets(P_"Diagnostics"));
   
   FUNC_TOC
 }
