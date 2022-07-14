@@ -157,7 +157,7 @@ solve_UMFPACK_size              = 1
 #-----------------------------------------------------------------------#
 
 #### outputs: (regular expression is supported)
-txt_output_1d  = ham,mom,eq_residual
+txt_output_0d  = ham,mom,eq_residual
 silo_output_3d = ^phi,^psi,^alphaPsi,^B0,^beta,eq_residual,\
                  ham,mom,(dphi_D0,dphi_D1,dphi_D2),\
                  enthalpy,rho0,(drho0_D0,drho0_D1,drho0_D2),\
