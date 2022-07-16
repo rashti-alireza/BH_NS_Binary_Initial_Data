@@ -166,6 +166,15 @@ txt_output_1d_line = (X,0.25,0.25), (X,0.25,0.75), (X,0.5,0.5),\
 		     (0.25,0.25,Z), (0.25,0.75,Z), (0.5,0.5,Z),\
 		     (0.75,0.25,Z), (0.75,0.75,Z)
 
+txt_output_2d  = ^phi,^psi,^alphaPsi,^B0,^beta,eq_residual,\
+                ^d.?phi,^d.?psi,^d.?alphaPsi,^d.?B0,^dbeta,eq_residual,\
+                 ham,mom,enthalpy,rho0,drho0.+,denthalpy.+
+
+## planes separated with ',' and the fix values take place in [0,1]x[0,1]
+txt_output_2d_plane = (X,Y,0), (X,Y,0.25), (X,Y,0.5), (X,Y,0.75), (X,Y,1),\
+                      (X,0,Z), (X,0.25,Z), (X,0.5,Z), (X,0.75,Z), (X,1,Z),\
+                      (0,Y,Z), (0.25,Y,Z), (0.5,Y,Z), (0.75,Y,Z), (1,Y,Z)
+
 silo_output_3d = ^phi,^psi,^alphaPsi,^B0,^beta,eq_residual,\
                  ham,mom,(dphi_D0,dphi_D1,dphi_D2),\
                  enthalpy,rho0,(drho0_D0,drho0_D1,drho0_D2),\
