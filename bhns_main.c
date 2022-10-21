@@ -193,7 +193,7 @@ static void set_default_parameters(void)
   Pset_default("NS_EoS_type","NA");
   /* unit: [geo] */
   Pset_default("NS_EoS_unit","NA");
-  Pset_default("NS_EoS_K","NA");
+  Pset_default("NS_EoS_K0","NA");
   Pset_default("NS_EoS_Gamma","NA");
   Pset_default("NS_EoS_rho0_th","NA");
   
