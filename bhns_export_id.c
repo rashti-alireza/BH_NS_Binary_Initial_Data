@@ -50,7 +50,7 @@ void bhns_bam_exporting_initial_data(void *vp)
   /* set bam fields based on initial data to be usable for bam */
   bhns_set_bam_fields(bhns->grid);
  
-  /* read (x,y,x) points from bam file to be interpolated on them */
+  /* read (x,y,z) points from bam file to be interpolated on them */
   idexp_load_Cartesian_coordinates_from_file
     (Pgets(P_ BAM_"coords_file_path"),points);
   
