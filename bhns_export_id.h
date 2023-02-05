@@ -1,4 +1,5 @@
 #include "bhns_header.h"
+#include "elliptica_id_reader_lib.h"
 
 /* prefix parameters came from evo codes, should be lower case  */
 #define BAM_ "bam_"
@@ -9,8 +10,4 @@
 void bhns_bam_exporting_initial_data(void *vp);
 void bhns_set_bam_fields(Grid_T *const grid);
 void bhns_set_evo_fields(Grid_T *const grid);
-
-
-
-
 
