@@ -139,10 +139,10 @@ void bhns_evo_exporting_initial_data(Elliptica_ID_Reader_T *const idr)
   for (Uint n = 0; n < idr->nparams; ++n)
   {
     char lv[STR_LEN_MAX];
-    sprintf(lv,CHECKPOINT_SET_PARAM_"%s",idr->params_lv);
+    sprintf(lv,CHECKPOINT_SET_PARAM_"%s",idr->params_lv[n]);
     
-    Psets(idr->params_lv,idr->params_rv);
-    Psets(lv,idr->params_rv);
+    Psets(idr->params_lv[n],idr->params_rv[n]);
+    Psets(lv,idr->params_rv[n]);
   }
   
   /* read physics from checkpoint */
