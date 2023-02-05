@@ -132,19 +132,30 @@ void bhns_evo_exporting_initial_data(Elliptica_ID_Reader_T *const idr)
   /* don't stop */
   Pseti(CHECKPOINT_SET_PARAM_ P_"STOP",0);
   
-  /* go from Omega x r to inertial coords sys asymptotically.
-  // EVO needs this!? (it will be set in the reader) */
-  // Psets(CHECKPOINT_SET_PARAM_ "ADM_B1I_form","zero");
+  /* set all parameters set in evo code. */
+  // NOTE: adding both plain and modify version to make sure things kick in 
+  // after loading from checkpoint file.
+  for (Uint n = 0; n < idr->nparams; ++n)
+  {
+    char lv[STR_LEN_MAX];
+    sprintf(lv,CHECKPOINT_SET_PARAM_"%s",idr->params_lv);
+    
+    Psets(idr->params_lv,idr->params_rv);
+    Psets(lv,idr->params_rv);
+  }
   
   /* read physics from checkpoint */
   Psets("checkpoint_file_path",idr->checkpoint_path);
   bhns = bhns_read_physics_from_checkpoint();
   points->grid = bhns->grid;
   
+  /* go from Omega x r to inertial coords sys asymptotically.
+  // EVO needs this!? (it will be set in the reader) */
+  // Psets(CHECKPOINT_SET_PARAM_ "ADM_B1I_form","zero");
   physics(bhns,ADM_UPDATE_Kij);/* before filling */
+  
   /* fill BH */
   Physics_T *const bh  = init_physics(bhns,BH);
-  Psets("BH_filler_method",Pgets(P_ EVO_"filler_method"));
   Pseti("BH_filler_verbose",1);/* make it verbose anyway. */
   /* fill these fields */
   Psets("BH_filler_fields","alphaPsi,psi,beta_U0,beta_U1,beta_U2,"
@@ -159,10 +170,10 @@ void bhns_evo_exporting_initial_data(Elliptica_ID_Reader_T *const idr)
   bhns_set_evo_fields(bhns->grid);
  
   /* get (x,y,z) points from evo. NOTE: no allocation done for (x,y,z) */
-  find_XYZ_from_xyz(idr,points);
+  idexp_find_XYZ_from_xyz(idr,points);
   
   /* adapt fields_notations for Elliptica */
-  assert(sprintf(fields_name,"%s",Pgets(P_ EVO_"fields_name")));
+  assert(sprintf(fields_name,"%s",idr->ifields));
   
   /* metric fields */
   regex_replace(fields_name,"\\balpha\\b",EVO_"alpha",fields_name);
@@ -208,8 +219,7 @@ void bhns_evo_exporting_initial_data(Elliptica_ID_Reader_T *const idr)
   free_2d(sfield);
   
   /* write into file */
-  idexp_interpolate_fields_and_write_to_file
-    (file,points,fields_name,Pgets(P_ EVO_"fields_name"));
+  idexp_interpolate_fields_and_save_in_id_reader(idr,points,fields_name,idr->ifields);
   
   /* finishing up */
   idexp_close_file(file);
