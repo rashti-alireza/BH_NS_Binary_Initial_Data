@@ -1,0 +1,183 @@
+# add and set evolution fields into ELLIPTICA grid. the convention chosen as 
+# the BAM code. hence, if you want another definition for these field you need to
+# replace 'evo' with another name, say gra for GR-Athena++, and redefine
+# them as you like.
+
+
+# Manifold or grid Dimension
+Dimension = 3;
+
+# point on manifold shown by:
+Point = ijk;
+
+C_macro  = reav_v_if_exists(name);
+C_macro2 = REALLOC_v_WRITE_v(name);
+C_macro3 = DECLARE_AND_EMPTY_FIELD(name);
+C_macro4 = add_alloc_get_field(name);
+C_macro5 = add_alloc_field(name);
+
+# main function:
+`#include "bhns_header.h"`
+``
+``
+`#define add_alloc_get_field(name) ADD_FIELD(name) REALLOC_v_WRITE_v(name)`
+``
+``
+`#define add_alloc_field(name) ADD_AND_ALLOC_FIELD(name) `
+``
+``
+`#define reav_v_if_exists(name) const double *name = 0; \`
+` if (_Ind(#name) >= 0) name = patch->fields[Ind(#name)]->v;`
+``
+``
+`void bhns_set_evo_fields(Grid_T *const grid);`
+`void bhns_set_evo_fields(Grid_T *const grid)`
+`{`
+`  Uint p;`
+`  const Uint np = grid->np;`
+``
+`  OpenMP_Patch_Pragma(omp parallel for)`
+`  for (p = 0; p < np; ++p)`
+`  {`
+`  Patch_T *patch = grid->patch[p];`
+``
+Declare = 
+{
+ # add: evo_grhd_v^i
+ (obj = Field,name = evo_grhd_v, rank = U, C_macro4);
+
+ # add: evo_grhd_rho
+ (obj = Field,name = evo_grhd_rho, rank = 0, C_macro4);
+
+ # add: evo_grhd_p
+ (obj = Field,name = evo_grhd_p, rank = 0, C_macro4);
+
+ # add: evo_grhd_epsl
+ (obj = Field,name = evo_grhd_epsl, rank = 0, C_macro4);
+
+ # add: evo_alpha
+ (obj = Field,name = evo_alpha, rank = 0, C_macro4);
+
+ # add: evo_beta^i
+ (obj = Field,name = evo_beta, rank = U, C_macro4);
+
+ # add: evo_adm_g_ij
+ (obj = Field,name = evo_adm_g, rank = DD, C_macro4);
+
+ # add: evo_adm_K_ij
+ (obj = Field,name = evo_adm_Kij, rank = DD, C_macro4);
+
+ # conformal metric 
+ (obj = Field,name = gConf, rank = DD, C_macro);
+
+ # conformal metric inverse
+ (obj = Field,name = igConf, rank = UU, C_macro);
+
+ # K_{ij}
+ (obj = Field,name = adm_Kij, rank = DD, C_macro);
+
+ # add: evo_chi = psi^-4
+ #(obj = Field,name = evo_chi, rank = 0, C_macro4);
+ 
+ # shift
+ (obj = Field,name = beta, rank = U, C_macro);
+
+ # psi
+ (obj = Field,name = psi, rank = 0, C_macro);
+
+ # alphaPsi
+ (obj = Field,name = alphaPsi, rank = 0, C_macro);
+
+ # B1 in beta = B0+B1
+ #(obj = Field,name = B1, rank = U, C_macro);
+ 
+ # trKij
+ #(obj = Field,name = K, rank = 0, C_macro);
+
+ # enthalpy
+ (obj = Field,name = enthalpy, rank = 0, C_macro);
+
+ # spin part of fluid
+ (obj = Field,name = W, rank = U, C_macro);
+
+ # d(phi)/d? for irrotional part of fluid
+ (obj = Field,name = dphi, rank = D, C_macro);
+
+ # u0
+ (obj = Field,name = u0, rank = 0, C_macro);
+
+}
+
+# symmetries:
+Symm[adm_Kij(i,j)     = adm_Kij(j,i)];
+Symm[evo_adm_Kij(i,j) = evo_adm_Kij(j,i)];
+Symm[evo_adm_g(i,j)   = evo_adm_g(j,i)];
+Symm[gConf(i,j)     = gConf(j,i)];
+Symm[igConf(i,j)    = igConf(j,i)];
+
+## set metric fields in all patches:
+`  FOR_ALL_ijk`
+`  {`
+   psi4   = psi**4;
+
+# alpha:
+`   evo_alpha[ijk] = alphaPsi[ijk]/psi[ijk];`
+
+# beta:
+`   evo_beta_U0[ijk] = beta_U0[ijk];`
+`   evo_beta_U1[ijk] = beta_U1[ijk];`
+`   evo_beta_U2[ijk] = beta_U2[ijk];`
+
+# g_ij:
+   adm_g(-i,-j) = psi4*gConf(i,j);
+   Symm[adm_g(i,j) = adm_g(j,i)];
+   Cpopulate[evo_adm_g = adm_g];
+
+# K_ij:
+   Kdd(-i,-j) = adm_Kij(i,j);
+   Symm[Kdd(i,j) = Kdd(j,i)];
+   Cpopulate[evo_adm_Kij = Kdd];
+
+# evo_chi (for test purposes)
+#`   evo_chi[ijk] = 1/psi4;`
+
+`  }`# FOR_ALL_ijk
+
+## set matter fields if needed
+`  if (IsItCovering(patch,"NS"))`
+`  {`
+`  Physics_T *ns = init_physics(0,NS);`
+`  EoS_T *eos    = init_EoS(ns);`
+
+`  FOR_ALL_ijk`
+`  {`
+
+   # grhd_v^i:
+   psim4     = psi**(-4);
+   grhd_v(i) = (psim4*igConf(i,j)*dphi(-j)+W(i))/(evo_alpha*enthalpy*u0);
+   Cpopulate[evo_grhd_v = grhd_v];
+
+   # total_energy_density = grhd_rho(1+grhd_epsl)
+`  eos->h = enthalpy[ijk];`
+`  if(!isfinite(eos->h) || LSSEQL(eos->h,1.))`
+`  {`
+`    evo_grhd_rho[ijk]  = 0;`
+`    evo_grhd_p[ijk]    = 0;`
+`    evo_grhd_epsl[ijk] = 0;`
+`  }`
+`  else`
+`  {`
+`   evo_grhd_rho[ijk]  = eos->rest_mass_density(eos);`
+`   evo_grhd_p[ijk]    = eos->pressure(eos);`
+`   evo_grhd_epsl[ijk] = eos->specific_internal_energy(eos);` 
+`  }`
+
+`  }`# FOR_ALL_ijk
+
+`  free_physics(ns);`
+`  free_EoS(eos);`
+`  }` # if (IsItCovering(patch,"NS"))
+
+`  }`# end of FOR_ALL_PATCHES
+
+`}` # end of function
