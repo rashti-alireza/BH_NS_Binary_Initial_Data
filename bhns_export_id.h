@@ -1,7 +1,8 @@
 #include "bhns_header.h"
 
-/* prefix parameters came from bam, should be lower case  */
+/* prefix parameters came from evo codes, should be lower case  */
 #define BAM_ "bam_"
+#define EVO_ "evo_"
 
 #define STR_LEN_MAX (999)
 
