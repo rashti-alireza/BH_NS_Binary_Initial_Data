@@ -122,9 +122,10 @@ void bhns_evo_exporting_initial_data(Elliptica_ID_Reader_T *const idr)
 {
   FUNC_TIC
   
-  Physics_T *bhns    = 0;
+  Physics_T *bhns = 0;
   ID_Export_T *points = idexp_init();
-  FILE *file          = 0;
+  double CM[3] = {0.};
+  FILE *file = 0;
   char fields_name[STR_LEN_MAX] = {'\0'};
   char **sfield = 0;
   Uint f;
@@ -170,7 +171,10 @@ void bhns_evo_exporting_initial_data(Elliptica_ID_Reader_T *const idr)
   bhns_set_evo_fields(bhns->grid);
  
   /* get (x,y,z) points from evo. NOTE: no allocation done for (x,y,z) */
-  idexp_find_XYZ_from_xyz(idr,points);
+  CM[0] = Pgetd(P_"x_CM");
+  CM[1] = Pgetd(P_"y_CM");
+  CM[2] = Pgetd(P_"z_CM");
+  idexp_find_XYZ_from_xyz(idr,points,CM);
   
   /* adapt fields_notations for Elliptica */
   assert(sprintf(fields_name,"%s",idr->ifields));
