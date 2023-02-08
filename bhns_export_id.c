@@ -118,7 +118,7 @@ void bhns_bam_exporting_initial_data(void *vp)
 }
 
 /* export ID for a general evolution code */
-void bhns_evo_exporting_initial_data(Elliptica_ID_Reader_T *const idr)
+void bhns_read_id_asymptotically_inertial(Elliptica_ID_Reader_T *const idr)
 {
   FUNC_TIC
   
