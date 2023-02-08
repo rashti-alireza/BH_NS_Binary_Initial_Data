@@ -11,7 +11,7 @@ int BH_NS_Binary_Initial_Data(void *vp)
 {
   /* if this is a BAM call */
   if (strcmp_i(PgetsEZ(P_"bam_export_id"),"yes"))
-    bhns_bam_exporting_initial_data(vp);
+    bhns_bam_read_id_asymptotically_inertial(vp);
   
   /* otherwise construct initial data */
   else
