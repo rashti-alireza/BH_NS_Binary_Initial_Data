@@ -223,7 +223,7 @@ void bhns_read_id_asymptotically_inertial(Elliptica_ID_Reader_T *const idr)
   free_2d(sfield);
   
   /* write into file */
-  idexp_interpolate_fields_and_save_in_id_reader(idr,points,fields_name,idr->ifields);
+  idexp_interpolate_fields_and_save_in_array(idr,points,fields_name,idr->ifields);
   
   /* finishing up */
   idexp_close_file(file);
