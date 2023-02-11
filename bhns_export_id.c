@@ -15,7 +15,7 @@ void bhns_bam_read_id_asymptotically_inertial(void *vp)
   FUNC_TIC
   
   Physics_T *bhns    = 0;
-  ID_Export_T *points = idexp_init();
+  ID_Reader_T *points = idr_init();
   FILE *file          = 0;
   char fields_name[STR_LEN_MAX] = {'\0'};
   char **sfield = 0;
@@ -51,11 +51,11 @@ void bhns_bam_read_id_asymptotically_inertial(void *vp)
   bhns_set_bam_fields(bhns->grid);
  
   /* read (x,y,z) points from bam file to be interpolated on them */
-  idexp_load_Cartesian_coordinates_from_file
+  idr_load_Cartesian_coordinates_from_file
     (Pgets(P_ BAM_"coords_file_path"),points);
   
   /* open a binary file to write fields in it. */
-  file = idexp_new_binary_file_to_write
+  file = idr_new_binary_file_to_write
     (Pgets(P_ BAM_"fields_file_path"),Pgets(P_ BAM_"fields_name"));
   
   /* adapt fields_notations for Elliptica */
@@ -105,12 +105,12 @@ void bhns_bam_read_id_asymptotically_inertial(void *vp)
   free_2d(sfield);
   
   /* write into file */
-  idexp_interpolate_fields_and_write_to_file
+  idr_interpolate_fields_and_write_to_file
     (file,points,fields_name,Pgets(P_ BAM_"fields_name"));
   
   /* finishing up */
-  idexp_close_file(file);
-  idexp_free(points);
+  idr_close_file(file);
+  idr_free(points);
   free_physics(bhns);
   
   UNUSED(vp);
@@ -123,7 +123,7 @@ void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr)
   FUNC_TIC
   
   Physics_T *bhns = 0;
-  ID_Export_T *points = idexp_init();
+  ID_Reader_T *points = idr_init();
   double CM[3] = {0.};
   FILE *file = 0;
   char fields_name[STR_LEN_MAX] = {'\0'};
@@ -174,7 +174,7 @@ void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr)
   CM[0] = Pgetd(P_"x_CM");
   CM[1] = Pgetd(P_"y_CM");
   CM[2] = Pgetd(P_"z_CM");
-  idexp_find_XYZ_from_xyz(idr,points,CM);
+  idr_find_XYZ_from_xyz(idr,points,CM);
   
   /* adapt fields_notations for Elliptica */
   assert(sprintf(fields_name,"%s",idr->ifields));
@@ -223,15 +223,15 @@ void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr)
   free_2d(sfield);
   
   /* write into file */
-  idexp_interpolate_fields_and_save_in_array(idr,points,fields_name,idr->ifields);
+  idr_interpolate_fields_and_save_in_array(idr,points,fields_name,idr->ifields);
   
   /* finishing up */
-  idexp_close_file(file);
+  idr_close_file(file);
   // since no alocation done for (x,y,z):
   points->x = 0;
   points->y = 0;
   points->z = 0;
-  idexp_free(points);
+  idr_free(points);
   free_physics(bhns);
   
   FUNC_TOC  
