@@ -8,7 +8,7 @@
 
 #define STR_LEN_MAX (999)
 
-void bhns_bam_read_id_asymptotically_inertial(void *vp);
+void bhns_export_id_bam_generic(void *vp);
 void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr);
 void bhns_set_bam_fields(Grid_T *const grid);
 void bhns_set_evo_fields_generic(Grid_T *const grid);

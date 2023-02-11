@@ -10,7 +10,7 @@
 
 /* exporting initial data for bam.
 // it writes the required fields into a file to be read by bam. */
-void bhns_bam_read_id_asymptotically_inertial(void *vp)
+void bhns_export_id_bam_generic(void *vp)
 {
   FUNC_TIC
   
