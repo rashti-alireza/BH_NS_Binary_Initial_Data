@@ -48,7 +48,7 @@ void bhns_export_id_bam_generic(void *vp)
   free_physics(bh);
     
   /* set bam fields based on initial data to be usable for bam */
-  bhns_set_bam_fields(bhns->grid);
+  bhns_set_bam_fields_generic(bhns->grid);
  
   /* read (x,y,z) points from bam file to be interpolated on them */
   idr_load_Cartesian_coordinates_from_file
