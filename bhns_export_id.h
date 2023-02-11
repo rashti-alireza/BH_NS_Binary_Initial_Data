@@ -1,4 +1,5 @@
 #include "bhns_header.h"
+#include "id_reader_lib.h"
 #include "elliptica_id_reader_lib.h"
 
 /* prefix parameters came from evo codes, should be lower case  */
