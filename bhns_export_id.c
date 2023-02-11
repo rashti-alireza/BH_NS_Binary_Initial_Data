@@ -125,7 +125,6 @@ void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr)
   Physics_T *bhns = 0;
   ID_Reader_T *points = idr_init();
   double CM[3] = {0.};
-  FILE *file = 0;
   char fields_name[STR_LEN_MAX] = {'\0'};
   char **sfield = 0;
   Uint f;
@@ -222,11 +221,10 @@ void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr)
   }
   free_2d(sfield);
   
-  /* write into file */
+  /* write into array */
   idr_interpolate_fields_and_save_in_array(idr,points,fields_name,idr->ifields);
   
   /* finishing up */
-  idr_close_file(file);
   // since no alocation done for (x,y,z):
   points->x = 0;
   points->y = 0;
