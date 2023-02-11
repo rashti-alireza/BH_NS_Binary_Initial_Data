@@ -17,8 +17,8 @@
  if (_Ind(#name) >= 0) name = patch->fields[Ind(#name)]->v;
 
 
-void bhns_set_evo_fields_asymptotically_inertial(Grid_T *const grid);
-void bhns_set_evo_fields_asymptotically_inertial(Grid_T *const grid)
+void bhns_set_evo_fields_generic(Grid_T *const grid);
+void bhns_set_evo_fields_generic(Grid_T *const grid)
 {
   Uint p;
   const Uint np = grid->np;

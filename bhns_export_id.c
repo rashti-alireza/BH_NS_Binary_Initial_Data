@@ -168,7 +168,7 @@ void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr)
   free_physics(bh);
     
   /* set bam fields based on initial data to be usable for evo */
-  bhns_set_evo_fields_asymptotically_inertial(bhns->grid);
+  bhns_set_evo_fields_generic(bhns->grid);
  
   /* get (x,y,z) points from evo. NOTE: no allocation done for (x,y,z) */
   CM[0] = Pgetd(P_"x_CM");
