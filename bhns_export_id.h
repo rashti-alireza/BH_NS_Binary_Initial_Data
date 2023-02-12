@@ -6,7 +6,7 @@
 #define BAM_ "bam_"
 #define EVO_ "evo_"
 
-#define STR_LEN_MAX (999)
+#define STR_LEN_MAX (9999)
 
 void bhns_export_id_bam_generic(void *vp);
 void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr);
