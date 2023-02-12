@@ -125,7 +125,7 @@ void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr)
   Physics_T *bhns = 0;
   ID_Reader_T *points = idr_init();
   double CM[3] = {0.};
-  char fields_name[STR_LEN_MAX] = {'\0'};
+  char fields_name[STR_LEN_MAX] = {'\0'};// elliptica field names
   char **sfield = 0;
   Uint f;
   
