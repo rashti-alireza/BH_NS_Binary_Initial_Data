@@ -156,7 +156,8 @@ solve_UMFPACK_size              = 1
 txt_output_0d  = ham,mom,eq_residual
 
 txt_output_1d  = ^phi,^psi,^alphaPsi,^B0,^beta,eq_residual,\
-	         ham,mom,enthalpy,rho0,drho0_D0,drho0_D1,drho0_D2,
+	         ham,mom,enthalpy,rho0,drho0_D0,drho0_D1,drho0_D2,\
+                 dphi_D0,dphi_D1,dphi_D2
 
 ## lines separated with ',' and the fix values take place in [0,1]x[0,1]
 txt_output_1d_line = (X,0.25,0.25), (X,0.25,0.75), (X,0.5,0.5),\

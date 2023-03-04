@@ -29,7 +29,7 @@
 
 Physics_T *bhns_initialize_new_physics(Physics_T *const phys);
 void bhns_add_fields(Physics_T *const phys,const char *const region);
-void bhns_bam_exporting_initial_data(void *vp);
+void bhns_export_id_bam_generic(void *vp);
 
 void bhns_print_physical_system_properties(Physics_T *const phys,
                                           FILE *const file,
@@ -38,7 +38,6 @@ void bhns_print_physical_system_properties(Physics_T *const phys,
 
 
 Physics_T *bhns_read_physics_from_checkpoint(void);
-void bhns_set_bam_fields(Grid_T *const grid);
 void bhns_analyze(Physics_T *const phys,const int iteration);
 void bhns_solve_equation(Physics_T *const phys);
 
