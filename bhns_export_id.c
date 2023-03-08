@@ -176,9 +176,10 @@ void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr)
   }
   free_2d(sfield);
   
-  /* set all parameters set in evo code. */
+  /* set all parameters that are set from the evo code side.
+  // NOTE: these are not changing the checkpoint file itself.
   // NOTE: adding both plain and modify version to make sure things kick in 
-  // after loading from checkpoint file.
+  // after loading from checkpoint file. */
   for (Uint n = 0; n < idr->nparams; ++n)
   {
     char lv[STR_LEN_MAX];
