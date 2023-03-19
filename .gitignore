@@ -1,13 +1,6 @@
-# Ignore the following:
-
-# ignore backup joe files:
-*.*~ 
-*~
-DEADJOE
-
-#.gitignore
-
-
-#ignore makes
+## ignore submakes
 makefile
+.sub_makefile
 
+## joe's
+DEADJOE
