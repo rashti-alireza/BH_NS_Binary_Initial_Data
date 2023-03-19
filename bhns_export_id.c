@@ -118,10 +118,10 @@ void bhns_export_id_bam_generic(void *vp)
 }
 
 /* export ID for a general evolution code */
-void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr)
+void bhns_export_id_generic(void *vp)
 {
   FUNC_TIC
-  
+  Elliptica_ID_Reader_T *const idr = vp;
   Physics_T *bhns = 0;
   ID_Reader_T *points = idr_init();
   double CM[3] = {0.};

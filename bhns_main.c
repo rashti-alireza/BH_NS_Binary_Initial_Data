@@ -13,6 +13,10 @@ int BH_NS_Binary_Initial_Data(void *vp)
   if (strcmp_i(PgetsEZ(P_"bam_export_id"),"yes"))
     bhns_export_id_bam_generic(vp);
   
+  /* if this is a generic ID reader call */
+  else if (strcmp_i(PgetsEZ("IDR_BHNS_export_id"),"generic"))
+    bhns_export_id_generic(vp);
+  
   /* otherwise construct initial data */
   else
     construct_initial_data(vp);

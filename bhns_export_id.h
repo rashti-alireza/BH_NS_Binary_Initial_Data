@@ -9,7 +9,7 @@
 #define STR_LEN_MAX (9999)
 
 void bhns_export_id_bam_generic(void *vp);
-void bhns_export_id_generic(Elliptica_ID_Reader_T *const idr);
+void bhns_export_id_generic(void *vp);
 void bhns_set_bam_fields_generic(Grid_T *const grid);
 void bhns_set_evo_fields_generic(Grid_T *const grid);
 

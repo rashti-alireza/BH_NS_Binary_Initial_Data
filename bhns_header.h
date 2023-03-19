@@ -29,8 +29,6 @@
 
 Physics_T *bhns_initialize_new_physics(Physics_T *const phys);
 void bhns_add_fields(Physics_T *const phys,const char *const region);
-void bhns_export_id_bam_generic(void *vp);
-
 void bhns_print_physical_system_properties(Physics_T *const phys,
                                           FILE *const file,
                                           const int iteration,
