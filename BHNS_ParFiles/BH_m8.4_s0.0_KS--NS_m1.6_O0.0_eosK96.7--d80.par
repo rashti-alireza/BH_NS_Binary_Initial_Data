@@ -11,6 +11,7 @@ BHNS_angular_velocity            = auto
 BHNS_start_off                   = parameter_file
 BHNS_observe_ADM_P               = S+V,constraint
 BHNS_observe_ADM_J               = S+V,constraint
+BHNS_Observe_ADM_M               = S_inf, default
 BHNS_P_ADM_control_method        = adjust(x_CM,y_CM)
 BHNS_P_ADM_control_update_weight = 0.(x10)->0.2
 BHNS_P_ADM_control_tolerance     = 1E-8
@@ -33,8 +34,8 @@ BH_surface_type            = perfect_s2
 BH_surface_Ylm_max_l       = 1
 BH_tune_BH_radius_criteria = fix_irreducible_mass
 BH_mass_tolerance          = 1E-8
-BH_radius_update_weight    = 0.(x10)->0.2(x240)->0.
-BH_spin_update_weight      = 0.(x10)->0.2(x240)->0.
+BH_radius_update_weight    = 0.(x10)->0.2(x340)->0.
+BH_spin_update_weight      = 0.(x10)->0.2(x340)->0.
 BH_spin_tolerance          = 1E-3
 
 #### NS:
@@ -109,9 +110,9 @@ grid_outermost_radius        = 1E5
 grid_verbose                 = no
 
 #### resolutions:
-n_a                          = 12(x250)->14(x100)->16(x50)->18(x50)->20(x40)
-n_b                          = 12(x250)->14(x100)->16(x50)->18(x50)->20(x40)
-n_c                          = 12(x250)->14(x100)->16(x50)->18(x50)->20(x40)
+n_a                          = 14(x250)->16(x100)->18(x50)->20(x50)->22(x40)
+n_b                          = 14(x250)->16(x100)->18(x50)->20(x50)->22(x40)
+n_c                          = 14(x250)->16(x100)->18(x50)->20(x50)->22(x40)
 grid_SplitCS_max_n_a         = 40
 grid_SplitCS_max_n_b         = 40
 grid_SplitCS_max_n_c         = 40
@@ -154,11 +155,11 @@ solve_UMFPACK_size              = 1
 
 #### outputs: (regular expression is supported)
 txt_output_0d  = ham,mom,eq_residual
-silo_output_3d = ^phi,^psi,^alphaPsi,^B0,^beta,eq_residual,\
-                 ham,mom,(dphi_D0,dphi_D1,dphi_D2),\
-                 enthalpy,rho0,(drho0_D0,drho0_D1,drho0_D2),\
-                 drho0_D0,drho0_D1,drho0_D2,\
-	         (B0_U0,B0_U1,B0_U2),(beta_U0,beta_U1,beta_U2)
+#silo_output_3d = ^phi,^psi,^alphaPsi,^B0,^beta,eq_residual,\
+#                 ham,mom,(dphi_D0,dphi_D1,dphi_D2),\
+#                 enthalpy,rho0,(drho0_D0,drho0_D1,drho0_D2),\
+#                 drho0_D0,drho0_D1,drho0_D2,\
+#	         (B0_U0,B0_U1,B0_U2),(beta_U0,beta_U1,beta_U2)
 
 #-----------------------------------------------------------------------#
 # The End                                                               #
