@@ -240,10 +240,9 @@ void bhns_export_id_generic(void *vp)
   FUNC_TOC  
 }
 
-/* export ID for a general evolution code and set thread safe 
-// interpolation functions for each field. 
-// Note: this function itself is not thread safe but output interpolation functions 
-// are so. */
+/* export ID for a general evolution code for a multi thread safe settings.
+// Note: this function itself is not MT safe but later we can use 
+// idr->fieldx(...) that are MT safe. */
 void bhns_export_id_generic_mt_safe(void *vp)
 {
   FUNC_TIC
