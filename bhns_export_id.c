@@ -252,8 +252,6 @@ void bhns_export_id_generic_mt_safe(void *vp)
   
   Elliptica_ID_Reader_T *const idr = vp;
   Physics_T *bhns = 0;
-  //ID_Reader_T *points = idr_init();
-  //double CM[3] = {0.};
   char fields_name[STR_LEN_MAX] = {'\0'};// elliptica field names
   char **sfield = 0;
   Uint f;
@@ -323,6 +321,8 @@ void bhns_export_id_generic_mt_safe(void *vp)
   /* read physics from checkpoint */
   Psets("checkpoint_file_path",idr->checkpoint_path);
   bhns = bhns_read_physics_from_checkpoint();
+  
+  // set grid for idr
   idr->grid = bhns->grid;
   
   /* go from Omega x r to inertial coords sys asymptotically.
