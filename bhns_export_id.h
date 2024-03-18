@@ -12,4 +12,5 @@ void bhns_export_id_bam_generic(void *vp);
 void bhns_export_id_generic(void *vp);
 void bhns_set_bam_fields_generic(Grid_T *const grid);
 void bhns_set_evo_fields_generic(Grid_T *const grid);
+void bhns_export_id_generic_mt_safe(void *vp);
 

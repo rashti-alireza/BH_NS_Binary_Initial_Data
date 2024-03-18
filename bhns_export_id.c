@@ -240,3 +240,121 @@ void bhns_export_id_generic(void *vp)
   FUNC_TOC  
 }
 
+/* export ID for a general evolution code and set thread safe 
+// interpolation functions for each field. 
+// Note: this function itself is not thread safe but output interpolation functions 
+// are so. */
+void bhns_export_id_generic_mt_safe(void *vp)
+{
+  FUNC_TIC
+  
+  // sanity check
+  assert(vp && "The input is null!");
+  
+  Elliptica_ID_Reader_T *const idr = vp;
+  Physics_T *bhns = 0;
+  //ID_Reader_T *points = idr_init();
+  //double CM[3] = {0.};
+  char fields_name[STR_LEN_MAX] = {'\0'};// elliptica field names
+  char **sfield = 0;
+  Uint f;
+  
+  /* adapt fields_notations for Elliptica and ensure given fields are expected.
+  // NOTE: the following replaces the name with the same ORDER as the input. */
+  assert(sprintf(fields_name,"%s",idr->ifields));
+  
+  /* metric fields */
+  regex_replace(fields_name,"\\balpha\\b",EVO_"alpha",fields_name);
+  
+  regex_replace(fields_name,"\\bbetax\\b",EVO_"beta_U0",fields_name);
+  regex_replace(fields_name,"\\bbetay\\b",EVO_"beta_U1",fields_name);
+  regex_replace(fields_name,"\\bbetaz\\b",EVO_"beta_U2",fields_name);
+  
+  regex_replace(fields_name,"\\badm_gxx\\b",EVO_"adm_g_D0D0",fields_name);
+  regex_replace(fields_name,"\\badm_gxy\\b",EVO_"adm_g_D0D1",fields_name);
+  regex_replace(fields_name,"\\badm_gxz\\b",EVO_"adm_g_D0D2",fields_name);
+  regex_replace(fields_name,"\\badm_gyy\\b",EVO_"adm_g_D1D1",fields_name);
+  regex_replace(fields_name,"\\badm_gyz\\b",EVO_"adm_g_D1D2",fields_name);
+  regex_replace(fields_name,"\\badm_gzz\\b",EVO_"adm_g_D2D2",fields_name);
+  
+  regex_replace(fields_name,"\\badm_Kxx\\b",EVO_"adm_Kij_D0D0",fields_name);
+  regex_replace(fields_name,"\\badm_Kxy\\b",EVO_"adm_Kij_D0D1",fields_name);
+  regex_replace(fields_name,"\\badm_Kxz\\b",EVO_"adm_Kij_D0D2",fields_name);
+  regex_replace(fields_name,"\\badm_Kyy\\b",EVO_"adm_Kij_D1D1",fields_name);
+  regex_replace(fields_name,"\\badm_Kyz\\b",EVO_"adm_Kij_D1D2",fields_name);
+  regex_replace(fields_name,"\\badm_Kzz\\b",EVO_"adm_Kij_D2D2",fields_name);
+  
+  /* matter fields */
+  regex_replace(fields_name,"\\bgrhd_vx\\b",EVO_"grhd_v_U0",fields_name);
+  regex_replace(fields_name,"\\bgrhd_vy\\b",EVO_"grhd_v_U1",fields_name);
+  regex_replace(fields_name,"\\bgrhd_vz\\b",EVO_"grhd_v_U2",fields_name);
+  regex_replace(fields_name,"\\bgrhd_rho\\b",EVO_"grhd_rho",fields_name);
+  regex_replace(fields_name,"\\bgrhd_p\\b",EVO_"grhd_p",fields_name);
+  regex_replace(fields_name,"\\bgrhd_epsl\\b",EVO_"grhd_epsl",fields_name);
+  
+  /* check if all fields are expected */
+  sfield = read_separated_items_in_string(fields_name,',');
+  f = 0;
+  while(sfield[f])
+  {
+    if (!regex_search("^"EVO_,sfield[f]))
+    {
+      printf("field '%s' is Unexpected!\n",sfield[f]);
+      Error1("Unexpected field! Add me!");
+    }
+    f++;
+  }
+  free_2d(sfield);
+  
+  /* set all parameters that are set from the evo code side.
+  // NOTE: these are not changing the checkpoint file itself.
+  // NOTE: adding both plain and modify version to make sure things kick in 
+  // after loading from checkpoint file. */
+  for (Uint n = 0; n < idr->nparams; ++n)
+  {
+    char lv[STR_LEN_MAX];
+    sprintf(lv,CHECKPOINT_SET_PARAM_"%s",idr->params_lv[n]);
+    
+    Psets(idr->params_lv[n],idr->params_rv[n]);
+    Psets(lv,idr->params_rv[n]);
+  }
+  
+  /* don't stop for checkpoint */
+  Pseti(CHECKPOINT_SET_PARAM_ P_"STOP",0);
+  /* read physics from checkpoint */
+  Psets("checkpoint_file_path",idr->checkpoint_path);
+  bhns = bhns_read_physics_from_checkpoint();
+  idr->grid = bhns->grid;
+  
+  /* go from Omega x r to inertial coords sys asymptotically.
+  // EVO needs this!? (it will be set in the reader) */
+  // Psets(CHECKPOINT_SET_PARAM_ "ADM_B1I_form","zero");
+  physics(bhns,ADM_UPDATE_Kij);/* before filling */
+  
+  /* fill BH */
+  Physics_T *const bh  = init_physics(bhns,BH);
+  Pseti("BH_filler_verbose",1);/* make it verbose anyway. */
+  /* fill these fields */
+  Psets("BH_filler_fields","alphaPsi,psi,beta_U0,beta_U1,beta_U2,"
+                           "adm_Kij_D0D0,adm_Kij_D0D1,adm_Kij_D0D2,"
+                           "adm_Kij_D1D1,adm_Kij_D1D2,adm_Kij_D2D2,"
+                           "gConf_D0D0,gConf_D0D1,gConf_D0D2,"
+                           "gConf_D1D1,gConf_D1D2,gConf_D2D2");
+  physics(bh,BH_FILL);
+  free_physics(bh);
+  
+  /* get (x,y,z) points from evo. */
+  idr->id_CM[0] = Pgetd(P_"x_CM");
+  idr->id_CM[1] = Pgetd(P_"y_CM");
+  idr->id_CM[2] = Pgetd(P_"z_CM");
+  
+  /* set fields based on initial data to be usable for evo */
+  bhns_set_evo_fields_generic(bhns->grid);
+  
+  /* set interpolation function */
+  idr_set_ifield_coeffs(idr,fields_name);
+  
+  free_physics(bhns);
+  
+  FUNC_TOC  
+}
