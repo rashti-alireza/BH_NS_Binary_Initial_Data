@@ -358,6 +358,7 @@ void bhns_export_id_generic_mt_safe(void *vp)
   
   /* set grid for idr */
   idr->grid = bhns->grid;
+  bhns->grid = 0;
   
   /* save field names */
   idr->id_field_names = sfield;
