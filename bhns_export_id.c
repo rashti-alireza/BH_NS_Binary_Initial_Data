@@ -242,7 +242,7 @@ void bhns_export_id_generic(void *vp)
 
 /* export ID for a general evolution code for a multi thread safe settings.
 // Note: this function itself is not MT safe but later we can use 
-// idr->fieldx(...) that are MT safe. */
+// idr->fieldx(...) that is MT safe. */
 void bhns_export_id_generic_mt_safe(void *vp)
 {
   FUNC_TIC
@@ -339,13 +339,13 @@ void bhns_export_id_generic_mt_safe(void *vp)
   physics(bh,BH_FILL);
   free_physics(bh);
   
-  /* get (x,y,z) points from evo. */
+  /* set fields based on initial data to be usable for evo */
+  bhns_set_evo_fields_generic(bhns->grid);
+  
+  /* save ID CM */
   idr->id_CM[0] = Pgetd(P_"x_CM");
   idr->id_CM[1] = Pgetd(P_"y_CM");
   idr->id_CM[2] = Pgetd(P_"z_CM");
-  
-  /* set fields based on initial data to be usable for evo */
-  bhns_set_evo_fields_generic(bhns->grid);
   
   /* set grid for idr */
   idr->grid = bhns->grid;
