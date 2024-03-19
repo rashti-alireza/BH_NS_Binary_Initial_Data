@@ -289,7 +289,7 @@ void bhns_export_id_generic_mt_safe(void *vp)
   regex_replace(fields_name,"\\bgrhd_p\\b",EVO_"grhd_p",fields_name);
   regex_replace(fields_name,"\\bgrhd_epsl\\b",EVO_"grhd_epsl",fields_name);
   
-  /* check if all fields are expected */
+  /* check if all fields are expected, DONT free sfield as we save it later */
   sfield = read_separated_items_in_string(fields_name,',');
   f = 0;
   while(sfield[f])
@@ -301,7 +301,6 @@ void bhns_export_id_generic_mt_safe(void *vp)
     }
     f++;
   }
-  free_2d(sfield);
   
   /* set all parameters that are set from the evo code side.
   // NOTE: these are not changing the checkpoint file itself.
@@ -351,12 +350,14 @@ void bhns_export_id_generic_mt_safe(void *vp)
   idr->grid = bhns->grid;
   
   /* save field names */
-  idr->id_field_names = read_separated_items_in_string(fields_name,',');
+  idr->id_field_names = sfield;
+  sfield = 0;
   
   /* set interpolation function */
   idr_set_ifield_coeffs(idr);
   
   free_physics(bhns);
+  free_2d(sfield);
   
   FUNC_TOC
 }
