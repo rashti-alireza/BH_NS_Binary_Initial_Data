@@ -322,9 +322,6 @@ void bhns_export_id_generic_mt_safe(void *vp)
   Psets("checkpoint_file_path",idr->checkpoint_path);
   bhns = bhns_read_physics_from_checkpoint();
   
-  // set grid for idr
-  idr->grid = bhns->grid;
-  
   /* go from Omega x r to inertial coords sys asymptotically.
   // EVO needs this!? (it will be set in the reader) */
   // Psets(CHECKPOINT_SET_PARAM_ "ADM_B1I_form","zero");
@@ -350,10 +347,16 @@ void bhns_export_id_generic_mt_safe(void *vp)
   /* set fields based on initial data to be usable for evo */
   bhns_set_evo_fields_generic(bhns->grid);
   
+  /* set grid for idr */
+  idr->grid = bhns->grid;
+  
+  /* save field names */
+  idr->id_field_names = read_separated_items_in_string(fields_name,',');
+  
   /* set interpolation function */
-  idr_set_ifield_coeffs(idr,fields_name);
+  idr_set_ifield_coeffs(idr);
   
   free_physics(bhns);
   
-  FUNC_TOC  
+  FUNC_TOC
 }
