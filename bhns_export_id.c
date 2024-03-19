@@ -256,6 +256,16 @@ void bhns_export_id_generic_mt_safe(void *vp)
   char **sfield = 0;
   Uint f;
   
+  // if not set, set the defaults values
+  if (!idr->ifields)
+  {
+    idr->ifields = "alpha,betax,betay,betaz,"
+                   "adm_gxx,adm_gxy,adm_gxz,adm_gyy,adm_gyz,adm_gzz,"
+                   "adm_Kxx,adm_Kxy,adm_Kxz,adm_Kyy,adm_Kyz,adm_Kzz,"
+                   "grhd_rho,grhd_p,grhd_epsl,"
+                   "grhd_vx,grhd_vy,grhd_vz";
+  }
+ 
   /* adapt fields_notations for Elliptica and ensure given fields are expected.
   // NOTE: the following replaces the name with the same ORDER as the input. */
   assert(sprintf(fields_name,"%s",idr->ifields));
